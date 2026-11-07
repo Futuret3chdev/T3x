@@ -295,8 +295,8 @@ export default function UpdatesPage() {
               </li>
               <li>
                 • <span className="text-white/80">Infinite Wallet</span> links only go to{' '}
-                <a href="https://mt.futuret3ch.com.au" className="text-emerald-400 hover:underline">
-                  mt.futuret3ch.com.au
+                <a href="https://t3x-wallet.vercel.app" className="text-emerald-400 hover:underline">
+                  t3x-wallet.vercel.app
                 </a>
                 .
               </li>

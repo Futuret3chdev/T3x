@@ -23,7 +23,7 @@ export default function HeroSection() {
               target="_blank"
               className="inline-flex items-center justify-center px-6 sm:px-8 h-11 sm:h-12 rounded-2xl bg-white text-black font-semibold tracking-wider text-sm active:opacity-90"
             >
-              LAUNCH INFINITE WALLET →
+              LAUNCH T3x Wallet →
             </a>
             <a
               href="#tokenomics"
@@ -39,7 +39,7 @@ export default function HeroSection() {
         <div className="md:col-span-5 mt-10 sm:mt-12 md:mt-0">
           <div className="rounded-3xl p-5 sm:p-8 border border-white/10 bg-white/5 backdrop-blur-xl">
             <div className="text-xs tracking-[2px] text-emerald-400 mb-3">THE WALLET IS THE GATEWAY</div>
-            <div className="text-3xl sm:text-4xl font-semibold tracking-tight leading-none">INFINITE WALLET<br />For infinite possibilities.<br />Truly ours.</div>
+            <div className="text-3xl sm:text-4xl font-semibold tracking-tight leading-none">T3x Wallet<br />For infinite possibilities.<br />Truly ours.</div>
 
             <ul className="mt-6 sm:mt-8 space-y-2 sm:space-y-3 text-sm opacity-80">
               <li className="flex gap-3">• 100% self-built. No injected providers.</li>
@@ -48,7 +48,7 @@ export default function HeroSection() {
               <li className="flex gap-3">• Keys encrypted locally. Seed never leaves your device.</li>
             </ul>
 
-            <a href={LINKS.wallet} target="_blank" className="mt-6 sm:mt-8 block text-center py-3 rounded-2xl bg-emerald-400 text-black font-semibold tracking-wider text-sm">OPEN INFINITE WALLET</a>
+            <a href={LINKS.wallet} target="_blank" className="mt-6 sm:mt-8 block text-center py-3 rounded-2xl bg-emerald-400 text-black font-semibold tracking-wider text-sm">OPEN T3x Wallet</a>
           </div>
         </div>
       </div>

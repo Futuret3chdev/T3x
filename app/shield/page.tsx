@@ -193,8 +193,8 @@ export default function ShieldPage() {
         </p>
         <p className="mt-2 text-sm opacity-70">
           Wallet:{' '}
-          <a className="text-cyan-300" href="https://mt.futuret3ch.com.au/">
-            https://mt.futuret3ch.com.au
+          <a className="text-cyan-300" href="https://t3x-wallet.vercel.app/">
+            https://t3x-wallet.vercel.app
           </a>
         </p>
 

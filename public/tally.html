@@ -115,7 +115,7 @@
             <button type="button" class="wallet-opt recommended" data-provider="solflare">Solflare</button>
             <button type="button" class="wallet-opt recommended" data-provider="backpack">Backpack</button>
             <button type="button" class="wallet-opt" data-provider="phantom">Phantom</button>
-            <a class="wallet-opt" data-provider="infinite" href="https://mt.futuret3ch.com.au/" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Infinite Wallet</a>
+            <a class="wallet-opt" data-provider="infinite" href="https://t3x-wallet.vercel.app/" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Infinite Wallet</a>
             <select id="treasuryPick" class="treasury-pick" title="Which team treasury are you paying from?">
                 <option value="">Team treasury (optional label)…</option>
             </select>
@@ -812,7 +812,7 @@
         if (!injected) {
             showDeeplinkHint(name);
             if (name === 'infinite') {
-                window.open('https://mt.futuret3ch.com.au/', '_blank');
+                window.open('https://t3x-wallet.vercel.app/', '_blank');
             }
             return false;
         }

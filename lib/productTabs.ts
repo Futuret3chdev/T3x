@@ -41,13 +41,19 @@ export const PRODUCT_TABS: ProductTab[] = [
     id: 'games',
     label: 'Games',
     href: '/catalog',
-    blurb: 'Catalog: Puck, Tap, Racer, Soccer Pro, Metro Vice, more.',
+    blurb: 'Catalog: Castrum, Dominion, Corgonaut, Eve, Soccer Pro, more.',
+  },
+  {
+    id: 'eve',
+    label: 'Eve',
+    href: 'https://in-ai-futuret3ch.vercel.app',
+    blurb: 'One assistant. Eve, by Futuret3ch.',
   },
   {
     id: 'wallet',
     label: 'Wallet',
-    href: 'https://mt.futuret3ch.com.au/',
-    blurb: 'INFINITE WALLET — self-custodial. Keys stay on the device.',
+    href: 'https://t3x-wallet.vercel.app/',
+    blurb: 'T3x Wallet. Keys stay on the device.',
   },
   {
     id: 'studio',

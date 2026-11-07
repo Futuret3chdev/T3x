@@ -5,8 +5,8 @@ export default function EcosystemSection() {
       desc: 'Native token of the T3x-ECO SYSTEM. Ultra-low fixed fees. Real on-chain state machine powering everything.',
     },
     {
-      title: 'INFINITE WALLET',
-      desc: 'Self-custodial INFINITE WALLET. Seed encrypted locally. Mint NFTs, hold Rockets, bridge assets. 100% ours.',
+      title: 'T3x Wallet',
+      desc: 'Self-custodial T3x Wallet. Seed encrypted locally. Mint NFTs, hold Rockets, bridge assets. 100% ours.',
     },
     {
       title: 'NFTs + Rockets',

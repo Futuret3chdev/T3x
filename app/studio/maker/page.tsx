@@ -83,8 +83,8 @@ function MakerInner() {
           <div className="uppercase text-xs tracking-[3px] text-emerald-400 mb-1">T3x Studio</div>
           <h1 className="text-3xl font-semibold tracking-tight">Make a game</h1>
           <p className="text-sm opacity-70 mt-1">
-            Pick a block, paint the level, then press Play.
-            {who ? ` Signed in as ${who}.` : ' Sign in to save a share link.'}
+            1. Pick a block. 2. Paint the grid. 3. Press Play. Save only if you want a share link.
+            {who ? ` Signed in as ${who}.` : ''}
           </p>
         </div>
         <div className="flex gap-2">

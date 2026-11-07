@@ -71,7 +71,7 @@ export default function PublisherPage() {
           <Link href="/studio/demo" className="px-5 py-2 rounded-xl bg-emerald-400 text-black font-semibold text-sm">
             Open SDK demo
           </Link>
-          <a href="https://mt.futuret3ch.com.au/" className="px-5 py-2 rounded-xl border border-white/20 text-sm">
+          <a href="https://t3x-wallet.vercel.app/" className="px-5 py-2 rounded-xl border border-white/20 text-sm">
             Infinite Wallet
           </a>
         </div>

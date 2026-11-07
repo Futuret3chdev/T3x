@@ -6,7 +6,7 @@ type Tool = 'shield' | 'vaultlock' | 'seedguard' | 'netwatch' | 'keyring' | 'phi
 
 const KNOWN = [
   'memetorrent.futuret3ch.com.au',
-  'mt.futuret3ch.com.au',
+  't3x-wallet.vercel.app',
   'futuret3ch.com.au',
   'admin.futuret3ch.com.au',
   'pool.futuret3ch.com.au',

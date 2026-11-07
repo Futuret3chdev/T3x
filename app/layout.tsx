@@ -10,8 +10,8 @@ export const viewport = {
 };
 
 export const metadata = {
-  title: 'T3x-ECO SYSTEM | $T3X • INFINITE WALLET • 1¢ Fees — by Futuret3ch',
-  description: 'Next-generation decentralized on-chain network. Native $T3X token. Self-built INFINITE WALLET. NFTs, Rockets, self-built bridges. No third parties. Infinite possibilities.',
+  title: 'T3x-ECO SYSTEM | $T3X • T3x Wallet • 1¢ Fees — by Futuret3ch',
+  description: 'Next-generation decentralized on-chain network. Native $T3X token. Self-built T3x Wallet. NFTs, Rockets, self-built bridges. No third parties. Infinite possibilities.',
   icons: { icon: '/favicon.ico' },
 };
 

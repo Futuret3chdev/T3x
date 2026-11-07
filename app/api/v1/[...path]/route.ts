@@ -114,7 +114,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ path
       return v1ok({
         product: 'Infinite Wallet',
         status: 'upcoming',
-        connect: 'https://mt.futuret3ch.com.au/',
+        connect: 'https://t3x-wallet.vercel.app/',
         note: 'Connect, sign, and $T3X pay will use these routes at launch. Today use Play SDK requestWallet().',
         play_sdk: 'https://memetorrent.futuret3ch.com.au/sdk/mt-play.js',
       });

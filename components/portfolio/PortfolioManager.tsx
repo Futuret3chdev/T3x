@@ -241,7 +241,7 @@ export default function PortfolioManager() {
             <div className="text-xs tracking-[3px] text-emerald-400 mb-2">MANAGEMENT, NOT JUST TRACKING</div>
             <div className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-1.6px]">Infinite Portfolio.<br />Real flows. Real ownership.</div>
             <p className="mt-3 max-w-xl text-base sm:text-lg opacity-70">
-              Real command-center flows that actually move your assets, earn utility, and prove everything on-chain — all inside INFINITE WALLET.
+              Real command-center flows that actually move your assets, earn utility, and prove everything on-chain — all inside T3x Wallet.
             </p>
           </div>
           <div className="text-left md:text-right md:block text-xs opacity-60">
@@ -304,7 +304,7 @@ export default function PortfolioManager() {
               </button>
             ))}
           </div>
-          <div className="text-[10px] mt-1 opacity-50">Each vault is completely isolated (no cross-account leakage). Matches real INFINITE WALLET behavior.</div>
+          <div className="text-[10px] mt-1 opacity-50">Each vault is completely isolated (no cross-account leakage). Matches real T3x Wallet behavior.</div>
         </div>
 
         {/* Asset breakdown — clean management view */}
@@ -518,7 +518,7 @@ export default function PortfolioManager() {
                         </button>
                       ))}
                     </div>
-                    <div className="text-xs mt-4 opacity-60">Rockets are auto-deposited to your INFINITE WALLET vault. Real utility across the ecosystem.</div>
+                    <div className="text-xs mt-4 opacity-60">Rockets are auto-deposited to your T3x Wallet vault. Real utility across the ecosystem.</div>
                   </div>
                 )}
 
@@ -581,7 +581,7 @@ export default function PortfolioManager() {
                     </div>
 
                     <button onClick={() => completeStep()} className="mt-6 w-full py-4 rounded-2xl bg-white text-black font-semibold tracking-wider">MINT THIS DESIGN TO CURRENT WALLET (demo)</button>
-                    <div className="text-[10px] text-center mt-2 opacity-50">Real mint uses INFINITE WALLET + our native NFT layer at 1¢ fees. Design saved on-chain forever.</div>
+                    <div className="text-[10px] text-center mt-2 opacity-50">Real mint uses T3x Wallet + our native NFT layer at 1¢ fees. Design saved on-chain forever.</div>
                   </div>
                 )}
 
@@ -627,7 +627,7 @@ export default function PortfolioManager() {
                   <div className="mt-6 text-center">
                     <p className="opacity-80 mb-4">The full self-built constellation. Every node is connected without third parties.</p>
                     <div className="inline-block text-6xl mb-3">✨ 🌌 🔗</div>
-                    <p className="text-sm">T3x Core • INFINITE WALLET • TAP (Shop • Match • Transport • Studio) • 100+ Bridges • Native NFTs • Rockets Economy • Safety Layer</p>
+                    <p className="text-sm">T3x Core • T3x Wallet • TAP (Shop • Match • Transport • Studio) • 100+ Bridges • Native NFTs • Rockets Economy • Safety Layer</p>
                     <button onClick={() => completeStep()} className="mt-4 px-8 py-3 rounded-2xl border border-white/30">CLOSE VISUAL</button>
                   </div>
                 )}
@@ -661,15 +661,15 @@ export default function PortfolioManager() {
                 </div>
               ))}
             </div>
-            <div className="text-[10px] mt-3 opacity-50">These utilities are unlocked and managed through the flows above — all inside your self-custodial INFINITE WALLET.</div>
+            <div className="text-[10px] mt-3 opacity-50">These utilities are unlocked and managed through the flows above — all inside your self-custodial T3x Wallet.</div>
           </div>
         </div>
 
-        {/* Promote specialty wallets: Couples & Business (first-class in INFINITE WALLET) */}
+        {/* Promote specialty wallets: Couples & Business (first-class in T3x Wallet) */}
         <div className="mt-10 pt-8 border-t border-white/10">
           <div className="text-xs uppercase tracking-[3px] opacity-60 mb-2">SPECIALTY WALLETS</div>
           <div className="text-2xl font-semibold tracking-tight mb-2">Built for life &amp; business.</div>
-          <p className="text-sm opacity-70 max-w-xl mb-6">The first Couples Wallet for shared secure access + Business Vaults with team flows, reporting, and branded management. All powered by the same self-custodial INFINITE WALLET — create in one click, backed up encrypted to your account.</p>
+          <p className="text-sm opacity-70 max-w-xl mb-6">The first Couples Wallet for shared secure access + Business Vaults with team flows, reporting, and branded management. All powered by the same self-custodial T3x Wallet — create in one click, backed up encrypted to your account.</p>
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="rounded-3xl border border-purple-400/30 bg-white/[0.01] p-6">
@@ -691,7 +691,7 @@ export default function PortfolioManager() {
                   <p>This is the first true self-custodial couples product — no bank, no trustee, no single point of failure or third-party access.</p>
                 </div>
               )}
-              <a href="https://mt.futuret3ch.com.au/" target="_blank" className="mt-4 inline-block text-sm text-purple-400 hover:underline">Create in INFINITE WALLET →</a>
+              <a href="https://t3x-wallet.vercel.app/" target="_blank" className="mt-4 inline-block text-sm text-purple-400 hover:underline">Create in T3x Wallet →</a>
             </div>
             <div className="rounded-3xl border border-blue-400/30 bg-white/[0.01] p-6">
               <div className="text-blue-400 text-xs tracking-widest">FOR BUSINESSES</div>
@@ -712,13 +712,13 @@ export default function PortfolioManager() {
                   <p>Fully enterprise-ready and self-custodial: the master seed stays with the company, sub-accounts are derived, and no external custodian or platform ever touches the keys.</p>
                 </div>
               )}
-              <a href="https://mt.futuret3ch.com.au/" target="_blank" className="mt-4 inline-block text-sm text-blue-400 hover:underline">Create in INFINITE WALLET →</a>
+              <a href="https://t3x-wallet.vercel.app/" target="_blank" className="mt-4 inline-block text-sm text-blue-400 hover:underline">Create in T3x Wallet →</a>
             </div>
           </div>
         </div>
 
         <div className="mt-8 text-center">
-          <a href="https://mt.futuret3ch.com.au/" target="_blank" className="inline-block text-sm px-8 py-3 rounded-2xl border border-white/30 hover:bg-white/5">LAUNCH INFINITE WALLET TO RUN THESE FLOWS FOR REAL →</a>
+          <a href="https://t3x-wallet.vercel.app/" target="_blank" className="inline-block text-sm px-8 py-3 rounded-2xl border border-white/30 hover:bg-white/5">LAUNCH T3x Wallet TO RUN THESE FLOWS FOR REAL →</a>
           <div className="text-[10px] mt-3 opacity-50">All balances, NFTs, and Rockets live forever in your self-custodial vault. No third parties. Infinite possibilities.</div>
         </div>
 

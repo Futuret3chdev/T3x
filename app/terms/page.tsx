@@ -14,7 +14,7 @@ export default function TermsPage() {
           <p>You are solely responsible for your keys, your $T3X, your Rockets, and your NFTs. We never hold custody of user funds or seeds.</p>
           <p>The software is provided as-is. There are risks in crypto. Do your own research. Only use what you can afford to lose.</p>
           <p>All core components (node, verifier, wallet logic, bridges) are built and operated by the team without reliance on third-party chains or custodians for the primary experience.</p>
-          <p>Demo flows on this marketing site are simulations only. Real execution happens inside INFINITE WALLET with your local keys.</p>
+          <p>Demo flows on this marketing site are simulations only. Real execution happens inside T3x Wallet with your local keys.</p>
           <p>Tokenomics, utilities, and future T3x-CHAIN details are subject to evolution as the self-built ecosystem grows.</p>
         </div>
 

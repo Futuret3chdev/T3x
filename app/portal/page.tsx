@@ -223,7 +223,7 @@ export default function PortalPage() {
         <div className="uppercase text-[10px] tracking-[3px] opacity-50 mb-3">Apps</div>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
           {[
-            { href: 'https://mt.futuret3ch.com.au/', label: 'Wallet', icon: '👛', external: true },
+            { href: 'https://t3x-wallet.vercel.app/', label: 'Wallet', icon: '👛', external: true },
             { href: '/catalog', label: 'Games', icon: '🎮', external: false },
             ...(tapStaff
               ? [
@@ -496,7 +496,7 @@ export default function PortalPage() {
                   </button>
                   {walletMsg && <div className="text-sm opacity-70">{walletMsg}</div>}
                 </form>
-                <a href="https://mt.futuret3ch.com.au/" target="_blank" rel="noopener noreferrer" className="inline-block text-emerald-400 text-sm">
+                <a href="https://t3x-wallet.vercel.app/" target="_blank" rel="noopener noreferrer" className="inline-block text-emerald-400 text-sm">
                   Open Infinite Wallet →
                 </a>
               </div>
