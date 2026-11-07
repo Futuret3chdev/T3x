@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-const SNIP = `<script src="https://memetorrent.futuret3ch.com.au/sdk/mt-games.js"></script>
+const SNIP = `<script src="https://t3x.futuret3ch.com.au/sdk/mt-games.js"></script>
 <script>
   const games = MTGames.init({ gameId: 'my-title' });
 

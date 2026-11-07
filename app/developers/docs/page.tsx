@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { API_CATS } from '@/lib/mt-api-catalog';
 
-const ORIGIN = 'https://memetorrent.futuret3ch.com.au';
+const ORIGIN = 'https://t3x.futuret3ch.com.au';
 const MINT = 'ELywDcVX2WumHm4xEfqF8NdEKaeGCAaq9JmwtjE8pump';
 
 function Copy({ text }: { text: string }) {

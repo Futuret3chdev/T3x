@@ -12,7 +12,7 @@ export const viewport = {
 export const metadata = {
   title: 'T3x-ECO SYSTEM | $T3X • T3x Vault • 1¢ Fees — by Futuret3ch',
   description: 'Next-generation decentralized on-chain network. Native $T3X token. Self-built T3x Vault. NFTs, Rockets, self-built bridges. No third parties. Infinite possibilities.',
-  icons: { icon: '/favicon.ico' },
+  icons: { icon: '/favicon.png', apple: '/logo.png' },
 };
 
 export default function RootLayout({

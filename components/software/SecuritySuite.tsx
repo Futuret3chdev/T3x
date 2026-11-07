@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 type Tool = 'shield' | 'vaultlock' | 'seedguard' | 'netwatch' | 'keyring' | 'phish' | 'clip' | 'signdesk' | 'allowlist';
 
 const KNOWN = [
-  'memetorrent.futuret3ch.com.au',
+  't3x.futuret3ch.com.au',
   't3x-wallet.vercel.app',
   'futuret3ch.com.au',
   'admin.futuret3ch.com.au',
@@ -30,7 +30,7 @@ function hostOf(raw: string) {
 }
 
 function nearSpoof(host: string) {
-  const needles = ['memetorrent', 'futuret3ch', 'mt-eco', 'infinitewallet'];
+  const needles = ['t3x', 'futuret3ch', 'mt-eco', 'infinitewallet'];
   const tidy = host.replace(/[^a-z0-9.-]/g, '');
   return needles.some((n) => {
     if (tidy.includes(n)) return !KNOWN.some((k) => tidy === k || tidy.endsWith('.' + k));

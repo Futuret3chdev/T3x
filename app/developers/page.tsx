@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-const ORIGIN = 'https://memetorrent.futuret3ch.com.au';
+const ORIGIN = 'https://t3x.futuret3ch.com.au';
 const CURL = `curl "${ORIGIN}/api/v1/cryptocurrency/quotes/latest?symbol=T3x"`;
 const CLI_UNIX = `curl -fsSL ${ORIGIN}/cli/mt.js -o mt.js && chmod +x mt.js
 node mt.js quotes`;

@@ -43,10 +43,10 @@ export default function ShieldPage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href="https://memetorrent.futuret3ch.com.au/shield"
+                href="https://t3x.futuret3ch.com.au/shield"
                 className="px-4 py-2 rounded-full bg-cyan-400 text-black font-semibold text-sm"
               >
-                memetorrent.futuret3ch.com.au/shield
+                t3x.futuret3ch.com.au/shield
               </a>
               <Link
                 href="/login?next=/shield/trial&from=shield-trial"
