@@ -1,0 +1,43 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
+export default function Footer() {
+  const [compact, setCompact] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1100px), (pointer: coarse)');
+    const apply = () => setCompact(mq.matches);
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, []);
+
+  return (
+    <footer className="border-t border-white/10 px-6 py-6 md:py-10 text-xs text-white/50">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-y-3 justify-between">
+        <div>© {new Date().getFullYear()} T3x-ECO SYSTEM — Developed by Futuret3ch. All core components self-hosted and self-built.</div>
+        <div className="mt-foot-links flex-wrap gap-x-6 gap-y-1">
+          <a href="https://www.futuret3ch.com.au" target="_blank" className="hover:text-white">Futuret3ch</a>
+          <a href="/claims" className="hover:text-white">Claim $T3X</a>
+          <a href="/status" className="hover:text-white">Status</a>
+          <a href="/portal" className="hover:text-white">Portal</a>
+          <a href="/catalog" className="hover:text-white">Games</a>
+          <a href="/shield" className="hover:text-white">Shield</a>
+          <a href="/studio" className="hover:text-white">Studio</a>
+          <a href="/login?next=/chat" className="hover:text-white">Chat</a>
+          <a href="/casino" className="hover:text-white">18+ games</a>
+          <a href="/software" className="hover:text-white">Software</a>
+          <a href="/developers" className="hover:text-white">Developers</a>
+          <a href="/media" className="hover:text-white">Media</a>
+          <a href="/updates" className="hover:text-white">Updates</a>
+          <a href="/terms" className="hover:text-white">Terms</a>
+          <a href="/policies" className="hover:text-white">Policies</a>
+          <a href="/#safety" className="hover:text-white">Safety</a>
+          <a href="/privacy" className="hover:text-white">Privacy</a>
+          <a href="/donations" className="hover:text-white">Donations</a>
+        </div>
+      </div>
+      <div className="max-w-7xl mx-auto mt-4 text-[10px] text-white/40">Built here. Hosted here. Keys stay with you.</div>
+    </footer>
+  );
+}

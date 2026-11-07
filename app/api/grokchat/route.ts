@@ -1,0 +1,60 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(request: NextRequest) {
+  try {
+    const { message } = await request.json();
+
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+      return NextResponse.json({ reply: 'Please enter a message.' }, { status: 400 });
+    }
+
+    const msg = message.trim();
+    const lower = msg.toLowerCase();
+    let reply = '';
+
+    // Enhanced Grok-style T3x ECO SYSTEM assistant - answers directly on site
+    if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey') || lower.includes('greet')) {
+      reply = "I'm Eve. Ask me about $T3X, the wallet, or a bridge.";
+    } else if (lower.includes('help') || lower.includes('support') || lower.includes('how do i') || lower.includes('guide')) {
+      reply = "I'm here to help! You can explore the site for LIVE $T3X stats, use the BUY $T3X NOW panel (self-custodial wallet connect), or run the management flows on the homepage. What specifically do you need?";
+    } else if (lower.includes('price') || lower.includes('$mt') || lower.includes('token price') || lower.includes('how much')) {
+      reply = "$T3X live stats (price, market cap, volume) are shown on the homepage under LIVE $T3X. The contract address is ELywDcVX2WumHm4xEfqF8NdEKaeGCAaq9JmwtjE8pump. You can buy directly using the BUY $T3X NOW button with your own wallet.";
+    } else if (lower.includes('wallet') || lower.includes('infinite') || lower.includes('infinite wallet')) {
+      reply = "INFINITE WALLET is our fully self-custodial wallet at https://mt.futuret3ch.com.au/. It supports native T3x, Solana $T3X, minting NFTs, earning/spending Rockets, and all the real management flows. Your keys never leave your device.";
+    } else if (lower.includes('bridge') || lower.includes('swap') || lower.includes('cross chain')) {
+      reply = "You can bridge Native T3x ↔ SPL $T3X and perform swaps inside INFINITE WALLET. Real on-chain flows (with demo versions) are available right on the homepage under ONE-PLACE MANAGEMENT FLOWS.";
+    } else if (lower.includes('develop') || lower.includes('sdk') || lower.includes('api') || lower.includes('build') || lower.includes('developer')) {
+      reply = "Developer APIs: https://memetorrent.futuret3ch.com.au/developers — docs at /developers/docs, CLI at /cli/mt.js, quotes at GET /api/v1/cryptocurrency/quotes/latest?symbol=T3x, Play SDK at /sdk/mt-play.js. Support: support@futuret3ch.com.au";
+    } else if (lower.includes('buy') || lower.includes('purchase') || lower.includes('get $mt') || lower.includes('how to buy')) {
+      reply = "Use the BUY $T3X NOW button in the top navigation bar. Connect your self-custodial wallet (Phantom, Solflare, or Backpack), enter the SOL amount, and sign the on-chain transaction directly. Everything stays in your control. See the Raydium fundamentals for how Solana swaps work: https://docs.raydium.io/solana-fundamentals";
+    } else if (lower.includes('futuret3ch') || lower.includes('future t3ch') || lower.includes('the team') || lower.includes('who built') || lower.includes('company') || lower.includes('developed by')) {
+      reply = "Futuret3ch is the Australian technology company behind T3X. We build self-hosted blockchain infrastructure, the INFINITE WALLET, and real-utility projects with complete transparency. No third parties. More at https://www.futuret3ch.com.au.";
+    } else if (lower.includes('about me') || lower.includes('tell me about me') || lower.includes('tell me about mt') || lower.includes('what is mt') || lower.includes('about mt') || lower.includes('ecosystem')) {
+      reply = "The T3x ECO SYSTEM is a self-built, self-hosted on-chain network powered by the native $T3X token. We have the INFINITE WALLET, P2E utilities with Rockets, NFTs, bridges, and real management flows — all without third parties. Own your keys, own your assets. Explore the homepage for LIVE $T3X, tokenomics, utilities, and flows.";
+    } else if (lower.includes('tokenomics') || lower.includes('supply') || lower.includes('how many')) {
+      reply = "Total supply is 1,000,000,000 $T3X. Breakdown: 18% Presale, 10% Liquidity, 20% Staking, 45% Mining, 4% Airdrops, 2.5% Development, 0.5% Team. Details on the homepage under tokenomics.";
+    } else if (lower.includes('utility') || lower.includes('utilities') || lower.includes('what can i do') || lower.includes('use $mt for')) {
+      reply = "$T3X is the universal key: P2E Mining (earn Rockets), NFT Digital Identity, Physical/Digital Store access, future T3x-CHAIN features, Launchpad, Vault rewards, and more. Real utility across the ecosystem. See the full list on the homepage under CORE UTILITIES.";
+    } else if (lower.includes('safety') || lower.includes('security') || lower.includes('keys') || lower.includes('seed')) {
+      reply = "Safety is core: Client-side key generation, local encryption (AES-GCM + PBKDF2), ed25519 signing on-device, and no seeds ever leave your machine. See the SAFETY section on the homepage for full details.";
+    } else if (lower.includes('constellation') || lower.includes('map') || lower.includes('ecosystem map')) {
+      reply = "The T3x-ECO SYSTEM CONSTELLATION on the homepage is an interactive visual map showing T3x Core, INFINITE WALLET, TAP, bridges, and more — all self-built and connected.";
+    } else if (lower.includes('tap') || lower.includes('games') || lower.includes('p2e') || lower.includes('rockets')) {
+      reply = "TAP is trips, packages, and food deliveries — like Uber, Dasher, and Panda. Not games. TAPSHOP is trade. TAPMATCH is work (employees and employers). Those three desks are staff only — not open to the public. Games live in the catalog.";
+    } else if (lower.includes('contact') || lower.includes('reach') || lower.includes('overlords')) {
+      reply = "Use the Eve box on this page, or the emails listed above.";
+    } else {
+      // Grok-style helpful fallback - actually answers instead of generic team notification
+      reply = `Thanks for asking about "${msg}". I'm Eve. I can help with $T3X, the wallet, and bridges on this site.
+
+I can also tell you about the wallet, utilities, and how a swap or bridge works. What do you want to do?`;
+    }
+
+    return NextResponse.json({ reply });
+  } catch (error) {
+    console.error('grokchat error:', error);
+    return NextResponse.json({ 
+      reply: "Sorry, something went wrong. Try asking again about $T3X, the wallet, utilities, or the flows." 
+    }, { status: 500 });
+  }
+}

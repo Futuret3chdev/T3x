@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>T3x Studio Suite</title>
+  <link rel="stylesheet" href="kit.css" />
+  <style>
+    body{background:#0b1020;color:#e8eaf0}
+    .hero{padding:28px 20px 8px;max-width:1100px;margin:0 auto}
+    .hero h1{font-size:32px;margin:0 0 8px;letter-spacing:-.8px}
+    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;padding:16px 20px 40px;max-width:1100px;margin:0 auto}
+    .cards a{display:block;text-decoration:none;border-radius:16px;padding:16px;border:1px solid #ffffff22;min-height:140px}
+    .cards a:hover{filter:brightness(1.08)}
+    .cards h2{margin:0 0 6px;font-size:18px}
+    .cards p{margin:0;opacity:.8;font-size:13px}
+    .tag{font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:.6;margin-bottom:8px}
+  </style>
+</head>
+<body>
+  <div class="top" style="background:#111827">
+    <strong style="color:#19d37e">T3x Studio Suite</strong>
+    <nav id="nav"></nav>
+  </div>
+  <div class="hero">
+    <h1>Twelve studios. Each does a different job.</h1>
+    <p style="opacity:.7;max-width:640px">Not skins of the same window. Android compiles APKs. Device Lab farms devices. Publisher writes the store listing. Play Console rolls out. Photo turns an old house picture into a rendered game building. iOS, Assets, World, Music, Video, Shield, and Bot are their own tools.</p>
+  </div>
+  <div class="cards" id="cards"></div>
+  <script src="kit.js"></script>
+  <script>
+    document.getElementById('nav').innerHTML = T3x.nav('index');
+    const list = [
+      ['android.html','#0f2918','#19d37e','Android Studio','Paint a level, run it, Build APK. The compiler.'],
+      ['lab.html','#10151f','#60a5fa','Device Lab','Phone, fold, tablet, TV, watch, Auto at once. Screenshots, crashes, net throttle.'],
+      ['ios.html','#1a1024','#c4b5fd','iOS Studio','iPhone / iPad skins, Info.plist, Export Xcode zip.'],
+      ['assets.html','#24180c','#fb923c','Asset Studio','Pixel sprites, tileset, animation frames, particles, PNG export.'],
+      ['publisher.html','#0c1f24','#22d3ee','Publisher','Store listing, icon, feature graphic, $T3X IAP, publish title.'],
+      ['console.html','#07140c','#4ade80','Play Console','Tracks, rollout %, testers, crash inbox for your titles.'],
+      ['bot.html','#0b1220','#38bdf8','Bot Studio','Run /ca /token /holders against live T3x APIs. Telegram preview.'],
+      ['world.html','#140c1c','#e879f9','World / 3D','Voxel world, orbit camera, walk mode, export JSON.'],
+      ['shield.html','#1a0c0c','#f87171','Shield Policy','Allowlist, panic lock, clipboard rules. Export policy JSON.'],
+      ['music.html','#0c0c1a','#a78bfa','Music / SFX','16-step tracker, 4 channels, BPM, export WAV.'],
+      ['video.html','#0c141a','#fbbf24','Video Cut','Load a clip, set in/out, play the cut, export WebM.'],
+      ['photo.html','#14100c','#e7c07b','Photography','Restore an old house photo, warp the facade, render a 3D building, drop it in the game.']
+    ];
+    document.getElementById('cards').innerHTML = list.map(([h,bg,c,t,d])=>`
+      <a href="${h}" style="background:${bg};border-color:${c}44">
+        <div class="tag" style="color:${c}">Studio</div>
+        <h2 style="color:${c}">${t}</h2>
+        <p>${d}</p>
+      </a>`).join('');
+  </script>
+</body>
+</html>

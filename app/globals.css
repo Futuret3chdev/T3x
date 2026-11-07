@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+/* Catalog play iframe: hide page chrome, fill the phone. */
+html.mt-embed,
+html.mt-embed body {
+  height: 100% !important;
+  min-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #000 !important;
+}
+html.mt-embed main {
+  height: 100% !important;
+  min-height: 100% !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+html.mt-embed main > div {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100% !important;
+  min-height: 100% !important;
+}
+html.mt-embed main a,
+html.mt-embed main h1,
+html.mt-embed main p,
+html.mt-embed main .uppercase {
+  display: none !important;
+}
+html.mt-embed iframe {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  z-index: 30;
+}
+html.mt-embed canvas {
+  max-height: none !important;
+}
+
+/* Slim phone header by default. Full categories only on a real desktop mouse. */
+.mt-nav-compact { display: flex; }
+.mt-nav-desktop { display: none; }
+.mt-nav-social { display: none; }
+.mt-foot-links { display: none; }
+@media (min-width: 1101px) and (hover: hover) and (pointer: fine) {
+  .mt-nav-compact { display: none !important; }
+  .mt-nav-desktop { display: flex !important; }
+  .mt-nav-social { display: block !important; }
+  .mt-foot-links { display: flex !important; }
+}
+
+/* =========================
+   BASE COLORS (TAILWIND SAFE)
+========================= */
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Web3 tokens (neutral defaults) */
+  --card: #ffffff;
+  --border: rgba(0, 0, 0, 0.08);
+  --accent: #00cc88;
+}
+
+/* AUTO DARK MODE (SYSTEM) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+
+    --card: rgba(20, 25, 35, 0.9);
+    --border: rgba(255, 255, 255, 0.08);
+    --accent: #00ff99;
+  }
+}
+
+/* MANUAL OVERRIDE: LIGHT */
+[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  --card: #ffffff;
+  --border: rgba(0, 0, 0, 0.08);
+  --accent: #00cc88;
+}
+
+/* MANUAL OVERRIDE: DARK */
+[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  --card: rgba(20, 25, 35, 0.9);
+  --border: rgba(255, 255, 255, 0.08);
+  --accent: #00ff99;
+}
+
+/* =========================
+   GLOBALS
+========================= */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  transition: background 0.25s ease, color 0.25s ease;
+  scroll-behavior: smooth;
+}
+
+section[id] {
+  scroll-margin-top: 20px;
+}
+/* ===== Subtle background depth ===== */
+body {
+  background:
+    radial-gradient(
+      1200px at 15% 20%,
+      rgba(0, 255, 153, 0.06),
+      transparent 40%
+    ),
+    radial-gradient(
+      1000px at 85% 80%,
+      rgba(255, 255, 255, 0.04),
+      transparent 45%
+    ),
+    var(--background);
+}
+
+/* Marquee for bridge chains - pure floating logos, very slow, gentle dancing bobs ("side to side going past happy") */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-scroll {
+  animation: marquee 240s linear infinite;
+}
+
+.marquee-scroll:hover {
+  animation-play-state: paused;
+}
+
+@keyframes logo-dance {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-4px) rotate(1.5deg); }
+}
+
+.logo-dance {
+  animation: logo-dance 2.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Play chrome */
+.mt-play-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  background: linear-gradient(180deg, #101828 0%, #0b1220 100%);
+  border-bottom: 1px solid rgba(25, 211, 126, 0.22);
+  color: #fff;
+  font-family: system-ui, sans-serif;
+}
+.mt-play-picker {
+  position: fixed;
+  z-index: 31;
+  top: 44px;
+  left: 0;
+  right: 0;
+  padding: 12px 14px 16px;
+  background: linear-gradient(180deg, #0f1a2e 0%, #0a1220 100%);
+  border-bottom: 1px solid rgba(25, 211, 126, 0.28);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  color: #fff;
+}
+.mt-play-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+  gap: 10px 8px;
+  max-height: min(42vh, 280px);
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.mt-play-picker-grid::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.mt-play-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #dbeafe;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-align: center;
+  line-height: 1.15;
+}
+.mt-play-chip img {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  object-fit: cover;
+  display: block;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+.mt-play-chip.is-on {
+  color: #19d37e;
+}
+.mt-play-chip.is-on img {
+  border-color: #19d37e;
+  box-shadow: 0 0 0 3px rgba(25, 211, 126, 0.28), 0 6px 16px rgba(0, 0, 0, 0.35);
+}

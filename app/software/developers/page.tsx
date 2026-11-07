@@ -1,0 +1,94 @@
+'use client';
+
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+type User = {
+  username: string;
+  email: string;
+  license_key: string | null;
+  license_tier: string;
+};
+
+export default function SoftwareDevelopersPage() {
+  const [user, setUser] = useState<User | null>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/portal/me', { credentials: 'include' })
+      .then((r) => r.json())
+      .then((d) => setUser(d.user || null))
+      .catch(() => setUser(null))
+      .finally(() => setReady(true));
+  }, []);
+
+  return (
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div className="flex flex-wrap gap-4 text-sm">
+        <Link href="/" className="opacity-70 hover:opacity-100">← Home</Link>
+        <Link href="/software" className="opacity-70 hover:opacity-100">← Software</Link>
+      </div>
+      <div className="uppercase text-xs tracking-[3px] text-emerald-400 mt-4 mb-2">Software · Developers</div>
+      <h1 className="text-4xl sm:text-5xl font-semibold tracking-[-1.6px] mb-4">
+        One account. One license. Every T3x site.
+      </h1>
+      <p className="opacity-70 max-w-2xl mb-10 text-sm sm:text-base">
+        Sign in to receive a free builder license on your portal profile. One account works across T3x sites.
+      </p>
+
+      <div className="grid md:grid-cols-2 gap-4 mb-12">
+        <div className="rounded-2xl p-6 border border-white/10" style={{ background: 'var(--card)' }}>
+          <div className="text-emerald-400 text-xs tracking-[2px] mb-2">FREE</div>
+          <h2 className="text-2xl font-semibold mb-2">Builder license</h2>
+          <ul className="text-sm opacity-70 space-y-2">
+            <li>• Issued automatically on your profile</li>
+            <li>• Android game client download</li>
+            <li>• Same key on every Futuret3ch site</li>
+          </ul>
+        </div>
+        <div className="rounded-2xl p-6 border border-emerald-400/30" style={{ background: 'var(--card)' }}>
+          <div className="text-emerald-400 text-xs tracking-[2px] mb-2">PRO</div>
+          <h2 className="text-2xl font-semibold mb-2">Ecosystem license</h2>
+          <ul className="text-sm opacity-70 space-y-2 mb-4">
+            <li>• Publish into TAP / P2E</li>
+            <li>• $T3X and Rockets hooks</li>
+            <li>• iOS, Windows and Mac when those clients ship</li>
+          </ul>
+          {(!user || (user.license_tier || 'free') !== 'pro') && (
+            <div>
+              <button
+                type="button"
+                disabled
+                className="font-semibold text-black bg-emerald-400/40 px-4 py-2 rounded-full text-sm cursor-not-allowed"
+              >
+                Upgrade to Pro
+              </button>
+              <p className="text-xs opacity-50 mt-2">Coming soon — paid upgrade.</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {!ready ? (
+        <p className="opacity-50 text-sm">Checking your profile…</p>
+      ) : user ? (
+        <div className="rounded-2xl p-6 border border-emerald-400/30">
+          <div className="uppercase text-xs tracking-[2px] text-emerald-400 mb-2">On your profile</div>
+          <div className="font-mono text-lg sm:text-2xl text-emerald-400 break-all mb-3">{user.license_key}</div>
+          <p className="text-sm opacity-70 mb-4">
+            {user.username} · {user.email} · {(user.license_tier || 'free').toUpperCase()}
+          </p>
+          <div className="flex flex-wrap gap-4 text-sm">
+            <Link href="/portal" className="text-emerald-400 hover:underline">Open portal →</Link>
+            <Link href="/software/games" className="text-emerald-400 hover:underline">Download Android →</Link>
+          </div>
+        </div>
+      ) : (
+        <p className="text-sm opacity-70">
+          Use the <b>account icon</b> in the top bar to create or enter your portal.
+          A free license is written to that profile on first login.
+        </p>
+      )}
+    </div>
+  );
+}

@@ -1,0 +1,81 @@
+'use client';
+
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { TAP_APPS, type TapAppId } from '@/lib/tap-apps';
+import TapMatchApp from '@/components/tap/tapmatch/TapMatchApp';
+import TapGo from '@/components/tap/TapGo';
+import TapStaffGate from '@/components/tap/TapStaffGate';
+
+type User = { username: string; email: string; avatar_url: string | null; is_admin?: boolean };
+
+export default function TapDesk({ app }: { app: TapAppId }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const current = TAP_APPS.find((a) => a.id === app) || TAP_APPS[0];
+
+  useEffect(() => {
+    fetch('/api/portal/me', { credentials: 'include' })
+      .then((r) => r.json())
+      .then((d) => setUser(d.user || null))
+      .catch(() => setUser(null))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return <div className="max-w-6xl mx-auto px-4 py-20 opacity-60">Opening TAP desk…</div>;
+  }
+
+  return (
+    <div className="min-h-[70vh] border-t border-sky-400/20 bg-gradient-to-b from-sky-950/40 via-black to-black">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+          <div>
+            <div className="uppercase text-[10px] tracking-[4px] text-sky-400 mb-2">TAP desk</div>
+            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">{current.name}</h1>
+            <p className="text-sm opacity-60 mt-1">Staff only</p>
+          </div>
+          <Link href="/" className="text-sm opacity-60 hover:opacity-100">
+            ← Home
+          </Link>
+        </div>
+
+        <TapStaffGate user={user}>
+          <div className="flex flex-wrap gap-2 mb-10">
+            {TAP_APPS.map((a) => {
+              const on = a.id === app;
+              return (
+                <Link
+                  key={a.id}
+                  href={a.href}
+                  className={`px-5 py-2.5 rounded-2xl text-sm font-semibold tracking-wide border ${
+                    on
+                      ? 'border-sky-400 bg-sky-400 text-black'
+                      : 'border-sky-400/30 bg-sky-400/5 opacity-80 hover:opacity-100'
+                  }`}
+                >
+                  {a.name}
+                  <span className="ml-2 text-[10px] font-normal tracking-[1px] opacity-70">{a.tag}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          {app === 'tap' && <TapGo user={user} />}
+
+          {app === 'tapshop' && (
+            <section className="rounded-3xl border border-sky-400/30 bg-sky-400/5 p-6 sm:p-8">
+              <h2 className="text-xl font-semibold mb-2">Trade</h2>
+              <p className="text-sm opacity-70 max-w-xl mb-4">
+                TAPSHOP is your trade account — items, $T3X, and Rockets.
+              </p>
+              <div className="text-xs tracking-[2px] text-sky-300">Marketplace floor — building out</div>
+            </section>
+          )}
+
+          {app === 'tapmatch' && <TapMatchApp user={user} />}
+        </TapStaffGate>
+      </div>
+    </div>
+  );
+}

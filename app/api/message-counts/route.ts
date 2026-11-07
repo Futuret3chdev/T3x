@@ -1,0 +1,337 @@
+import { NextRequest } from 'next/server';
+import mysql from 'mysql2/promise';
+
+const DB_HOST = '50.6.160.248';
+const DB_USER = 'tcvkxete_admin';
+const DB_PASS = 'Shinhwa1@@';
+
+function getMelbourneDateStr(d: Date = new Date()): string {
+  // Melbourne is UTC+10 or +11 (AEST/AEDT). Use fixed offset handling via MySQL CONVERT_TZ where possible.
+  const tz = 'Australia/Melbourne';
+  const formatter = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' });
+  return formatter.format(d); // YYYY-MM-DD
+}
+
+function getMelbourneTimestamp(): string {
+  const tz = 'Australia/Melbourne';
+  const now = new Date();
+  const datePart = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+  const timePart = new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(now);
+  return `${datePart} ${timePart} AEST`;
+}
+
+function getMelbourneYesterdayStr(): string {
+  const today = getMelbourneDateStr();
+  const [y, m, d] = today.split('-').map(Number);
+  const utc = new Date(Date.UTC(y, m - 1, d - 1));
+  const yy = utc.getUTCFullYear();
+  const mm = String(utc.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(utc.getUTCDate()).padStart(2, '0');
+  return `${yy}-${mm}-${dd}`;
+}
+
+function getMelbourneMonthStr(): string {
+  return getMelbourneDateStr().slice(0, 7); // YYYY-MM
+}
+
+async function queryTelegram(conn: any, startDate: string, endDate: string, forRange: boolean) {
+  // daily_message_counts likely has rows per user per date: date, user_id, username, message_count
+  // monthly_message_totals: user_id, username, total_message_count (for current month or maintained)
+  const rangeRows: any[] = [];
+  const dailyRows: any[] = [];
+  const dailyPreviousRows: any[] = [];
+  const monthlyRows: any[] = [];
+
+  try {
+    // RANGE (custom period aggregate or the provided window)
+    if (forRange && startDate && endDate) {
+      const [rows] = await conn.execute(
+        `SELECT user_id, username, SUM(message_count) as message_count
+         FROM daily_message_counts
+         WHERE date BETWEEN ? AND ?
+         GROUP BY user_id, username
+         ORDER BY message_count DESC
+         LIMIT 100`,
+        [startDate, endDate]
+      );
+      for (const r of rows as any[]) {
+        rangeRows.push({
+          user_id: r.user_id,
+          username: r.username,
+          message_count: String(r.message_count)
+        });
+      }
+    } else {
+      // default range behaves like daily
+      const today = getMelbourneDateStr();
+      const [rows] = await conn.execute(
+        `SELECT user_id, username, message_count
+         FROM daily_message_counts
+         WHERE date = ?
+         ORDER BY message_count DESC
+         LIMIT 100`,
+        [today]
+      );
+      for (const r of rows as any[]) {
+        rangeRows.push({
+          user_id: r.user_id,
+          username: r.username,
+          message_count: String(r.message_count ?? r.message_count)
+        });
+      }
+    }
+
+    // DAILY (today in Melbourne)
+    const today = getMelbourneDateStr();
+    const [daily] = await conn.execute(
+      `SELECT user_id, username, message_count
+       FROM daily_message_counts
+       WHERE date = ?
+       ORDER BY message_count DESC
+       LIMIT 100`,
+      [today]
+    );
+    for (const r of daily as any[]) {
+      dailyRows.push({
+        user_id: r.user_id,
+        username: r.username,
+        message_count: Number(r.message_count)
+      });
+    }
+
+    if (!forRange) {
+      const yesterday = getMelbourneYesterdayStr();
+      const [dailyPrev] = await conn.execute(
+        `SELECT user_id, username, message_count
+         FROM daily_message_counts
+         WHERE date = ?
+         ORDER BY message_count DESC
+         LIMIT 100`,
+        [yesterday]
+      );
+      for (const r of dailyPrev as any[]) {
+        dailyPreviousRows.push({
+          user_id: r.user_id,
+          username: r.username,
+          message_count: Number(r.message_count)
+        });
+      }
+    }
+
+    // MONTHLY champions (current month in Melbourne)
+    const month = getMelbourneMonthStr();
+    const [monthly] = await conn.execute(
+      `SELECT user_id, username, total_message_count
+       FROM monthly_message_totals
+       WHERE month = ?
+       ORDER BY total_message_count DESC
+       LIMIT 100`,
+      [month]
+    );
+    for (const r of monthly as any[]) {
+      monthlyRows.push({
+        user_id: r.user_id,
+        username: r.username,
+        total_message_count: Number(r.total_message_count)
+      });
+    }
+  } catch (e) {
+    // leave arrays empty on error; caller will still return timestamp
+  }
+
+  return { range: rangeRows, daily: dailyRows, daily_previous: dailyPreviousRows, monthly: monthlyRows };
+}
+
+async function queryDiscord(conn: any, startDate: string, endDate: string, forRange: boolean) {
+  const rangeRows: any[] = [];
+  const dailyRows: any[] = [];
+  const dailyPreviousRows: any[] = [];
+  const monthlyRows: any[] = [];
+
+  // Match legacy message_counts.php: author_id, author_username, timestamp
+  try {
+    const today = getMelbourneDateStr();
+    const month = getMelbourneMonthStr();
+    const rangeStart = forRange && startDate ? startDate : today;
+    const rangeEnd = forRange && endDate ? endDate : today;
+
+    const [range] = await conn.execute(
+      `SELECT author_id AS user_id,
+              COALESCE(author_username, 'Unknown') AS username,
+              COUNT(*) AS message_count
+       FROM messages
+       WHERE DATE(CONVERT_TZ(timestamp, '+00:00', '+10:00')) BETWEEN ? AND ?
+       GROUP BY author_id, author_username
+       ORDER BY message_count DESC
+       LIMIT 100`,
+      [rangeStart, rangeEnd]
+    );
+    for (const r of range as any[]) {
+      rangeRows.push({
+        user_id: String(r.user_id),
+        username: r.username,
+        message_count: Number(r.message_count)
+      });
+    }
+
+    const [daily] = await conn.execute(
+      `SELECT author_id AS user_id,
+              COALESCE(author_username, 'Unknown') AS username,
+              COUNT(*) AS message_count
+       FROM messages
+       WHERE DATE(CONVERT_TZ(timestamp, '+00:00', '+10:00')) = ?
+       GROUP BY author_id, author_username
+       ORDER BY message_count DESC
+       LIMIT 100`,
+      [today]
+    );
+    for (const r of daily as any[]) {
+      dailyRows.push({
+        user_id: String(r.user_id),
+        username: r.username,
+        message_count: Number(r.message_count)
+      });
+    }
+
+    if (!forRange) {
+      const yesterday = getMelbourneYesterdayStr();
+      const [dailyPrev] = await conn.execute(
+        `SELECT author_id AS user_id,
+                COALESCE(author_username, 'Unknown') AS username,
+                COUNT(*) AS message_count
+         FROM messages
+         WHERE DATE(CONVERT_TZ(timestamp, '+00:00', '+10:00')) = ?
+         GROUP BY author_id, author_username
+         ORDER BY message_count DESC
+         LIMIT 100`,
+        [yesterday]
+      );
+      for (const r of dailyPrev as any[]) {
+        dailyPreviousRows.push({
+          user_id: String(r.user_id),
+          username: r.username,
+          message_count: Number(r.message_count)
+        });
+      }
+    }
+
+    const [monthly] = await conn.execute(
+      `SELECT author_id AS user_id,
+              COALESCE(author_username, 'Unknown') AS username,
+              COUNT(*) AS total_message_count
+       FROM messages
+       WHERE DATE_FORMAT(CONVERT_TZ(timestamp, '+00:00', '+10:00'), '%Y-%m') = ?
+       GROUP BY author_id, author_username
+       ORDER BY total_message_count DESC
+       LIMIT 100`,
+      [month]
+    );
+    for (const r of monthly as any[]) {
+      monthlyRows.push({
+        user_id: String(r.user_id),
+        username: r.username,
+        total_message_count: Number(r.total_message_count)
+      });
+    }
+  } catch {
+    // empty is ok
+  }
+
+  return { range: rangeRows, daily: dailyRows, daily_previous: dailyPreviousRows, monthly: monthlyRows };
+}
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const startDate = searchParams.get('start_date') || '';
+  const endDate = searchParams.get('end_date') || '';
+  const useRange = !!(startDate && endDate);
+
+  const timestamp = getMelbourneTimestamp();
+
+  const response: any = {
+    timestamp,
+    meta: {
+      today: getMelbourneDateStr(),
+      yesterday: getMelbourneYesterdayStr(),
+      range_start: useRange ? startDate : null,
+      range_end: useRange ? endDate : null,
+    },
+    telegram: { range: [], daily: [], daily_previous: [], monthly: [] },
+    discord: { range: [], daily: [], daily_previous: [], monthly: [] }
+  };
+
+  let tgConn: any = null;
+  let dcConn: any = null;
+  let apiError: string | null = null;
+
+  try {
+    tgConn = await mysql.createConnection({
+      host: DB_HOST,
+      user: DB_USER,
+      password: DB_PASS,
+      database: 'tcvkxete_message_tracking',
+      connectTimeout: 8000
+    });
+
+    const tg = await queryTelegram(tgConn, startDate, endDate, useRange);
+    response.telegram = tg;
+    try {
+      const [lastDaily] = await tgConn.execute(
+        `SELECT MAX(date) AS last_date FROM daily_message_counts`
+      );
+      const [lastMsg] = await tgConn.execute(
+        `SELECT MAX(created_at) AS last_at FROM messages`
+      );
+      response.meta.telegram_last_daily = lastDaily?.[0]?.last_date
+        ? String(lastDaily[0].last_date).slice(0, 10)
+        : null;
+      response.meta.telegram_last_message = lastMsg?.[0]?.last_at
+        ? String(lastMsg[0].last_at)
+        : null;
+    } catch {
+      /* optional diagnostics */
+    }
+
+    // Discord may live in separate DB or same host different name.
+    // Try the message_tracking first for discord tables; fall back to 'tcvkxete_discord_members'
+    try {
+      dcConn = await mysql.createConnection({
+        host: DB_HOST,
+        user: DB_USER,
+        password: DB_PASS,
+        database: 'tcvkxete_discord_members',
+        connectTimeout: 5000
+      });
+    } catch {
+      // reuse tg conn if discord tables are in message_tracking db
+      dcConn = tgConn;
+    }
+
+    const dc = await queryDiscord(dcConn, startDate, endDate, useRange);
+    response.discord = dc;
+  } catch (err: any) {
+    apiError = err?.message || 'database_error';
+    console.error('message-counts error', apiError);
+  } finally {
+    if (tgConn && tgConn.end) { try { await tgConn.end(); } catch {} }
+    if (dcConn && dcConn !== tgConn && dcConn.end) { try { await dcConn.end(); } catch {} }
+  }
+
+  if (apiError) response.meta.api_error = apiError;
+  response.meta.telegram_rows = (response.telegram.daily?.length || 0) + (response.telegram.monthly?.length || 0);
+  response.meta.discord_rows = (response.discord.daily?.length || 0) + (response.discord.monthly?.length || 0);
+
+  return Response.json(response, {
+    headers: {
+      'Cache-Control': 'no-store, max-age=0',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    }
+  });
+}
+
+export async function POST(request: NextRequest) {
+  // Some bots may POST; delegate to GET logic for compatibility (or extend for inserts if writer needed)
+  return GET(request);
+}

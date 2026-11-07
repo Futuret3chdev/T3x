@@ -1,0 +1,41 @@
+import './globals.css';
+import SiteShell from '@/components/nav/SiteShell';
+import { WalletAdapterProvider } from '@/components/wallet/WalletAdapterProvider';
+import MtTracker from '@/components/analytics/MtTracker';
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover' as const,
+};
+
+export const metadata = {
+  title: 'T3x-ECO SYSTEM | $T3X • INFINITE WALLET • 1¢ Fees — by Futuret3ch',
+  description: 'Next-generation decentralized on-chain network. Native $T3X token. Self-built INFINITE WALLET. NFTs, Rockets, self-built bridges. No third parties. Infinite possibilities.',
+  icons: { icon: '/favicon.ico' },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" data-build="2026-09-03-tap-staff-only">
+      <head>
+        {/* Font Awesome for social icons in original brand colors */}
+        <link 
+          rel="stylesheet" 
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+          crossOrigin="anonymous" 
+        />
+      </head>
+      <body className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+        <WalletAdapterProvider>
+          <MtTracker />
+          <SiteShell>{children}</SiteShell>
+        </WalletAdapterProvider>
+      </body>
+    </html>
+  );
+}

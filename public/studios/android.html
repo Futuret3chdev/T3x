@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>T3x Android Studio</title>
+  <style>
+    :root {
+      --bg:#1e1f22; --p:#2b2d30; --p2:#3c3f41; --edge:#1e1e1e; --t:#c0c4cc;
+      --dim:#8b8f97; --a:#6a8759; --run:#3574f0; --bad:#d1675a; --gold:#d7ba7d;
+    }
+    * { box-sizing:border-box; }
+    html,body { margin:0; height:100%; background:var(--bg); color:var(--t); font:12.5px/1.4 "Segoe UI",system-ui,sans-serif; }
+    button,input,select,textarea { font:inherit; }
+    #ide { display:grid; height:100%; grid-template-rows:auto auto minmax(0,1fr) minmax(120px,22vh); }
+    #titlebar,#toolbar { background:var(--p2); display:flex; align-items:center; gap:8px; padding:0 8px; border-bottom:1px solid #111; position:relative; z-index:6; }
+    button { cursor:pointer; }
+    #titlebar strong { color:#a5c261; }
+    #titlebar .win { margin-left:auto; color:var(--dim); font-size:11px; }
+    #toolbar { flex-wrap:wrap; gap:5px; padding:4px 8px; }
+    #toolbar input,#toolbar select,#toolbar button {
+      background:#45494a; color:#ddd; border:1px solid #5a5a5a; border-radius:3px; padding:3px 8px;
+    }
+    #toolbar button.primary { background:#499c54; color:#fff; border-color:#3d7a45; font-weight:700; }
+    #toolbar button.run { background:var(--run); color:#fff; border-color:#2b5fc4; font-weight:700; }
+    #main { display:grid; grid-template-columns:188px minmax(0,1fr) 312px; min-height:0; }
+    #tree { background:var(--p2); border-right:1px solid #111; overflow:auto; padding:8px 0; }
+    #tree h4 { margin:10px 10px 4px; font-size:10px; letter-spacing:1px; color:#7a7a7a; }
+    #tree button { display:block; width:100%; text-align:left; background:0; color:var(--t); border:0; padding:4px 12px; cursor:pointer; }
+    #tree button.on,#tree button:hover { background:#4b6eaf; color:#fff; }
+    #work { display:flex; flex-direction:column; min-width:0; min-height:0; }
+    #tabs { display:flex; flex-wrap:wrap; background:var(--p2); border-bottom:1px solid #111; }
+    #tabs button { background:transparent; color:#888; border:0; border-right:1px solid #111; padding:7px 12px; }
+    #tabs button.on { background:#4e5254; color:#fff; }
+    #stage { flex:1; overflow:auto; background:var(--bg); padding:10px; }
+    canvas.edit { background:#0b1020; image-rendering:pixelated; cursor:crosshair; border:1px solid #111; max-width:100%; }
+    #brushes { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px; }
+    #brushes button { border:1px solid #5a5a5a; background:#45494a; color:#ccc; border-radius:3px; padding:4px 8px; }
+    #brushes button.on { background:#499c54; color:#fff; }
+    pre.code, textarea.code {
+      margin:0; width:100%; min-height:280px; padding:12px; background:#1e1f22; color:#a9b7c6;
+      font:12px/1.45 ui-monospace,Consolas,monospace; border:1px solid #111; white-space:pre-wrap;
+    }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    label.row { display:flex; justify-content:space-between; gap:8px; align-items:center; margin:6px 0; }
+    label.row input, label.row select { width:120px; background:#45494a; color:#ddd; border:1px solid #5a5a5a; padding:3px 6px; }
+    #emuwrap { background:#1a1b1e; border-left:1px solid #111; display:flex; flex-direction:column; min-height:0; }
+    #emuhead { padding:6px 8px; display:flex; gap:4px; flex-wrap:wrap; align-items:center; border-bottom:1px solid #111; }
+    #emuhead select, #emuhead button { background:#45494a; color:#ddd; border:1px solid #5a5a5a; border-radius:3px; padding:3px 6px; }
+    #emustage { flex:1; overflow:auto; display:flex; flex-wrap:wrap; gap:12px; padding:10px; justify-content:center; align-content:flex-start; }
+    .device { position:relative; background:#111; color:#fff; box-shadow:0 10px 30px #000a; flex:0 0 auto; }
+    .device .bezel { background:#0a0a0c; padding:10px 8px 14px; }
+    .device.watch .bezel { border-radius:50%; padding:14px; }
+    .device.phone .bezel { border-radius:28px; }
+    .device.fold .bezel, .device.tablet .bezel { border-radius:16px; }
+    .device.tv .bezel { border-radius:6px; padding:8px 8px 22px; }
+    .device.car .bezel { border-radius:10px; }
+    .device .notch { height:8px; width:72px; margin:0 auto 6px; background:#000; border-radius:8px; }
+    .device.watch .notch, .device.tv .notch, .device.car .notch { display:none; }
+    .device canvas { display:block; image-rendering:pixelated; background:#000; width:100%; height:auto; }
+    .device .nav { display:flex; justify-content:space-around; color:#666; font-size:11px; margin-top:6px; }
+    .device.watch .nav, .device.tv .nav { display:none; }
+    .device .tag { position:absolute; left:8px; top:4px; font-size:10px; color:#9aa; }
+    .device.offline canvas { filter:grayscale(1) brightness(.5); }
+    .device.colorblind canvas { filter:url(#cb); }
+    .pad { display:grid; grid-template-columns:repeat(3,28px); gap:3px; justify-content:center; margin-top:6px; }
+    .pad button { width:28px; height:22px; background:#333; color:#eee; border:1px solid #555; border-radius:4px; padding:0; }
+    #bottom { background:#1e1f22; border-top:1px solid #111; display:flex; flex-direction:column; min-height:0; }
+    #btabs { display:flex; background:var(--p2); }
+    #btabs button { background:0; color:#888; border:0; border-right:1px solid #111; padding:6px 12px; }
+    #btabs button.on { background:#4e5254; color:#fff; }
+    #blog { flex:1; overflow:auto; padding:8px 10px; font:12px/1.4 ui-monospace,Consolas,monospace; color:#a9b7c6; white-space:pre-wrap; }
+    #blog .ok { color:#6a8759; } #blog .bad { color:#d1675a; } #blog .gold { color:var(--gold); }
+    .meter { height:8px; background:#333; border-radius:4px; overflow:hidden; }
+    .meter > i { display:block; height:100%; background:#499c54; width:0; }
+    .chip { display:inline-block; padding:1px 6px; border:1px solid #555; border-radius:99px; margin-right:4px; font-size:11px; }
+    @media (max-width:900px){
+      #main { grid-template-columns:1fr; grid-template-rows:auto 1fr auto; }
+      #emuwrap { border-left:0; border-top:1px solid #111; min-height:280px; }
+      #tree { max-height:120px; }
+    }
+  </style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none">
+  <filter id="cb">
+    <feColorMatrix values="0.625 0.375 0 0 0  0.7 0.3 0 0 0  0 0.3 0.7 0 0  0 0 0 1 0"/>
+  </filter>
+</svg>
+<div id="ide">
+  <div id="titlebar">
+    <strong>T3x Android Studio</strong>
+    <a href="./index.html" style="color:#9cdcfe;text-decoration:none;font-size:12px">← Suite</a>
+    <span id="proj">app · Night Run</span>
+    <span class="chip" id="fpschip">0 fps</span>
+    <span class="chip" id="emuchip">0 emu</span>
+    <span class="win">FutureT3ch device lab · no AVD images · not Google’s IDE</span>
+  </div>
+  <div id="toolbar">
+    <input id="name" value="Night Run" />
+    <select id="theme">
+      <option value="night">Night</option>
+      <option value="forest">Forest</option>
+      <option value="city">City</option>
+      <option value="space">Space</option>
+    </select>
+    <button type="button" class="run" id="play">▶ Run emulators</button>
+    <button type="button" id="stop" hidden>■ Stop</button>
+    <button type="button" class="primary" id="buildApk">Build APK</button>
+    <button type="button" id="hot">Hot reload</button>
+    <button type="button" id="lab">Device lab</button>
+    <button type="button" id="twin">+ 2nd player</button>
+    <button type="button" id="shot">Screenshot</button>
+    <button type="button" id="rec">Record</button>
+    <button type="button" id="webplay">Web play</button>
+  </div>
+  <div id="main">
+    <aside id="tree">
+      <h4>PROJECT</h4>
+      <button type="button" class="on" data-tab="design">game/level.tmx</button>
+      <button type="button" data-tab="anim">animation/timeline</button>
+      <button type="button" data-tab="shop">res/shop_mt.json</button>
+      <button type="button" data-tab="store">play/listing</button>
+      <button type="button" data-tab="a11y">tools/accessibility</button>
+      <button type="button" data-tab="html">assets/index.html</button>
+      <button type="button" data-tab="manifest">AndroidManifest.xml</button>
+      <button type="button" data-tab="gradle">build.gradle</button>
+      <h4>DEVICES</h4>
+      <button type="button" data-dev="pixel">Pixel 8</button>
+      <button type="button" data-dev="compact">Compact</button>
+      <button type="button" data-dev="fold">Fold</button>
+      <button type="button" data-dev="tablet">Tablet</button>
+      <button type="button" data-dev="watch">Watch</button>
+      <button type="button" data-dev="tv">Android TV</button>
+      <button type="button" data-dev="car">Android Auto</button>
+    </aside>
+    <div id="work">
+      <div id="tabs">
+        <button type="button" class="on" data-tab="design">Design</button>
+        <button type="button" data-tab="anim">Timeline</button>
+        <button type="button" data-tab="shop">$T3X Shop</button>
+        <button type="button" data-tab="store">Store listing</button>
+        <button type="button" data-tab="a11y">Access</button>
+        <button type="button" data-tab="html">HTML</button>
+        <button type="button" data-tab="manifest">Manifest</button>
+        <button type="button" data-tab="gradle">Gradle</button>
+      </div>
+      <div id="stage">
+        <div id="pane-design">
+          <div id="brushes"></div>
+          <canvas class="edit" id="c"></canvas>
+          <div class="grid2" style="margin-top:10px">
+            <div>
+              <label class="row">Gravity <input id="grav" type="number" step="0.05" value="0.45"></label>
+              <label class="row">Jump <input id="jump" type="number" step="0.1" value="-8.2"></label>
+              <label class="row">Lives <input id="lives" type="number" value="3"></label>
+            </div>
+            <div>
+              <label class="row">Package <input id="pkg" value="au.com.futuret3ch.made"></label>
+              <label class="row">Version <input id="ver" value="1.0.0"></label>
+              <label class="row">Seed <input id="seed" value="night-run"></label>
+            </div>
+          </div>
+        </div>
+        <div id="pane-anim" hidden>
+          <p class="dim">Animation timeline — coin spin, spring squash, enemy patrol. Scrub while emulators run (Android Studio has no game timeline).</p>
+          <label class="row">Coin spin speed <input id="spin" type="range" min="0" max="20" value="8"></label>
+          <label class="row">Enemy speed <input id="espd" type="range" min="0" max="20" value="6"></label>
+          <label class="row">Particle amount <input id="part" type="range" min="0" max="40" value="12"></label>
+          <label class="row">Freeze time <input id="freeze" type="checkbox"></label>
+        </div>
+        <div id="pane-shop" hidden>
+          <p>In-game $T3X shop. Google Android Studio has no commerce designer.</p>
+          <label class="row">Extra life <input id="priceLife" type="number" value="5"> T3x</label>
+          <label class="row">Spring shoes <input id="priceJump" type="number" value="12"> T3x</label>
+          <label class="row">Coin magnet <input id="priceMag" type="number" value="8"> T3x</label>
+          <label class="row">Wallet test <select id="wallet"><option>disconnected</option><option>Phantom mock</option><option>Infinite Wallet</option></select></label>
+        </div>
+        <div id="pane-store" hidden>
+          <label class="row">Short desc <input id="sdesc" value="A night run you built in T3x Android Studio." style="width:220px"></label>
+          <textarea id="ldesc" class="code" style="min-height:120px">Sideload in seconds. No Gradle. Built and signed inside T3x Android Studio.</textarea>
+          <p id="shots"></p>
+        </div>
+        <div id="pane-a11y" hidden>
+          <label class="row">Colorblind <select id="cbmode"><option value="">Off</option><option value="deutan">Deuteranopia</option><option value="protan">Protanopia</option></select></label>
+          <label class="row">Large HUD <input id="bigui" type="checkbox"></label>
+          <label class="row">Reduce motion <input id="nomove" type="checkbox"></label>
+          <label class="row">RTL <input id="rtl" type="checkbox"></label>
+          <p>Android Studio’s layout validator does not simulate colorblind play or RTL HUDs on a live game.</p>
+        </div>
+        <pre class="code" id="pane-html" hidden></pre>
+        <pre class="code" id="pane-manifest" hidden></pre>
+        <pre class="code" id="pane-gradle" hidden></pre>
+      </div>
+    </div>
+    <aside id="emuwrap">
+      <div id="emuhead">
+        <select id="devsel"></select>
+        <button type="button" id="rotate">Rotate</button>
+        <button type="button" id="shake">Shake</button>
+        <button type="button" id="air">Airplane</button>
+        <span id="sens" class="chip">wifi · 100% · GPS</span>
+      </div>
+      <div id="emustage"></div>
+      <div style="padding:8px;border-top:1px solid #111">
+        <label class="row">Battery <input id="batt" type="range" min="1" max="100" value="100"></label>
+        <label class="row">Net <select id="net"><option value="wifi">Wi‑Fi</option><option value="3g">3G 120ms</option><option value="off">Offline</option></select></label>
+        <label class="row">GPS <input id="gps" value="-33.87,151.21" style="width:140px"></label>
+      </div>
+    </aside>
+  </div>
+  <div id="bottom">
+    <div id="btabs">
+      <button type="button" class="on" data-b="log">Logcat</button>
+      <button type="button" data-b="prof">Profiler</button>
+      <button type="button" data-b="net">Network</button>
+      <button type="button" data-b="heat">Death heatmap</button>
+      <button type="button" data-b="adb">ADB</button>
+      <button type="button" data-b="apk">APK analyzer</button>
+    </div>
+    <div id="blog"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var s=document.createElement('script');
+  var p = location.pathname;
+  var onMaker = p.indexOf('/maker') === 0;
+  var onStudios = p.indexOf('/studios') === 0;
+  s.src = onMaker ? '/maker/studio.js' : (onStudios ? '/studios/studio.js' : './studio.js');
+  s.onerror=function(){
+    var t=document.createElement('script');
+    t.src = './studio.js';
+    document.body.appendChild(t);
+  };
+  document.body.appendChild(s);
+})();
+</script>
+</body>
+</html>
