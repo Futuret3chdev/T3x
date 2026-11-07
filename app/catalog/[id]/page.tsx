@@ -35,18 +35,30 @@ export default async function GameDetailPage({ params }: { params: Promise<{ id:
           </div>
           <h1 className="text-4xl font-semibold tracking-tight mb-3">{g.name}</h1>
           <p className="opacity-70 max-w-2xl mb-2">{g.blurb}</p>
-          <p className="text-sm text-emerald-400/90 mb-6">On a phone: Play, then turn the screen sideways. Landscape is the real table.</p>
+          {g.id !== 'in-ai' ? (
+            <p className="text-sm text-emerald-400/90 mb-6">On a phone: Play, then turn the screen sideways. Landscape is the real table.</p>
+          ) : (
+            <p className="text-sm opacity-70 mb-6">Open the assistant. It is not a game and it has no board.</p>
+          )}
           <div className="flex flex-wrap gap-3">
-            <PlayLink
-              href={g.id === 'mtgames' ? g.play : `/play/${g.id}`}
-              external={g.id === 'mtgames' && external}
-              className="font-semibold text-black bg-emerald-400 hover:bg-emerald-300 px-5 py-2 rounded-full text-sm"
-            >
-              Play
-            </PlayLink>
-            <Link href={`/boards?game=${encodeURIComponent(g.id)}`} className="px-5 py-2 rounded-full border border-white/15 text-sm">
-              {g.name} board
-            </Link>
+            {g.id === 'in-ai' ? (
+              <Link href="/in-ai" className="font-semibold text-black bg-emerald-400 hover:bg-emerald-300 px-5 py-2 rounded-full text-sm">
+                Open In-Ai
+              </Link>
+            ) : (
+              <PlayLink
+                href={g.id === 'mtgames' ? g.play : `/play/${g.id}`}
+                external={g.id === 'mtgames' && external}
+                className="font-semibold text-black bg-emerald-400 hover:bg-emerald-300 px-5 py-2 rounded-full text-sm"
+              >
+                Play
+              </PlayLink>
+            )}
+            {g.id !== 'in-ai' ? (
+              <Link href={`/boards?game=${encodeURIComponent(g.id)}`} className="px-5 py-2 rounded-full border border-white/15 text-sm">
+                {g.name} board
+              </Link>
+            ) : null}
             <Link href="/portal" className="px-5 py-2 rounded-full border border-white/15 text-sm">
               Library
             </Link>

@@ -23,13 +23,22 @@ export default function GameCard({ game }: { game: CatalogGame }) {
           <p className="text-sm opacity-70 mt-1">{game.blurb}</p>
         </div>
         <div className="mt-auto flex gap-2">
-          <PlayLink
-            href={game.id === 'mtgames' ? game.play : `/play/${game.id}`}
-            external={game.id === 'mtgames' && external}
-            className="inline-flex items-center justify-center font-semibold text-black bg-emerald-400 hover:bg-emerald-300 px-4 py-2 rounded-full text-sm"
-          >
-            Play
-          </PlayLink>
+          {game.id === 'in-ai' ? (
+            <a
+              href="/in-ai"
+              className="inline-flex items-center justify-center font-semibold text-black bg-emerald-400 hover:bg-emerald-300 px-4 py-2 rounded-full text-sm"
+            >
+              Open
+            </a>
+          ) : (
+            <PlayLink
+              href={game.id === 'mtgames' ? game.play : `/play/${game.id}`}
+              external={game.id === 'mtgames' && external}
+              className="inline-flex items-center justify-center font-semibold text-black bg-emerald-400 hover:bg-emerald-300 px-4 py-2 rounded-full text-sm"
+            >
+              Play
+            </PlayLink>
+          )}
           <a
             href={`/catalog/${game.id}`}
             className="inline-flex items-center justify-center px-4 py-2 rounded-full border border-white/15 text-sm opacity-80 hover:opacity-100"
