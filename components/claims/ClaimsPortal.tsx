@@ -392,6 +392,25 @@ export default function ClaimsPortal() {
         </div>
       </div>
 
+      <section className="mb-6 rounded-2xl border border-white/10 bg-white/[0.04] p-4 sm:p-6">
+        <h2 className="text-lg font-semibold">Volume claims</h2>
+        <p className="mt-2 text-sm opacity-70">
+          Everyone can see this. Every full $20 swapped or bridged on the scanner earns T3X. T3X will be paid once it becomes available.
+        </p>
+        <PublicVolume />
+      </section>
+
+      <section className="mb-6 rounded-2xl border border-emerald-400/30 bg-emerald-400/10 p-4 sm:p-6">
+        <h2 className="text-lg font-semibold">X tag contest</h2>
+        <p className="mt-2 text-sm opacity-80">
+          Sign in with X and tag the live tags. Each tag counts once on your page. The same tag is not counted again.
+          The top 100 get a prize and T3X. 1st gets $200, 2nd $50, 3rd $10. New tags go out on games and posters. Stay tuned.
+        </p>
+        <a href="https://t3x-airdrop.vercel.app/" className="mt-4 inline-flex h-11 items-center rounded-xl bg-emerald-400 px-4 text-sm font-semibold text-black">
+          Open the tag board
+        </a>
+      </section>
+
       <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
         {[
           { label: 'Pending $T3X', value: summary.pending.toLocaleString() },
@@ -539,6 +558,40 @@ export default function ClaimsPortal() {
           </>
         )}
       </div>
+    </div>
+  );
+}
+
+function PublicVolume() {
+  const [rows, setRows] = useState<{ username: string; usd: number; earned: number }[]>([]);
+  const [note, setNote] = useState("Loading the public board…");
+
+  useEffect(() => {
+    fetch("https://t3xsolscanner.vercel.app/api/public-claims")
+      .then((response) => response.json())
+      .then((body: { ok?: boolean; rows?: { username: string; usd: number; earned: number }[]; error?: string }) => {
+        setRows(body.rows || []);
+        setNote(body.ok ? "" : body.error || "The public board is not reachable yet.");
+      })
+      .catch(() => setNote("The public board is not reachable yet."));
+  }, []);
+
+  return (
+    <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
+      {!rows.length ? <p className="px-4 py-3 text-sm opacity-70">{note || "No volume yet."}</p> : null}
+      <ul className="max-h-80 divide-y divide-white/10 overflow-y-auto">
+        {rows.map((row, index) => (
+          <li key={row.username} className="flex items-center justify-between px-4 py-3 text-sm">
+            <span>
+              <span className="mr-2 font-mono text-xs opacity-50">{String(index + 1).padStart(2, "0")}</span>
+              {row.username}
+            </span>
+            <span className="font-mono">
+              ${Number(row.usd).toFixed(2)} · {row.earned} T3X
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
