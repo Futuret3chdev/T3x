@@ -109,10 +109,7 @@ export default function Navbar() {
   // Buy $T3X form state (compact at top, below BUY $T3X NOW)
   const [showBuyPanel, setShowBuyPanel] = useState(false);
   const buyPanelRef = useRef<HTMLDivElement>(null);
-
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const MT_MINT = 'ELywDcVX2WumHm4xEfqF8NdEKaeGCAaq9JmwtjE8pump';
 
   // Mobile detection for tips
   const [isMobile, setIsMobile] = useState(false);
@@ -191,7 +188,6 @@ export default function Navbar() {
           integratedTargetId: "jupiter-buy-container",
           formProps: {
             initialInputMint: "So11111111111111111111111111111111111111112",
-            initialOutputMint: MT_MINT,
           },
           branding: {
             logoUri: "https://futuret3ch.com.au/assets/img/logo.png",
@@ -528,8 +524,15 @@ export default function Navbar() {
 
               {/* Swap box (Jupiter plugin) on right — kept as visual / advanced alternative */}
               <div className="md:w-[280px]">
-                <div id="jupiter-buy-container" style={{ width: '100%', height: '340px', borderRadius: '12px', overflow: 'hidden', background: '#000' }} />
-                <div className="text-[10px] opacity-50 mt-1 text-center">Jupiter widget (alternative)</div>
+                <div className="relative">
+                  <div id="jupiter-buy-container" style={{ width: '100%', height: '340px', borderRadius: '12px', overflow: 'hidden', background: '#000' }} />
+                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-xl border border-white/15 bg-[#07080c] px-4 text-center">
+                    <div className="text-[11px] tracking-[3px] text-emerald-400">$T3X</div>
+                    <div className="mt-2 text-2xl font-semibold tracking-tight">Coming soon</div>
+                    <p className="mt-2 text-xs opacity-70">Buying opens when the token is live. The swap stays here underneath.</p>
+                  </div>
+                </div>
+                <div className="text-[10px] opacity-50 mt-1 text-center">Buy $T3X · coming soon</div>
               </div>
             </div>
 
