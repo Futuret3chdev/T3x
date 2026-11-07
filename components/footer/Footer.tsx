@@ -14,8 +14,15 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-white/10 px-6 py-6 md:py-10 text-xs text-white/50">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-y-3 justify-between">
-        <div>© {new Date().getFullYear()} T3x-ECO SYSTEM — Developed by Futuret3ch. All core components self-hosted and self-built.</div>
+      <div className="max-w-7xl mx-auto flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <img src="/logo.png" alt="T3X" className="h-14 w-14 rounded-full object-cover" />
+          <div>
+            <div className="text-sm font-semibold tracking-wide text-white">T3X</div>
+            <a href="https://www.futuret3ch.com.au" target="_blank" className="hover:text-white">Futuret3ch</a>
+            <div className="mt-1 text-[11px] text-white/45">Intellectual property. Trademarked 2026.</div>
+          </div>
+        </div>
         <div className="mt-foot-links flex-wrap gap-x-6 gap-y-1">
           <a href="https://www.futuret3ch.com.au" target="_blank" className="hover:text-white">Futuret3ch</a>
           <a href="/claims" className="hover:text-white">Claim $T3X</a>
