@@ -10,6 +10,12 @@
   .pal{position:fixed;right:12px;top:52px;display:flex;flex-direction:column;gap:4px}
   .pal button{width:36px;height:28px;border:2px solid #fff3}
   .pal button.on{outline:2px solid #fff}
+  @media(max-width:800px){
+    body{overflow:auto}
+    #view{height:70vh}
+    .pal{position:static;flex-direction:row;flex-wrap:wrap;padding:8px}
+    .hud{position:static;max-width:none;margin:8px}
+  }
 </style>
 </head><body>
 <div class="top" style="background:#2e1065">

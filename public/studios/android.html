@@ -74,10 +74,21 @@
     .meter { height:8px; background:#333; border-radius:4px; overflow:hidden; }
     .meter > i { display:block; height:100%; background:#499c54; width:0; }
     .chip { display:inline-block; padding:1px 6px; border:1px solid #555; border-radius:99px; margin-right:4px; font-size:11px; }
-    @media (max-width:900px){
-      #main { grid-template-columns:1fr; grid-template-rows:auto 1fr auto; }
-      #emuwrap { border-left:0; border-top:1px solid #111; min-height:280px; }
-      #tree { max-height:120px; }
+    @media (max-width:800px){
+      html,body{height:auto;overflow:auto}
+      #ide{height:auto;min-height:100%;grid-template-rows:auto auto auto auto}
+      #titlebar{flex-wrap:wrap;height:auto;padding:8px}
+      #titlebar .win{margin-left:0;width:100%}
+      #toolbar button,#toolbar input,#toolbar select,#emuhead button,#emuhead select{min-height:36px}
+      #main{grid-template-columns:1fr}
+      #tree{max-height:140px}
+      #stage{min-height:360px}
+      #emuwrap{border-left:0;border-top:1px solid #111;min-height:320px}
+      #bottom{min-height:180px}
+      .grid2{grid-template-columns:1fr}
+      label.row{flex-wrap:wrap}
+      label.row input,label.row select{width:100%}
+      pre.code,textarea.code{min-height:180px}
     }
   </style>
 </head>

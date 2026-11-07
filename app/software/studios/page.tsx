@@ -78,7 +78,7 @@ export default function StudiosPage() {
         </Link>
       </div>
       <div className="uppercase text-xs tracking-[3px] text-emerald-400 mt-4 mb-2">Software · Studios</div>
-      <h1 className="text-4xl sm:text-5xl font-semibold tracking-[-1.6px] mb-4">Android Studio, in order.</h1>
+      <h1 className="text-3xl sm:text-5xl font-semibold tracking-[-1.6px] mb-4">Android Studio, in order.</h1>
       <ol className="mb-10 grid gap-3 sm:grid-cols-3">
         {[
           ['1', 'Sign in', 'Use the portal account. The developer license is on that profile.'],

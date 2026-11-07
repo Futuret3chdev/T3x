@@ -17,3 +17,18 @@ label.row input,label.row select,label.row textarea{background:#0004;color:inher
 canvas{image-rendering:pixelated;background:#000}
 table{width:100%;border-collapse:collapse}
 th,td{text-align:left;padding:6px 8px;border-bottom:1px solid #fff1;font-size:12px}
+@media (max-width:800px){
+  .top{align-items:flex-start;padding:8px}
+  .top nav{display:flex;gap:4px;width:100%;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+  .top nav a{flex:0 0 auto;padding:8px 10px;white-space:nowrap}
+  .top .btn{min-height:36px}
+  .grid{grid-template-columns:1fr !important;padding:10px}
+  label.row{flex-direction:column;align-items:stretch}
+  label.row input,label.row select,label.row textarea{width:100%}
+  table{display:block;overflow-x:auto}
+  canvas,video,img{max-width:100%}
+  .hero h1{font-size:26px}
+  .cards{grid-template-columns:1fr !important;padding:12px}
+  .trk{overflow-x:auto}
+}
+
