@@ -30,11 +30,11 @@ export default function ContactPage() {
 
       <div className="max-w-3xl mx-auto px-6 py-16">
         <div className="uppercase text-xs tracking-[3px] text-emerald-400 mb-2">FUTURET3CH</div>
-        <h1 className="text-5xl font-semibold tracking-tight mb-4">Talk to Eve</h1>
-        <p className="opacity-70 mb-10">One assistant for T3X. The old on-site bot is gone so you are not talking to two.</p>
+        <h1 className="text-5xl font-semibold tracking-tight mb-4">Talk to In-Ai</h1>
+        <p className="opacity-70 mb-10">One assistant for T3X. It also lives on this site.</p>
 
-        <a href="https://in-ai-futuret3ch.vercel.app" className="mb-10 flex h-14 items-center justify-center rounded-2xl bg-emerald-400 text-sm font-semibold text-black">
-          Open Eve
+        <a href="/in-ai" className="mb-4 flex h-14 items-center justify-center rounded-2xl bg-emerald-400 text-sm font-semibold text-black">
+          Open In-Ai
         </a>
 
         <div className="space-y-4 mb-10">

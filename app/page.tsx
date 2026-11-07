@@ -5,6 +5,7 @@ import EcosystemSection from '@/components/ecosystem/EcosystemSection';
 import WalletPromo from '@/components/wallet/WalletPromo';
 import Features from '@/components/features/Features';
 import Safety from '@/components/security/Security';
+import PortalExtras from '@/components/home/PortalExtras';
 import TapEcosystem from '@/components/tap/TapEcosystem';
 
 export default function HomePage() {
@@ -23,6 +24,7 @@ export default function HomePage() {
       <EcosystemSection />
       <Features />
       <WalletPromo />
+      <PortalExtras />
       <TapEcosystem />
       <Safety />
     </>

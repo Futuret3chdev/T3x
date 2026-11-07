@@ -41,13 +41,13 @@ export const PRODUCT_TABS: ProductTab[] = [
     id: 'games',
     label: 'Games',
     href: '/catalog',
-    blurb: 'Catalog: Castrum, Dominion, Corgonaut, Eve, Soccer Pro, more.',
+    blurb: 'Catalog: Castrum, Dominion, Corgonaut, In-Ai, Soccer Pro, more.',
   },
   {
-    id: 'eve',
-    label: 'Eve',
-    href: 'https://in-ai-futuret3ch.vercel.app',
-    blurb: 'One assistant. Eve, by Futuret3ch.',
+    id: 'in-ai',
+    label: 'In-Ai',
+    href: '/in-ai',
+    blurb: 'In-Ai, by Futuret3ch. One assistant, inside the portal.',
   },
   {
     id: 'wallet',
@@ -82,6 +82,7 @@ export function tabFromPath(pathname: string): string {
   if (pathname.startsWith('/portal/tap') || pathname.startsWith('/portal/tapshop') || pathname.startsWith('/portal/tapmatch')) return 'tap';
   if (pathname.startsWith('/tap') || pathname.startsWith('/catalog')) return pathname.startsWith('/tap') ? 'tap' : 'games';
   if (pathname.startsWith('/bot')) return 'bot';
+  if (pathname.startsWith('/in-ai')) return 'in-ai';
   if (pathname.startsWith('/studio')) return 'studio';
   if (pathname.startsWith('/software')) return 'software';
   if (pathname.startsWith('/chat')) return 'chat';

@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     // Enhanced Grok-style T3x ECO SYSTEM assistant - answers directly on site
     if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey') || lower.includes('greet')) {
-      reply = "I'm Eve. Ask me about $T3X, the wallet, or a bridge.";
+      reply = "I'm In-Ai. Ask me about $T3X, the wallet, or a bridge.";
     } else if (lower.includes('help') || lower.includes('support') || lower.includes('how do i') || lower.includes('guide')) {
       reply = "I'm here to help! You can explore the site for LIVE $T3X stats, use the BUY $T3X NOW panel (self-custodial wallet connect), or run the management flows on the homepage. What specifically do you need?";
     } else if (lower.includes('price') || lower.includes('$mt') || lower.includes('token price') || lower.includes('how much')) {
@@ -42,10 +42,10 @@ export async function POST(request: NextRequest) {
     } else if (lower.includes('tap') || lower.includes('games') || lower.includes('p2e') || lower.includes('rockets')) {
       reply = "TAP is trips, packages, and food deliveries — like Uber, Dasher, and Panda. Not games. TAPSHOP is trade. TAPMATCH is work (employees and employers). Those three desks are staff only — not open to the public. Games live in the catalog.";
     } else if (lower.includes('contact') || lower.includes('reach') || lower.includes('overlords')) {
-      reply = "Use the Eve box on this page, or the emails listed above.";
+      reply = "Use In-Ai on this site, or the emails listed above.";
     } else {
       // Grok-style helpful fallback - actually answers instead of generic team notification
-      reply = `Thanks for asking about "${msg}". I'm Eve. I can help with $T3X, the wallet, and bridges on this site.
+      reply = `Thanks for asking about "${msg}". I'm In-Ai. I can help with $T3X, the wallet, and bridges on this site.
 
 I can also tell you about the wallet, utilities, and how a swap or bridge works. What do you want to do?`;
     }

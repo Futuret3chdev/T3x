@@ -13,7 +13,7 @@ export default function PrivacyPage() {
           <p>We believe in radical transparency and minimal data collection.</p>
           <p>All keys, seeds, and sensitive operations happen client-side in your browser. Nothing ever leaves your device unless you explicitly sign and broadcast a transaction.</p>
           <p>We do not use third-party analytics, trackers, or advertising pixels on our core properties. Self-hosted infrastructure means we control the logs — and we minimize them.</p>
-          <p>When you use the contact form or Eve, messages are only processed for the purpose of support and are not stored long-term or sold.</p>
+          <p>When you use the contact form or In-Ai, messages are only processed for the purpose of support and are not stored long-term or sold.</p>
           <p>Your on-chain activity is public by design (as with any blockchain), but we never associate it with personal identity unless you choose to (e.g. via optional social login recovery features in the future).</p>
           <p>For questions: Support@Futuret3ch.com</p>
         </div>

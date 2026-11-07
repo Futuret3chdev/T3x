@@ -112,13 +112,13 @@ export const CATALOG: CatalogGame[] = [
     source: 'https://github.com/Futuret3chdev/popblast',
   },
   {
-    id: 'eve',
-    name: 'Eve',
+    id: 'in-ai',
+    name: 'In-Ai',
     kind: 'studio',
     status: 'live',
-    play: 'https://in-ai-futuret3ch.vercel.app',
+    play: '/in-ai',
     img: '/games/covers/eve.jpg',
-    blurb: 'The only Futuret3ch assistant. One chat for T3x. No second bot.',
+    blurb: 'In-Ai, inside the portal. One assistant for T3x.',
   },
   {
     id: 'puck',
