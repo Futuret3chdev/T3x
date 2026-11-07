@@ -24,7 +24,7 @@ export default function PortalExtras() {
           <p className="text-xs font-semibold tracking-[0.2em] text-emerald-400 uppercase">Futuret3ch</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">In-Ai</h2>
           <p className="mt-2 max-w-xl text-sm opacity-70">The assistant lives here. The link under it opens the same app on its own.</p>
-          <iframe title="In-Ai" src={APP} className="mt-5 h-[640px] w-full rounded-2xl border border-white/10 bg-black" />
+          <iframe title="In-Ai" src={`${APP}/chat`} className="mt-5 h-[640px] w-full rounded-2xl border border-white/10 bg-black" />
           <a href={APP} className="mt-3 inline-flex text-sm text-emerald-400 hover:underline">
             Open In-Ai in its own tab
           </a>

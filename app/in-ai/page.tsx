@@ -15,7 +15,7 @@ export default function InAiPage() {
       <p className="mt-2 max-w-xl text-sm opacity-70">One assistant, inside the portal. Sign in with the same portal account.</p>
       <iframe
         title="In-Ai"
-        src={APP}
+        src={`${APP}/chat`}
         className="mt-6 h-[720px] w-full rounded-2xl border border-white/10 bg-black"
       />
       <a href={APP} className="mt-4 inline-flex text-sm text-emerald-400 hover:underline">
