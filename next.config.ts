@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ['mysql2'],
+  // Vercel was returning MIDDLEWARE_INVOCATION_FAILED on every server route
+  // because the Node lambda was missing traced @swc helpers.
+  outputFileTracingIncludes: {
+    '*': ['./node_modules/@swc/helpers/**'],
+  },
   async rewrites() {
     return [
       {
