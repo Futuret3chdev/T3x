@@ -150,25 +150,31 @@ export default function ProductDemos({ children }: { children: React.ReactNode }
       {tab === 'wallet' && (
         <Demo
           title="T3x Vault"
-          body="Self-custodial. Keys stay on the device."
+          body="Self-custodial. Keys stay on the device. Sign-in is marked coming soon."
           href="https://t3x-wallet.vercel.app/"
           cta="Open T3x Vault"
           external
         >
-          <p className="text-sm opacity-70">Create, import, send, mint NFTs, Rockets. Preview is on t3x-wallet.vercel.app.</p>
+          <iframe title="T3x Vault" src="https://t3x-wallet.vercel.app/" className="h-[70dvh] min-h-[480px] w-full rounded-xl border border-white/10 bg-black" />
         </Demo>
       )}
 
       {tab === 'studio' && (
-        <Demo title="Studio" body="Make maps and publish mini-games." href="/studio" cta="Open Studio" />
+        <Demo title="Studio" body="Make maps and publish mini-games." href="/studio" cta="Open Studio">
+          <iframe title="Studio" src="/studio" className="h-[70dvh] min-h-[480px] w-full rounded-xl border border-white/10 bg-black" />
+        </Demo>
       )}
 
       {tab === 'software' && (
-        <Demo title="Software" body="Browser security and game software." href="/software" cta="Open Software" />
+        <Demo title="Software" body="Browser security and game software." href="/software" cta="Open Software">
+          <iframe title="Software" src="/software" className="h-[70dvh] min-h-[480px] w-full rounded-xl border border-white/10 bg-black" />
+        </Demo>
       )}
 
       {tab === 'chat' && (
-        <Demo title="T3x Chat" body="Same login as portal. Rooms, DMs, games in chat." href="/chat" cta="Open Chat" />
+        <Demo title="T3x Chat" body="Same login as portal. Rooms, DMs, games in chat." href="/chat" cta="Open Chat">
+          <iframe title="T3x Chat" src="/chat" className="h-[70dvh] min-h-[480px] w-full rounded-xl border border-white/10 bg-black" />
+        </Demo>
       )}
     </div>
   );
