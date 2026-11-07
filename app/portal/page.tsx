@@ -708,6 +708,41 @@ export default function PortalPage() {
   );
 }
 
+async function vaultKey() {
+  const existing = localStorage.getItem('t3x-vault-key');
+  if (existing) {
+    const raw = Uint8Array.from(atob(existing), (c) => c.charCodeAt(0));
+    return crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['encrypt', 'decrypt']);
+  }
+  const key = await crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']);
+  const exp = new Uint8Array(await crypto.subtle.exportKey('raw', key));
+  localStorage.setItem('t3x-vault-key', btoa(String.fromCharCode(...exp)));
+  return key;
+}
+
+async function lockNote(text: string) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const cipher = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await vaultKey(), new TextEncoder().encode(text)));
+  const packed = new Uint8Array(iv.length + cipher.length);
+  packed.set(iv, 0);
+  packed.set(cipher, iv.length);
+  return btoa(String.fromCharCode(...packed));
+}
+
+async function unlockNote(payload: string) {
+  try {
+    const packed = Uint8Array.from(atob(payload), (c) => c.charCodeAt(0));
+    const plain = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv: packed.slice(0, 12) },
+      await vaultKey(),
+      packed.slice(12),
+    );
+    return new TextDecoder().decode(plain);
+  } catch {
+    return '';
+  }
+}
+
 function PortalVault() {
   const [slug, setSlug] = useState('');
   const [note, setNote] = useState('');
@@ -717,11 +752,12 @@ function PortalVault() {
   const load = () => {
     fetch('/api/chat/vault', { credentials: 'include' })
       .then((r) => r.json())
-      .then((d) => {
+      .then(async (d) => {
         if (!d.ok) return;
         setSlug(d.slug || '');
-        setNote(d.channel?.collab_note || '');
         setItems(d.items || []);
+        const raw = d.channel?.collab_note || '';
+        setNote(raw.startsWith('enc:') ? await unlockNote(raw.slice(4)) : raw);
       });
   };
 
@@ -730,13 +766,14 @@ function PortalVault() {
   }, []);
 
   const saveNote = async () => {
+    const hidden = note ? `enc:${await lockNote(note)}` : '';
     await fetch('/api/chat/vault', {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ note }),
+      body: JSON.stringify({ note: hidden }),
     });
-    setMsg('Vault note saved');
+    setMsg('Vault note saved on this device key');
   };
 
   const upload = async (file: File) => {
@@ -763,7 +800,7 @@ function PortalVault() {
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Vault files</h2>
       <p className="text-sm opacity-70">
-        A locker for this account. Notes are encrypted in the browser before they are saved. Files are listed by name. T3x Vault the wallet is still coming soon.
+        Files are listed by name. Notes are encrypted on this device before they are saved. The T3x Vault wallet is still coming soon.
       </p>
       <label className="block text-sm">
         <span className="opacity-60">Private notes</span>
