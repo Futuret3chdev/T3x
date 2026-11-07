@@ -29,17 +29,24 @@ function LoginForm() {
     setBusy(true);
     setErr('');
     const path = mode === 'login' ? '/api/portal/login' : '/api/portal/register';
-    const res = await fetch(path, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email,
-        password,
-        username: username || email.split('@')[0],
-      }),
-    });
-    const data = await res.json();
+    let data: { ok?: boolean; error?: string } = {};
+    try {
+      const res = await fetch(path, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          password,
+          username: username || email.split('@')[0],
+        }),
+      });
+      data = await res.json();
+    } catch {
+      setBusy(false);
+      setErr('Could not reach the account server. Try again in a moment.');
+      return;
+    }
     setBusy(false);
     if (!data.ok) {
       setErr(data.error || 'Could not continue');
@@ -108,10 +115,11 @@ function LoginForm() {
         )}
         <input
           required
-          type="email"
+          type={mode === 'login' ? 'text' : 'email'}
+          autoComplete={mode === 'login' ? 'username' : 'email'}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
+          placeholder={mode === 'login' ? 'Email or username' : 'Email'}
           className="w-full px-3 py-2.5 rounded-xl bg-black/40 border border-white/15 text-sm"
         />
         <input

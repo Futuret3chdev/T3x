@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { publicUser, readSessionToken, userBySession } from '@/lib/portal-auth';
 
 export async function POST(request: NextRequest) {
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   } catch {
     return Response.json({ ok: false, error: 'Invalid JSON' }, { status: 400 });
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     const bio = body.bio !== undefined ? String(body.bio).slice(0, 2000) : user.bio;
     const avatar_url =

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import { addWallet, hydrateFromHeldRecords, listWallets, removeWallet, type WalletKind } from '@/lib/user-wallets';
 
@@ -8,7 +8,7 @@ const KINDS = new Set(['phantom', 'infinite', 'solana', 'other']);
 export async function GET() {
   const user = await userBySession(await readSessionToken());
   if (!user) return Response.json({ ok: false, error: 'Sign in' }, { status: 401 });
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     const extra = await hydrateFromHeldRecords(conn, user);
     return Response.json({
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
   } catch {
     return Response.json({ ok: false, error: 'Invalid JSON' }, { status: 400 });
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     if (body.remove_id) {
       const wallets = await removeWallet(conn, user.email, Number(body.remove_id));

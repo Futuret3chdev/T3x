@@ -24,6 +24,17 @@ export async function getUserDb() {
   });
 }
 
+/** Portal accounts live on the scanner database, which has remote access. */
+export async function getPortalDb() {
+  return mysql.createConnection({
+    host: DB_HOST,
+    user: 'tcvkxete_t3xadmin',
+    password: 'T3x_benjibear1@@',
+    database: 'tcvkxete_t3xscanner',
+    connectTimeout: 8000,
+  });
+}
+
 export async function getTrackingDb() {
   return mysql.createConnection({
     host: DB_HOST,

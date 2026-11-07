@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import {
   attachLicense,
   hashPassword,
@@ -29,8 +29,31 @@ export async function POST(request: NextRequest) {
     return Response.json({ ok: false, error: 'Password must be at least 6 characters.' }, { status: 400 });
   }
 
-  const conn = await getUserDb();
+  let conn;
   try {
+    conn = await getPortalDb();
+    await conn.execute(`
+      CREATE TABLE IF NOT EXISTS portal_users (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(64) NOT NULL,
+        email VARCHAR(190) NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        session_token VARCHAR(128) NULL,
+        wallet_address VARCHAR(80) NULL,
+        license_key VARCHAR(40) NULL,
+        license_tier VARCHAR(16) NULL,
+        bio TEXT NULL,
+        avatar_url TEXT NULL,
+        telegram_id VARCHAR(64) NULL,
+        discord_id VARCHAR(64) NULL,
+        is_admin TINYINT NOT NULL DEFAULT 0,
+        created_at DATETIME NULL,
+        last_login DATETIME NULL,
+        UNIQUE KEY uniq_email (email),
+        UNIQUE KEY uniq_username (username),
+        KEY idx_session (session_token)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+    `);
     const [dup] = await conn.execute(
       'SELECT id FROM portal_users WHERE email = ? OR username = ? LIMIT 1',
       [email, username]
@@ -69,8 +92,17 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error('portal register', err);
     const detail = err instanceof Error ? err.message : 'unknown';
-    return Response.json({ ok: false, error: `Could not create the account. ${detail}` }, { status: 500 });
+    const denied = /access denied|ECONNREFUSED|ETIMEDOUT|ENOTFOUND/i.test(detail);
+    return Response.json(
+      {
+        ok: false,
+        error: denied
+          ? 'The account database is blocking this server. In HostGator Remote Database Access, add host % for tcvkxete_t3xadmin, then try again.'
+          : `Could not create the account. ${detail}`,
+      },
+      { status: 500 }
+    );
   } finally {
-    await conn.end();
+    await conn?.end();
   }
 }

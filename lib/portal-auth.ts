@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import type mysql from 'mysql2/promise';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { ensureDevLicenseTable, makeLicenseKey } from '@/lib/dev-license';
 
 export const SESSION_COOKIE = 'session_token';
@@ -101,8 +101,9 @@ export async function attachLicense(
 
 export async function userBySession(token: string | undefined | null): Promise<PortalUser | null> {
   if (!token) return null;
-  const conn = await getUserDb();
+  let conn;
   try {
+    conn = await getPortalDb();
     await ensurePortalColumns(conn);
     let rows;
     try {
@@ -131,8 +132,10 @@ export async function userBySession(token: string | undefined | null): Promise<P
       user.license_tier = lic.license_tier;
     }
     return user;
+  } catch {
+    return null;
   } finally {
-    await conn.end();
+    await conn?.end();
   }
 }
 

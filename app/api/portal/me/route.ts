@@ -1,4 +1,4 @@
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { publicUser, readSessionToken, userBySession } from '@/lib/portal-auth';
 import { hydrateFromHeldRecords } from '@/lib/user-wallets';
 
@@ -7,7 +7,7 @@ export async function GET() {
   if (!user) {
     return Response.json({ ok: false, user: null }, { status: 401 });
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     const extra = await hydrateFromHeldRecords(conn, user);
     user.telegram_id = extra.telegram_id;

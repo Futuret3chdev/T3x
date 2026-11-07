@@ -1,5 +1,5 @@
 import type mysql from 'mysql2/promise';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import crypto from 'crypto';
 
 export type DevTier = 'free' | 'pro';
@@ -25,7 +25,7 @@ export async function verifyLicenseKey(key: string): Promise<{
   if (!/^T3x-(FREE|PRO)-[A-F0-9]{10}$/i.test(license_key)) {
     return { ok: false, error: 'Bad license key' };
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureDevLicenseTable(conn);
     const [rows] = await conn.execute(
@@ -66,7 +66,7 @@ export async function issueFreeLicense(input: {
   email: string;
   handle?: string;
 }): Promise<{ license: DevLicense; created: boolean }> {
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureDevLicenseTable(conn);
     const email = input.email.trim().toLowerCase();
@@ -94,7 +94,7 @@ export async function issueFreeLicense(input: {
 }
 
 export async function upgradeToPro(email: string, name?: string): Promise<{ license_key: string; license_tier: 'pro' }> {
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureDevLicenseTable(conn);
     const addr = email.trim().toLowerCase();
