@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: 'In-Ai is the Futuret3ch assistant, inside the T3x portal.',
 };
 
-const APP = 'https://in-ai-futuret3ch.vercel.app';
+const APP = 'https://adept-learning-agent.vercel.app';
 
 export default function InAiPage() {
   return (

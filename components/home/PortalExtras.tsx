@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-const APP = 'https://in-ai-futuret3ch.vercel.app';
+const APP = 'https://adept-learning-agent.vercel.app';
 
 type Row = { username: string; usd: number; earned: number };
 
