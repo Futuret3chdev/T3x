@@ -93,8 +93,8 @@ export default function SoftwareGamesPage() {
           <Link href="/software/games/sdk" className="font-semibold text-black bg-emerald-400 px-4 py-2 rounded-full">
             Docs
           </Link>
-          <a href="/sdk/mt-games.js" className="px-4 py-2 rounded-full border border-white/20">
-            mt-games.js
+          <a href="/sdk/t3x-games.js" className="px-4 py-2 rounded-full border border-white/20">
+            t3x-games.js
           </a>
           <a href="/sdk/games-example.html" className="px-4 py-2 rounded-full border border-white/20">
             Example

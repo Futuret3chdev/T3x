@@ -17,9 +17,9 @@
   <input id="key" placeholder="T3x-FREE-…" style="width:100%;margin:8px 0" />
   <button type="button" id="go">Verify</button>
   <pre id="out">idle</pre>
-  <script src="/sdk/mt-games.js"></script>
+  <script src="/sdk/t3x-games.js"></script>
   <script>
-    const g = MTGames.init({ gameId: 'sdk-games-demo' });
+    const g = T3xGames.init({ gameId: 'sdk-games-demo' });
     const out = document.getElementById('out');
     document.getElementById('go').onclick = async () => {
       const r = await g.verify(document.getElementById('key').value);

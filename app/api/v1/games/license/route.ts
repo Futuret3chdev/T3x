@@ -11,12 +11,12 @@ export async function GET(request: NextRequest) {
   const v = await verifyLicenseKey(key);
   if (!v.ok) return v1err(v.error || 'Invalid', 401, 401);
   return v1ok({
-    product: 'mt-games',
+    product: 't3x-games',
     license_key: v.license_key,
     tier: v.tier,
     handle: v.handle,
-    apk: 'https://memetorrent.futuret3ch.com.au/downloads/MTGames.apk',
-    sdk: 'https://memetorrent.futuret3ch.com.au/sdk/mt-games.js',
+    apk: 'https://t3x.futuret3ch.com.au/downloads/MTGames.apk',
+    sdk: 'https://t3x.futuret3ch.com.au/sdk/t3x-games.js',
   });
 }
 
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   const v = await verifyLicenseKey(body.key || body.license || '');
   if (!v.ok) return v1err(v.error || 'Invalid', 401, 401);
   return v1ok({
-    product: 'mt-games',
+    product: 't3x-games',
     license_key: v.license_key,
     tier: v.tier,
     handle: v.handle,

@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-const SNIP = `<script src="https://t3x.futuret3ch.com.au/sdk/mt-games.js"></script>
+const SNIP = `<script src="https://t3x.futuret3ch.com.au/sdk/t3x-games.js"></script>
 <script>
-  const games = MTGames.init({ gameId: 'my-title' });
+  const games = T3xGames.init({ gameId: 'my-title' });
 
   // License from portal / Software → Developers
   await games.verify('T3x-FREE-…');
@@ -48,7 +48,7 @@ export default function GamesSdkPage() {
         <li>Browser tools: Skin Lab, Score Book, Pads… at /software/games</li>
       </ul>
       <p className="mt-6 text-sm">
-        <a className="text-emerald-400" href="/sdk/mt-games.js">mt-games.js</a>
+        <a className="text-emerald-400" href="/sdk/t3x-games.js">t3x-games.js</a>
         {' · '}
         <a className="text-emerald-400" href="/sdk/games-example.html">example</a>
         {' · '}

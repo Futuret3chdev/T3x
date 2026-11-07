@@ -1,14 +1,18 @@
-/*! T3x Games SDK v1.0.0 — https://memetorrent.futuret3ch.com.au/sdk/mt-games.js
+/*! T3x Games SDK v1.0.0 — https://t3x.futuret3ch.com.au/sdk/t3x-games.js
  * Licensed game clients (Android APK, future iOS/Win/Mac) + browser tools.
  */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
-  else root.MTGames = factory();
+  else {
+    var api = factory();
+    root.T3xGames = api;
+    root.MTGames = api;
+  }
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
   var VERSION = '1.0.0';
-  var ORIGIN = 'https://memetorrent.futuret3ch.com.au';
+  var ORIGIN = 'https://t3x.futuret3ch.com.au';
 
   function fail(err) {
     return { ok: false, error: String(err || 'Failed') };
