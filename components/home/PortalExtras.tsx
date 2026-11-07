@@ -53,9 +53,20 @@ export default function PortalExtras() {
             Every full $20 swapped or bridged earns T3X. T3X will be paid once it becomes available. Register and sign in with the portal.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
-            <Link href="/login" className="inline-flex h-11 items-center rounded-xl bg-emerald-400 px-4 text-sm font-semibold text-black">
-              Register or sign in
-            </Link>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('t3x-open-auth', { detail: { mode: 'login' } }))}
+              className="inline-flex h-11 items-center rounded-xl bg-emerald-400 px-4 text-sm font-semibold text-black"
+            >
+              Sign in
+            </button>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('t3x-open-auth', { detail: { mode: 'register' } }))}
+              className="inline-flex h-11 items-center rounded-xl border border-white/20 px-4 text-sm font-semibold"
+            >
+              Register
+            </button>
             <Link href="/claims" className="inline-flex h-11 items-center rounded-xl border border-white/20 px-4 text-sm font-semibold">
               Open claims
             </Link>

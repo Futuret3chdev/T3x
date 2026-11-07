@@ -34,6 +34,29 @@ export default function Navbar() {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    const openSaved = () => {
+      const raw = sessionStorage.getItem('t3x-auth');
+      if (!raw) return;
+      sessionStorage.removeItem('t3x-auth');
+      try {
+        const data = JSON.parse(raw) as { mode?: string; next?: string };
+        if (data.next) sessionStorage.setItem('t3x-auth-next', data.next);
+        openAuth(data.mode === 'register' ? 'register' : 'login');
+      } catch {
+        openAuth('login');
+      }
+    };
+    const onOpen = (event: Event) => {
+      const detail = (event as CustomEvent<{ mode?: string; next?: string }>).detail || {};
+      if (detail.next) sessionStorage.setItem('t3x-auth-next', detail.next);
+      openAuth(detail.mode === 'register' ? 'register' : 'login');
+    };
+    openSaved();
+    window.addEventListener('t3x-open-auth', onOpen);
+    return () => window.removeEventListener('t3x-open-auth', onOpen);
+  }, []);
+
   const openAuth = (mode: 'login' | 'register') => {
     setAuthMode(mode);
     setFormData({ username: '', email: '', password: '' });
@@ -72,6 +95,11 @@ export default function Navbar() {
       }
       setPortalUser(data.user);
       closeAuth();
+      const next = sessionStorage.getItem('t3x-auth-next');
+      sessionStorage.removeItem('t3x-auth-next');
+      if (next && next.startsWith('/') && !next.startsWith('/login')) {
+        window.location.href = next;
+      }
     } catch {
       setAuthError('Network error. Try again.');
     } finally {
@@ -572,10 +600,11 @@ export default function Navbar() {
                 <div>
                   <div className="text-xs opacity-60 mb-1">Email</div>
                   <input
-                    type="email"
+                    type={authMode === 'login' ? 'text' : 'email'}
+                    autoComplete={authMode === 'login' ? 'username' : 'email'}
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder={authMode === 'login' ? "jason.c@futuret3ch.com.au" : "wallet@email.com"}
+                    placeholder={authMode === 'login' ? 'Email or username' : 'wallet@email.com'}
                     required
                     className="w-full bg-white/5 border border-white/15 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-400/60"
                   />
