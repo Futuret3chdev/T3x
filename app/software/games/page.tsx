@@ -109,7 +109,7 @@ export default function SoftwareGamesPage() {
             note: 'Standalone IDE. Design, Run, Build APK on this PC. Install the .apk on any Android phone.',
             href: '/downloads/MTStudio.exe',
             label: 'Download T3x Android Studio (.exe)',
-            extra: { href: '/downloads/MTMaker.exe', label: 'Same app as MTMaker.exe' },
+            extra: { href: '/downloads/MTMaker.exe', label: 'Alternate Windows file' },
           },
           {
             name: 'Android · T3x Android Studio',

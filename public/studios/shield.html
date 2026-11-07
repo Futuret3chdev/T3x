@@ -37,7 +37,7 @@
 <script src="kit.js"></script>
 <script>
 document.getElementById('nav').innerHTML = T3x.nav('shield');
-let pol=T3x.get('mt-shield-policy',{version:1, allow:['futuret3ch.com.au','memetorrent.futuret3ch.com.au'], clipboard:{seed:true,swap:true}, net:{deny:false,vpn:false}, panic:false});
+let pol=T3x.get('mt-shield-policy',{version:1, allow:['futuret3ch.com.au','t3x.futuret3ch.com.au'], clipboard:{seed:true,swap:true}, net:{deny:false,vpn:false}, panic:false});
 function save(){ T3x.set('mt-shield-policy', pol); document.getElementById('json').textContent=JSON.stringify(pol,null,2); }
 function render(){
   document.getElementById('dlist').innerHTML=pol.allow.map((d,i)=>`<li>${d} <button data-i="${i}">×</button></li>`).join('');

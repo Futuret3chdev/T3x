@@ -60,7 +60,7 @@ if(sel) Object.values(DEVICES).forEach(d=>{ const o=document.createElement('opti
 function $(id){ return document.getElementById(id); }
 function on(id, ev, fn){ const el=$(id); if(el) el[ev]=fn; }
 function log(msg, cls, tag){
-  const line=`${new Date().toISOString().slice(11,23)} ${tag||'MTStudio'}: ${msg}`;
+  const line=`${new Date().toISOString().slice(11,23)} ${tag||'T3x Studio'}: ${msg}`;
   const el=document.createElement('div');
   if(cls) el.className=cls;
   el.textContent=line;
@@ -220,11 +220,11 @@ function stepWorld(w, input, dt){
     const cell=Math.floor((w.p.y+8)/CELL)*COLS+Math.floor((w.p.x+7)/CELL);
     if(cell>=0&&cell<heat.length) heat[cell]++;
     w.lives--; w.dead++;
-    log('player died lives='+w.lives,'bad','MTGame');
+    log('player died lives='+w.lives,'bad','T3x');
     if(w.lives<=0){ w.lives=w.s.lives; w.tiles=w.s.tiles.slice(); w.coins=0; }
     if(w.check) w.p={x:w.check.x,y:w.check.y,vx:0,vy:0}; else w.spawn();
   }
-  if(hit===5){ w.win=true; log('exit reached coins='+w.coins,'ok','MTGame'); }
+  if(hit===5){ w.win=true; log('exit reached coins='+w.coins,'ok','T3x'); }
   if(w.p.y>ROWS*CELL){ w.lives--; w.spawn(); }
   const spd=(w.s.espd||6)*0.15;
   w.enemies.forEach(en=>{
@@ -349,7 +349,7 @@ function startRun(lab){
   }
   emus.forEach(e=>{ e.world=makeWorld(spec()); });
   log('ActivityManager: Start proc '+$('pkg').value+' for activity MainActivity','ok','ActivityManager');
-  log(emus.length+' emulator(s) — Pixel/Fold/TV/Watch/Auto without downloading a system image. Google AVDs are 2GB+ each.','gold','MTStudio');
+  log(emus.length+' emulator(s) — Pixel/Fold/TV/Watch/Auto without downloading a system image. Google AVDs are 2GB+ each.','gold','T3x Studio');
   lastFps=performance.now(); frames=0;
   cancelAnimationFrame(raf);
   raf=requestAnimationFrame(loop);
@@ -525,7 +525,9 @@ on('buildApk','onclick',async ()=>{
     log('BUILD SUCCESSFUL '+name+'.apk '+buf.byteLength+' bytes  signed v2+v3','ok','ApkSign');
     blogTab='apk'; document.querySelectorAll('#btabs button').forEach(b=>b.classList.toggle('on',b.dataset.b==='apk')); renderBlog();
   }catch(e){
-    log('Build APK needs the Windows/Mac T3x Android Studio app. '+e.message,'bad');
+    var detail = String(e && e.message || '');
+    if (detail.indexOf('<') !== -1 || detail.length > 160) detail = 'The browser cannot sign an APK here.';
+    log('Build APK needs the Windows or Mac T3x Android Studio app. '+detail,'bad','T3x Studio');
   }
 });
 
