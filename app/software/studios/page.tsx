@@ -78,11 +78,20 @@ export default function StudiosPage() {
         </Link>
       </div>
       <div className="uppercase text-xs tracking-[3px] text-emerald-400 mt-4 mb-2">Software · Studios</div>
-      <h1 className="text-4xl sm:text-5xl font-semibold tracking-[-1.6px] mb-4">Studio software we build.</h1>
-      <p className="opacity-70 max-w-2xl mb-10 text-sm sm:text-base">
-        Each card is a different app. Device Lab is a farm. Publisher is the store listing. Play Console is rollouts.
-        Photography turns a house photo into a rendered game building.
-      </p>
+      <h1 className="text-4xl sm:text-5xl font-semibold tracking-[-1.6px] mb-4">Android Studio, in order.</h1>
+      <ol className="mb-10 grid gap-3 sm:grid-cols-3">
+        {[
+          ['1', 'Sign in', 'Use the portal account. The developer license is on that profile.'],
+          ['2', 'Open the studio', 'Level editor, then Run. Build the APK from the same screen.'],
+          ['3', 'Sideload', 'Install on the phone. Device Lab and Play Console are the next desks.'],
+        ].map(([n, title, body]) => (
+          <li key={n} className="rounded-2xl border border-white/10 p-4">
+            <div className="text-emerald-400 text-sm font-semibold">Step {n}</div>
+            <div className="mt-1 font-semibold">{title}</div>
+            <p className="mt-1 text-sm opacity-70">{body}</p>
+          </li>
+        ))}
+      </ol>
       <div className="grid sm:grid-cols-2 gap-4">
         {studios.map((s) => (
           <a

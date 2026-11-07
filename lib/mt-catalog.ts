@@ -24,12 +24,12 @@ export const CATALOG: CatalogGame[] = [
   },
   {
     id: 'mt-world-gallery',
-    name: 'T3x WORLD — Gallery',
+    name: 'Pet Verse',
     kind: 'multiplayer',
     status: 'live',
     play: '/games/gallery/index.html',
     img: '/games/covers/gallery.jpg',
-    blurb: 'Dusk plaza, chase cam so you see your skin. Shop spends ¢. Mint token head, gold cape, pets, jobs, houses.',
+    blurb: 'Pet Verse. Walk the plaza with your pet, spend in the shop, take jobs and houses.',
   },
   {
     id: 'soccer-pro',

@@ -97,9 +97,8 @@ export default function Navbar() {
       closeAuth();
       const next = sessionStorage.getItem('t3x-auth-next');
       sessionStorage.removeItem('t3x-auth-next');
-      if (next && next.startsWith('/') && !next.startsWith('/login')) {
-        window.location.href = next;
-      }
+      const dest = next && next.startsWith('/') && !next.startsWith('/login') ? next : '/portal';
+      if (window.location.pathname !== dest) window.location.href = dest;
     } catch {
       setAuthError('Network error. Try again.');
     } finally {

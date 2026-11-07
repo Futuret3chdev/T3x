@@ -6,7 +6,7 @@ import GameCard from '@/components/games/GameCard';
 import { liveGames } from '@/lib/mt-catalog';
 
 type Mode = 'users' | 'developers' | 'businesses';
-type UserTab = 'me' | 'games' | 'scores' | 'wallet' | 'chat' | 'friends' | 'vault';
+type UserTab = 'me' | 'games' | 'scores' | 'wallet' | 'chat' | 'friends' | 'vault' | 'claims';
 
 type User = {
   username: string;
@@ -26,6 +26,7 @@ const USER_NAV: { id: UserTab; label: string }[] = [
   { id: 'me', label: 'Profile' },
   { id: 'games', label: 'Library' },
   { id: 'scores', label: 'Scores' },
+  { id: 'claims', label: 'Claims' },
   { id: 'wallet', label: 'Wallet' },
   { id: 'chat', label: 'Chat' },
   { id: 'friends', label: 'Friends' },
@@ -55,7 +56,6 @@ export default function PortalPage() {
   const [friendQ, setFriendQ] = useState('');
   const [friendHits, setFriendHits] = useState<{ username: string; email: string; self?: boolean }[]>([]);
   const [friendMsg, setFriendMsg] = useState('');
-  const [tapStaff, setTapStaff] = useState(false);
 
 
   useEffect(() => {
@@ -69,14 +69,6 @@ export default function PortalPage() {
           setBio(d.user.bio || '');
           setWallet(d.user.wallet_address || '');
           setAvatar(d.user.avatar_url || '');
-          fetch('/api/v1/tapmatch/staff', { credentials: 'include', cache: 'no-store' })
-            .then((r) => r.json())
-            .then((s) =>
-              setTapStaff(
-                Boolean(s?.data?.staff) || Boolean(d.user.is_admin) || d.user.username === '376937'
-              )
-            )
-            .catch(() => setTapStaff(Boolean(d.user.is_admin) || d.user.username === '376937'));
           fetch('/api/scores?mine=1', { credentials: 'include' })
             .then((r) => r.json())
             .then((s) => setScores(s.scores || []))
@@ -223,17 +215,15 @@ export default function PortalPage() {
         <div className="uppercase text-[10px] tracking-[3px] opacity-50 mb-3">Apps</div>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
           {[
-            { href: 'https://t3x-wallet.vercel.app/', label: 'T3x Vault', icon: '👛', external: true },
-            { href: '/catalog', label: 'Games', icon: '🎮', external: false },
-            ...(tapStaff
-              ? [
-                  { href: '/portal/tap', label: 'TAP', icon: '🚗', external: false },
-                  { href: '/portal/tapshop', label: 'TAPSHOP', icon: '🛒', external: false },
-                  { href: '/portal/tapmatch', label: 'TAPMATCH', icon: '🤝', external: false },
-                ]
-              : []),
+            { href: '/catalog', label: 'Games', icon: '🕹', external: false },
+            { href: '/claims', label: 'Claims', icon: '✦', external: false },
+            { href: '/portal/tap', label: 'Rides', icon: '🚗', external: false },
+            { href: '/portal/tapshop', label: 'Shop', icon: '🛒', external: false },
+            { href: '/portal/tapmatch', label: 'Work', icon: '🤝', external: false },
+            { href: 'https://t3x-steam-demo-liart.vercel.app', label: 'Steam', icon: '🎮', external: true },
             { href: '/chat', label: 'Chat', icon: '💬', external: false },
             { href: '/shield', label: 'Shield', icon: '🛡', external: false },
+            { href: '/software/studios', label: 'Studio', icon: '🛠', external: false },
           ].map((app) => (
             <Link
               key={app.label}
@@ -388,11 +378,8 @@ export default function PortalPage() {
             {tab === 'scores' && (
               <div>
                 <h2 className="text-xl font-semibold mb-2">Scores</h2>
-                <p className="text-sm opacity-60 mb-4">
-                  Logged-in scores from Tap Tap, Pocket and Puck land here.{' '}
-                  <a href="/games/unix/tap/index.html" className="text-emerald-400">Play Tap</a>.
-                </p>
-                {!scores.length && <p className="text-sm opacity-50">No scores on this account yet.</p>}
+                <p className="text-sm opacity-60 mb-4">Scores saved on this account. Play a game while signed in and they land here.</p>
+                {!scores.length && <p className="text-sm opacity-50">No scores yet. Open Library and play one.</p>}
                 <ul className="space-y-2 text-sm">
                   {scores.map((s, i) => (
                     <li key={i} className="flex justify-between border-b border-white/10 py-2">
@@ -404,11 +391,26 @@ export default function PortalPage() {
               </div>
             )}
 
+            {tab === 'claims' && (
+              <div className="space-y-3">
+                <h2 className="text-xl font-semibold">Claims</h2>
+                <p className="text-sm opacity-70">Every full $20 swapped or bridged earns T3X. T3X is paid once it becomes available. This account is @{user.username}.</p>
+                <Link href="/claims" className="inline-flex rounded-full bg-emerald-400 px-4 py-2 text-sm font-semibold text-black">
+                  Open claims
+                </Link>
+              </div>
+            )}
+
             {tab === 'wallet' && (
               <div className="space-y-4">
                 <h2 className="text-xl font-semibold">Wallets</h2>
+                <div className="rounded-2xl border border-white/15 bg-black/40 p-4">
+                  <div className="text-[11px] tracking-[0.2em] text-emerald-400">COMING SOON</div>
+                  <div className="mt-1 text-lg font-semibold">T3x Vault</div>
+                  <p className="mt-1 text-sm opacity-70">The vault wallet stays locked. You can link an address here. You cannot open the vault yet.</p>
+                </div>
                 <p className="text-sm opacity-70">
-                  Link Phantom, T3x Vault, or another address to this account. Telegram and Discord stay on the profile.
+                  Link Phantom or another address to this account. The T3x Vault wallet itself is not open yet.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-3 text-sm">
                   <div className="rounded-xl border border-white/10 p-3">
@@ -479,7 +481,6 @@ export default function PortalPage() {
                       className="px-3 py-2 rounded-xl bg-black/40 border border-white/15 text-sm"
                     >
                       <option value="phantom">Phantom</option>
-                      <option value="infinite">T3x Vault</option>
                       <option value="solana">Other Solana</option>
                       <option value="other">Other</option>
                     </select>
@@ -496,9 +497,6 @@ export default function PortalPage() {
                   </button>
                   {walletMsg && <div className="text-sm opacity-70">{walletMsg}</div>}
                 </form>
-                <a href="https://t3x-wallet.vercel.app/" target="_blank" rel="noopener noreferrer" className="inline-block text-emerald-400 text-sm">
-                  Open T3x Vault →
-                </a>
               </div>
             )}
 
@@ -609,12 +607,10 @@ export default function PortalPage() {
               </div>
             )}
             {tab === 'chat' && (
-              <div>
-                <h2 className="text-xl font-semibold mb-2">Crypto chat</h2>
-                <p className="text-sm opacity-70 mb-3">Trades, general and support. Same login as this portal.</p>
-                <Link href="/chat" className="text-emerald-400 text-sm">
-                  Open chat →
-                </Link>
+              <div className="space-y-3">
+                <h2 className="text-xl font-semibold">Chat</h2>
+                <p className="text-sm opacity-70">Rooms for trades, swaps, and NFTs. Same account. Friends open a private thread.</p>
+                <iframe title="T3x Chat" src="/chat" className="h-[70dvh] min-h-[480px] w-full rounded-xl border border-white/10 bg-black" />
               </div>
             )}
             {tab === 'vault' && <PortalVault />}
@@ -686,14 +682,26 @@ export default function PortalPage() {
       )}
 
       {mode === 'businesses' && (
-        <div className="rounded-2xl p-6 border border-white/10 max-w-2xl" style={{ background: 'var(--card)' }}>
-          <h2 className="text-xl font-semibold mb-2">Business portal</h2>
-          <p className="text-sm opacity-70 mb-4">
-            For shops, partners and studios — listings, $T3X checkout and staff seats.
-          </p>
-          <a href="/contact" className="text-emerald-400 text-sm">
-            Talk to us →
-          </a>
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Business tools</h2>
+          <p className="text-sm opacity-70 max-w-2xl">Rides, shop, work, Steam, and the studios. These are the tools. They are not games.</p>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {[
+              ['Rides', 'Pick up and drop off. Like Uber.', '/portal/tap'],
+              ['Packages and food', 'Send a parcel or a food run.', '/portal/tap'],
+              ['Shop', 'List and trade items.', '/portal/tapshop'],
+              ['Work', 'Match riders and employers.', '/portal/tapmatch'],
+              ['Steam demo', 'The T3x game demo.', 'https://t3x-steam-demo-liart.vercel.app'],
+              ['Android Studio', 'Build steps for the sideload client.', '/software/studios'],
+              ['Shield', 'Live grid for a business seat.', '/shield'],
+              ['Claims', 'Track the $20 T3X rewards.', '/claims'],
+            ].map(([name, line, href]) => (
+              <a key={name} href={href} className="rounded-2xl border border-white/10 p-4 hover:border-emerald-400/40">
+                <div className="font-semibold">{name}</div>
+                <p className="mt-1 text-sm opacity-70">{line}</p>
+              </a>
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -753,9 +761,9 @@ function PortalVault() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Personal vault</h2>
+      <h2 className="text-xl font-semibold">Vault files</h2>
       <p className="text-sm opacity-70">
-        Only you can see this locker. Notes, files, music and video stay on this account.
+        A locker for this account. Notes are encrypted in the browser before they are saved. Files are listed by name. T3x Vault the wallet is still coming soon.
       </p>
       <label className="block text-sm">
         <span className="opacity-60">Private notes</span>
