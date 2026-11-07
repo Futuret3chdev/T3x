@@ -116,6 +116,37 @@ export default function ProductDemos({ children }: { children: React.ReactNode }
         </Demo>
       )}
 
+      {tab === 'in-ai' && (
+        <Demo
+          title="In-Ai"
+          body="One assistant, inside the portal. Use it here. Sign in if you want the chat saved."
+          href="/in-ai"
+          cta="Open In-Ai"
+        >
+          <iframe
+            title="In-Ai"
+            src="https://adept-learning-agent.vercel.app/chat"
+            className="h-[70dvh] min-h-[480px] w-full rounded-xl border border-white/10 bg-black"
+          />
+        </Demo>
+      )}
+
+      {tab === 'scanner' && (
+        <Demo
+          title="T3X Scanner"
+          body="Scan, swap, and bridge from the portal."
+          href="https://t3xsolscanner.vercel.app"
+          cta="Open the scanner"
+          external
+        >
+          <iframe
+            title="T3X Scanner"
+            src="https://t3xsolscanner.vercel.app"
+            className="h-[70dvh] min-h-[480px] w-full rounded-xl border border-white/10 bg-black"
+          />
+        </Demo>
+      )}
+
       {tab === 'wallet' && (
         <Demo
           title="T3x Vault"
