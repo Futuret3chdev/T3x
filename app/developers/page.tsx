@@ -86,7 +86,7 @@ export default function DevelopersPage() {
         <h1 className="text-4xl sm:text-6xl font-semibold tracking-tight mb-4">Build on $T3X.</h1>
         <p className="opacity-70 max-w-2xl text-lg mb-8">
           Keyless market API today (quotes, holders, candles). TAP API for trips, packages, and food — plus TAPSHOP and TAPMATCH.
-          Same paths for Infinite Wallet and T3x-Chain when they launch. Play SDK for catalog games. CLI for scripts.
+          Same paths for T3x Vault and T3x-Chain when they launch. Play SDK for catalog games. CLI for scripts.
         </p>
         <div className="flex flex-wrap gap-3 mb-12">
           <Link href="/developers/docs" className="rounded-full bg-emerald-400 text-black font-bold px-5 py-2">
@@ -122,7 +122,7 @@ export default function DevelopersPage() {
             { href: '/sdk/mt-play.js', t: 'Play SDK', d: 'Wallets, portal login, scores inside the catalog play bar.' },
             { href: '/cli/mt.js', t: 'CLI', d: 'node mt.js quotes · tap · holders · chart · scores' },
             { href: '/studio', t: 'Studio', d: '$T3X shop, editor, titles API.' },
-            { href: '/developers/docs', t: 'Wallet & T3x-Chain', d: 'Preview routes. Same host when Infinite Wallet and T3x-Chain go live.' },
+            { href: '/developers/docs', t: 'Wallet & T3x-Chain', d: 'Preview routes. Same host when T3x Vault and T3x-Chain go live.' },
           ].map((c) => (
             <Link key={c.t} href={c.href} className="rounded-2xl border border-white/10 p-5 hover:border-emerald-400/40">
               <div className="font-semibold mb-1">{c.t}</div>

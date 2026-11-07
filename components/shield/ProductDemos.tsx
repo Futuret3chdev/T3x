@@ -118,10 +118,10 @@ export default function ProductDemos({ children }: { children: React.ReactNode }
 
       {tab === 'wallet' && (
         <Demo
-          title="T3x Wallet"
+          title="T3x Vault"
           body="Self-custodial. Keys stay on the device."
           href="https://t3x-wallet.vercel.app/"
-          cta="Open wallet"
+          cta="Open T3x Vault"
           external
         >
           <p className="text-sm opacity-70">Create, import, send, mint NFTs, Rockets. Preview is on t3x-wallet.vercel.app.</p>

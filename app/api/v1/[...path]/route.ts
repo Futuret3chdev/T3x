@@ -112,7 +112,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ path
 
     if (p === 'wallet/preview' || p === 'wallet') {
       return v1ok({
-        product: 'Infinite Wallet',
+        product: 'T3x Vault',
         status: 'upcoming',
         connect: 'https://t3x-wallet.vercel.app/',
         note: 'Connect, sign, and $T3X pay will use these routes at launch. Today use Play SDK requestWallet().',

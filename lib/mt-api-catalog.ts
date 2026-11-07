@@ -102,7 +102,7 @@ export const API_CATS: ApiCat[] = [
   {
     id: 'solana',
     title: 'Solana RPC',
-    blurb: 'Browser-safe RPC helpers used by Infinite Wallet today.',
+    blurb: 'Browser-safe RPC helpers used by T3x Vault today.',
     rows: [
       { method: 'POST', path: '/api/solana/rpc', summary: 'JSON-RPC proxy' },
       { method: 'GET', path: '/api/solana/balance?address=', summary: 'SOL lamports' },
@@ -177,11 +177,11 @@ export const API_CATS: ApiCat[] = [
   },
   {
     id: 'upcoming',
-    title: 'Infinite Wallet & T3x-Chain',
+    title: 'T3x Vault & T3x-Chain',
     blurb: 'Same paths. chain=solana today. chain=mt-chain and wallet connect at launch.',
     rows: [
       { method: 'GET', path: '/api/v1/chain/info', summary: 'Live Solana + upcoming T3x-Chain', live: true },
-      { method: 'GET', path: '/api/v1/wallet/preview', summary: 'Infinite Wallet preview', auth: 'upcoming' },
+      { method: 'GET', path: '/api/v1/wallet/preview', summary: 'T3x Vault preview', auth: 'upcoming' },
     ],
   },
 ];

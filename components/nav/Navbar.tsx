@@ -331,7 +331,7 @@ export default function Navbar() {
           >
             BUY $T3X NOW
           </button>
-          <a href={LINKS.wallet} target="_blank" onClick={() => setMobileMenuOpen(false)} className="py-1 font-medium">Infinite Wallet</a>
+          <a href={LINKS.wallet} target="_blank" onClick={() => setMobileMenuOpen(false)} className="py-1 font-medium">T3x Vault</a>
           <a href="/scanner" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">Scanner</a>
           <a href="/in-ai" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">In-Ai</a>
           <a href="/status" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">Status</a>
@@ -504,14 +504,14 @@ export default function Navbar() {
               <div className="md:flex-1">
                 <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-2 sm:p-3 text-xs sm:text-sm h-full">
                   <div className="text-emerald-400 text-[10px] sm:text-xs tracking-[3px]">THE WALLET IS THE GATEWAY</div>
-                  <div className="font-semibold tracking-tight mt-0.5 text-sm sm:text-base">T3x Wallet<br />For infinite possibilities.<br />Truly ours.</div>
+                  <div className="font-semibold tracking-tight mt-0.5 text-sm sm:text-base">T3x Vault<br />For infinite possibilities.<br />Truly ours.</div>
                   <ul className="mt-1 space-y-0.5 text-[10px] sm:text-xs opacity-80">
                     <li>• 100% self-built. No injected providers.</li>
                     <li>• Create, import, send, mint NFTs, earn &amp; spend Rockets.</li>
                     <li>• Native T3x chain + Solana $T3X + future bridges.</li>
                     <li>• Keys encrypted locally. Seed never leaves your device.</li>
                   </ul>
-                  <a href={LINKS.wallet} target="_blank" className="mt-1 inline-block text-xs sm:text-sm text-emerald-400 hover:underline">OPEN T3x Wallet →</a>
+                  <a href={LINKS.wallet} target="_blank" className="mt-1 inline-block text-xs sm:text-sm text-emerald-400 hover:underline">OPEN T3x Vault →</a>
                 </div>
               </div>
 

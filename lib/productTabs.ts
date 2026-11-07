@@ -57,9 +57,9 @@ export const PRODUCT_TABS: ProductTab[] = [
   },
   {
     id: 'wallet',
-    label: 'Wallet',
+    label: 'T3x Vault',
     href: 'https://t3x-wallet.vercel.app/',
-    blurb: 'T3x Wallet. Keys stay on the device.',
+    blurb: 'T3x Vault. Keys stay on the device.',
   },
   {
     id: 'studio',

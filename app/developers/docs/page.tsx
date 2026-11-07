@@ -164,7 +164,7 @@ export default function DocsPage() {
           {cat === 'upcoming' && (
             <div className="mt-8 rounded-2xl border border-emerald-400/25 bg-emerald-400/5 p-5 text-sm">
               <p>
-                When T3x-Chain and Infinite Wallet launch, keep the same host and add{' '}
+                When T3x-Chain and T3x Vault launch, keep the same host and add{' '}
                 <code>chain=mt-chain</code> plus header <code>X-T3x-API-KEY</code>. Quotes, holders, and wallet
                 balance routes will not change names.
               </p>

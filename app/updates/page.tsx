@@ -294,7 +294,7 @@ export default function UpdatesPage() {
                 Play and Studio tools other than the public demo require sign-in. Games stay viewable.
               </li>
               <li>
-                • <span className="text-white/80">Infinite Wallet</span> links only go to{' '}
+                • <span className="text-white/80">T3x Vault</span> links only go to{' '}
                 <a href="https://t3x-wallet.vercel.app" className="text-emerald-400 hover:underline">
                   t3x-wallet.vercel.app
                 </a>

@@ -72,7 +72,7 @@ export default function PublisherPage() {
             Open SDK demo
           </Link>
           <a href="https://t3x-wallet.vercel.app/" className="px-5 py-2 rounded-xl border border-white/20 text-sm">
-            Infinite Wallet
+            T3x Vault
           </a>
         </div>
       </div>
@@ -95,7 +95,7 @@ export default function PublisherPage() {
         </p>
         <ul className="text-sm opacity-70 space-y-2">
           <li>Web, Android and Windows from one integration</li>
-          <li>Hosted checkout via Infinite Wallet</li>
+          <li>Hosted checkout via T3x Vault</li>
           <li>Inventory delivered to the player profile</li>
         </ul>
       </div>

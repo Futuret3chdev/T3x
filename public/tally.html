@@ -115,7 +115,7 @@
             <button type="button" class="wallet-opt recommended" data-provider="solflare">Solflare</button>
             <button type="button" class="wallet-opt recommended" data-provider="backpack">Backpack</button>
             <button type="button" class="wallet-opt" data-provider="phantom">Phantom</button>
-            <a class="wallet-opt" data-provider="infinite" href="https://t3x-wallet.vercel.app/" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Infinite Wallet</a>
+            <a class="wallet-opt" data-provider="infinite" href="https://t3x-wallet.vercel.app/" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">T3x Vault</a>
             <select id="treasuryPick" class="treasury-pick" title="Which team treasury are you paying from?">
                 <option value="">Team treasury (optional label)…</option>
             </select>
@@ -759,7 +759,7 @@
             help.innerHTML = 'Phantom often blocks dApps. If connect fails, switch to <strong>Solflare</strong> or <strong>Backpack</strong>, or open this page in the wallet in-app browser.';
         } else if (name === 'infinite') {
             help.className = 'wallet-hint';
-            help.innerHTML = 'Open <strong>Infinite Wallet</strong>, use its browser to visit this tally page, then connect with Solflare/Backpack inside that session if needed.';
+            help.innerHTML = 'Open <strong>T3x Vault</strong>, use its browser to visit this tally page, then connect with Solflare/Backpack inside that session if needed.';
         } else {
             help.className = 'wallet-hint';
             help.innerHTML = 'Using <strong>' + name + '</strong>. On mobile, open the deeplink if the extension is not detected.';

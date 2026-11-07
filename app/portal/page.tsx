@@ -223,7 +223,7 @@ export default function PortalPage() {
         <div className="uppercase text-[10px] tracking-[3px] opacity-50 mb-3">Apps</div>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
           {[
-            { href: 'https://t3x-wallet.vercel.app/', label: 'Wallet', icon: '👛', external: true },
+            { href: 'https://t3x-wallet.vercel.app/', label: 'T3x Vault', icon: '👛', external: true },
             { href: '/catalog', label: 'Games', icon: '🎮', external: false },
             ...(tapStaff
               ? [
@@ -408,7 +408,7 @@ export default function PortalPage() {
               <div className="space-y-4">
                 <h2 className="text-xl font-semibold">Wallets</h2>
                 <p className="text-sm opacity-70">
-                  Link Phantom, Infinite Wallet, or another address to this account. Telegram and Discord stay on the profile.
+                  Link Phantom, T3x Vault, or another address to this account. Telegram and Discord stay on the profile.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-3 text-sm">
                   <div className="rounded-xl border border-white/10 p-3">
@@ -479,7 +479,7 @@ export default function PortalPage() {
                       className="px-3 py-2 rounded-xl bg-black/40 border border-white/15 text-sm"
                     >
                       <option value="phantom">Phantom</option>
-                      <option value="infinite">Infinite Wallet</option>
+                      <option value="infinite">T3x Vault</option>
                       <option value="solana">Other Solana</option>
                       <option value="other">Other</option>
                     </select>
@@ -497,7 +497,7 @@ export default function PortalPage() {
                   {walletMsg && <div className="text-sm opacity-70">{walletMsg}</div>}
                 </form>
                 <a href="https://t3x-wallet.vercel.app/" target="_blank" rel="noopener noreferrer" className="inline-block text-emerald-400 text-sm">
-                  Open Infinite Wallet →
+                  Open T3x Vault →
                 </a>
               </div>
             )}

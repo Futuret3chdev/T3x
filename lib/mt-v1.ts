@@ -14,7 +14,7 @@ export function v1ok(data: unknown) {
         error_code: 0,
         error_message: null,
         credit_count: 1,
-        notice: 'Keyless public API. X-T3x-API-KEY reserved for T3x-chain / Infinite Wallet launch.',
+        notice: 'Keyless public API. X-T3x-API-KEY reserved for T3x-chain / T3x Vault launch.',
       },
       data,
     },
