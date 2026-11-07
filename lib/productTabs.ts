@@ -44,6 +44,12 @@ export const PRODUCT_TABS: ProductTab[] = [
     blurb: 'Catalog: Castrum, Dominion, Corgonaut, In-Ai, Soccer Pro, more.',
   },
   {
+    id: 'scanner',
+    label: 'Scanner',
+    href: '/scanner',
+    blurb: 'T3X Scanner, inside the portal.',
+  },
+  {
     id: 'in-ai',
     label: 'In-Ai',
     href: '/in-ai',
@@ -82,6 +88,7 @@ export function tabFromPath(pathname: string): string {
   if (pathname.startsWith('/portal/tap') || pathname.startsWith('/portal/tapshop') || pathname.startsWith('/portal/tapmatch')) return 'tap';
   if (pathname.startsWith('/tap') || pathname.startsWith('/catalog')) return pathname.startsWith('/tap') ? 'tap' : 'games';
   if (pathname.startsWith('/bot')) return 'bot';
+  if (pathname.startsWith('/scanner')) return 'scanner';
   if (pathname.startsWith('/in-ai')) return 'in-ai';
   if (pathname.startsWith('/studio')) return 'studio';
   if (pathname.startsWith('/software')) return 'software';
