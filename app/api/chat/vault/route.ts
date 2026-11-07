@@ -1,12 +1,12 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import { ensureChat, ensurePersonalVault, vaultSlug } from '@/lib/chat-core';
 
 export async function GET() {
   const me = await userBySession(await readSessionToken());
   if (!me) return Response.json({ ok: false, error: 'Sign in' }, { status: 401 });
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     const slug = await ensurePersonalVault(conn, me.email, me.username);
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
   } catch {
     body = {};
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     const slug = await ensurePersonalVault(conn, me.email, me.username);

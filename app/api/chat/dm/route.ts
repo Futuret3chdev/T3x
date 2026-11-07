@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import { ensureChat, ensureDmChannel } from '@/lib/chat-core';
 
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
   } catch {
     body = {};
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     let email = String(body.email || '').trim().toLowerCase();

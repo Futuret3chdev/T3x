@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import { ensureChat } from '@/lib/chat-core';
 
@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   const me = await userBySession(await readSessionToken());
   if (!me) return Response.json({ ok: false, error: 'Sign in' }, { status: 401 });
   const since = Number(request.nextUrl.searchParams.get('since') || '0') || 0;
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     await conn.execute('DELETE FROM mt_chat_signals WHERE created_at < DATE_SUB(NOW(), INTERVAL 2 HOUR)');
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
   if (!['invite', 'offer', 'answer', 'ice', 'hangup', 'reject'].includes(kind)) {
     return Response.json({ ok: false, error: 'Bad signal' }, { status: 400 });
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     let to = String(body.to || '').trim().toLowerCase();

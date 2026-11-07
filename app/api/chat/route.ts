@@ -1,12 +1,12 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import { canAccessRoom, ensureChat, roomRole } from '@/lib/chat-core';
 import { blockedReason } from '@/lib/chat-moderation';
 
 export async function GET(request: NextRequest) {
   const room = request.nextUrl.searchParams.get('room') || 'trades';
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     const me = await userBySession(await readSessionToken());
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
     ? '0xStealth' + String(user.id).slice(-4)
     : user.username;
   const burn = Number(body.burn) || 0;
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     const [ch] = await conn.execute('SELECT slug, kind FROM mt_chat_channels WHERE slug = ? LIMIT 1', [room]);
@@ -166,7 +166,7 @@ export async function DELETE(request: NextRequest) {
   if (!user) return Response.json({ ok: false, error: 'Sign in' }, { status: 401 });
   const id = request.nextUrl.searchParams.get('id');
   if (!id) return Response.json({ ok: false, error: 'Missing id' }, { status: 400 });
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     await conn.execute(

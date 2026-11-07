@@ -1,8 +1,8 @@
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     const [rows] = await conn.execute('SELECT mime, data FROM mt_chat_media WHERE id = ? LIMIT 1', [id]);
     const row = (rows as { mime: string; data: Buffer }[])[0];

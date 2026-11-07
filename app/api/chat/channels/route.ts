@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import {
   addMember,
@@ -18,7 +18,7 @@ const EXTRAS =
 
 export async function GET() {
   const me = await userBySession(await readSessionToken());
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     if (me) await ensurePersonalVault(conn, me.email, me.username);
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
   const kind = rawKind === 'private' || rawKind === 'secret' ? rawKind : 'public';
   if (name.length < 2) return Response.json({ ok: false, error: 'Channel name required.' }, { status: 400 });
   const slug = slugifyChannel(name) + '-' + Date.now().toString(36).slice(-3);
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     await conn.execute(
@@ -110,7 +110,7 @@ export async function PATCH(request: NextRequest) {
   }
   const slug = String(body.slug || '').slice(0, 48);
   if (!slug) return Response.json({ ok: false, error: 'Missing room' }, { status: 400 });
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     const [rows] = await conn.execute(
@@ -207,7 +207,7 @@ export async function DELETE(request: NextRequest) {
   if (SYSTEM_ROOMS.some((r) => r.slug === slug) || slug.startsWith('vault-')) {
     return Response.json({ ok: false, error: 'That room cannot be cancelled.' }, { status: 400 });
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     const [rows] = await conn.execute(

@@ -1,12 +1,12 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import { ensureNotices } from '@/lib/chat-notices';
 
 export async function GET() {
   const me = await userBySession(await readSessionToken());
   if (!me) return Response.json({ ok: false, items: [], count: 0 }, { status: 401 });
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureNotices(conn);
     try {
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
     body = {};
   }
   const raw = String(body.id || '');
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureNotices(conn);
     if (raw.startsWith('n-')) {

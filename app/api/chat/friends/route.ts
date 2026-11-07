@@ -1,10 +1,10 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import { ensureChat, ensureDmChannel } from '@/lib/chat-core';
 import { addNotice } from '@/lib/chat-notices';
 
-async function ensure(conn: Awaited<ReturnType<typeof getUserDb>>) {
+async function ensure(conn: Awaited<ReturnType<typeof getPortalDb>>) {
   await conn.execute(`
     CREATE TABLE IF NOT EXISTS mt_chat_friends (
       id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -21,7 +21,7 @@ async function ensure(conn: Awaited<ReturnType<typeof getUserDb>>) {
   }
 }
 
-async function lookupUser(conn: Awaited<ReturnType<typeof getUserDb>>, email: string, username?: string) {
+async function lookupUser(conn: Awaited<ReturnType<typeof getPortalDb>>, email: string, username?: string) {
   let addr = String(email || '').trim().toLowerCase();
   let name = String(username || '').trim();
   if (!addr && name) {
@@ -39,7 +39,7 @@ async function lookupUser(conn: Awaited<ReturnType<typeof getUserDb>>, email: st
 export async function GET() {
   const me = await userBySession(await readSessionToken());
   if (!me) return Response.json({ ok: false, friends: [] }, { status: 401 });
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensure(conn);
     const [friends] = await conn.execute(
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
   } catch {
     return Response.json({ ok: false, error: 'Invalid JSON' }, { status: 400 });
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensure(conn);
     await ensureChat(conn);
@@ -195,7 +195,7 @@ export async function DELETE(request: NextRequest) {
   } catch {
     body = {};
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensure(conn);
     const them = await lookupUser(conn, String(body.email || ''), body.username);

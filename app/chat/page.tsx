@@ -591,6 +591,7 @@ function ChatInner() {
   const [email, setEmail] = useState('');
   const [q, setQ] = useState('');
   const [hits, setHits] = useState<{ username: string; email: string; self?: boolean }[]>([]);
+  const [searchNote, setSearchNote] = useState('');
   const [friends, setFriends] = useState<{ username: string; friend_email: string }[]>([]);
   const [incoming, setIncoming] = useState<{ id: number; from_email: string; from_username: string }[]>([]);
   const [outgoing, setOutgoing] = useState<{ friend_email: string; username: string }[]>([]);
@@ -1006,14 +1007,17 @@ function ChatInner() {
 
   const searchUsers = async (v: string) => {
     setQ(v);
-    if (v.trim().length < 2) {
+    if (v.trim().replace(/^@/, '').length < 2) {
       setHits([]);
+      setSearchNote('');
       return;
     }
-    const d = await fetch(`/api/chat/users?q=${encodeURIComponent(v)}`, { credentials: 'include' }).then((r) =>
-      r.json()
-    );
-    setHits(d.users || []);
+    const d = await fetch(`/api/chat/users?q=${encodeURIComponent(v.trim())}`, { credentials: 'include' })
+      .then((r) => r.json())
+      .catch(() => ({ users: [], error: 'Search failed' }));
+    const users = d.users || [];
+    setHits(users);
+    setSearchNote(users.length ? '' : d.error || 'No account with that name');
   };
 
   const emit = async () => {
@@ -1078,6 +1082,7 @@ function ChatInner() {
                 @{h.username}
               </button>
             ))}
+            {searchNote && <p className="text-[11px] opacity-50 py-1">{searchNote}</p>}
             <div className="mt-3 text-[10px] uppercase tracking-wider opacity-40">Settings</div>
             {channels
               .filter((c) => c.kind === 'vault')

@@ -1,11 +1,11 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import { dmParticipant, ensureChat, isDmSlug } from '@/lib/chat-core';
 
 export async function GET(request: NextRequest) {
   const room = request.nextUrl.searchParams.get('room') || 'trades';
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     if (isDmSlug(room)) {
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
   }
   const room = String(body.room || 'trades').slice(0, 48);
   const event = String(body.event || 'MatchWon').slice(0, 64);
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     await conn.execute('INSERT INTO mt_chat_events (room, event_name, payload) VALUES (?,?,?)', [

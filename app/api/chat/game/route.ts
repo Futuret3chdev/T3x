@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import { canAccessRoom, canEditRoom, ensureChat, ensureDmChannel, isDmSlug, roomRole } from '@/lib/chat-core';
 import { getGame } from '@/lib/mt-catalog';
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
   const me = await userBySession(await readSessionToken());
   if (!me) return Response.json({ ok: false, error: 'Sign in' }, { status: 401 });
   const room = String(request.nextUrl.searchParams.get('room') || '').slice(0, 48);
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     if (room && request.nextUrl.searchParams.get('archive') === '1') {
@@ -170,7 +170,7 @@ export async function POST(request: NextRequest) {
   }
   const action = String(body.action || '');
   if (action === 'recap') {
-    const conn = await getUserDb();
+    const conn = await getPortalDb();
     try {
       await ensureChat(conn);
       const room = String(body.room || '').slice(0, 48);
@@ -203,7 +203,7 @@ export async function POST(request: NextRequest) {
     }
   }
   if (action === 'seen') {
-    const conn = await getUserDb();
+    const conn = await getPortalDb();
     try {
       await ensureChat(conn);
       await conn.execute('UPDATE mt_chat_game_invites SET seen = 1 WHERE id = ? AND to_email = ?', [
@@ -217,7 +217,7 @@ export async function POST(request: NextRequest) {
   }
   let room = String(body.room || '').slice(0, 48);
   if (!room) return Response.json({ ok: false, error: 'Missing room' }, { status: 400 });
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     if (!(await canAccessRoom(conn, room, me.email))) {

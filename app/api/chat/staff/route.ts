@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import { addMember, canOwnRoom, ensureChat, roomRole } from '@/lib/chat-core';
 
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   if (!me) return Response.json({ ok: false, error: 'Sign in' }, { status: 401 });
   const slug = String(request.nextUrl.searchParams.get('room') || '').slice(0, 48);
   if (!slug) return Response.json({ ok: false, error: 'Missing room' }, { status: 400 });
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     const role = await roomRole(conn, slug, me.email);
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
   if (!slug || !nextRole) {
     return Response.json({ ok: false, error: 'Room and role (admin or mod) required' }, { status: 400 });
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     const mine = await roomRole(conn, slug, me.email);
@@ -91,7 +91,7 @@ export async function DELETE(request: NextRequest) {
   const slug = String(body.room || '').slice(0, 48);
   const email = String(body.email || '').trim().toLowerCase();
   if (!slug || !email) return Response.json({ ok: false, error: 'Missing room or user' }, { status: 400 });
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     const mine = await roomRole(conn, slug, me.email);

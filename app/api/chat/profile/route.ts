@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { listWallets, migrateLegacyWallet } from '@/lib/user-wallets';
 
 export async function GET(request: NextRequest) {
@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   if (!username || username.startsWith('0xStealth')) {
     return Response.json({ ok: false, error: 'Hidden' }, { status: 404 });
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     const [rows] = await conn.execute(
       `SELECT username, email, bio, avatar_url, wallet_address,

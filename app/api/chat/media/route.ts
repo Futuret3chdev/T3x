@@ -1,8 +1,8 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 
-async function ensure(conn: Awaited<ReturnType<typeof getUserDb>>) {
+async function ensure(conn: Awaited<ReturnType<typeof getPortalDb>>) {
   await conn.execute(`
     CREATE TABLE IF NOT EXISTS mt_chat_media (
       id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
         : 'file';
   const filename = (file instanceof File ? file.name : 'upload').slice(0, 160);
   const buf = Buffer.from(await file.arrayBuffer());
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensure(conn);
     try {

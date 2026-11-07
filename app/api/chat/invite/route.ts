@@ -1,12 +1,12 @@
 import { NextRequest } from 'next/server';
-import { getUserDb } from '@/lib/rewards-db';
+import { getPortalDb } from '@/lib/rewards-db';
 import { readSessionToken, userBySession } from '@/lib/portal-auth';
 import { addMember, ensureChat, newInviteCode } from '@/lib/chat-core';
 
 export async function GET(request: NextRequest) {
   const code = String(request.nextUrl.searchParams.get('code') || '').trim();
   if (!code) return Response.json({ ok: false, error: 'Missing invite' }, { status: 400 });
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     const [rows] = await conn.execute(
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   } catch {
     body = {};
   }
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     await ensureChat(conn);
     if (body.code) {
