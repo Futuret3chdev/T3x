@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
       { source: '/studio.js', destination: '/maker/studio.js' },
       { source: '/studios', destination: '/studios/index.html' },
       { source: '/studios/', destination: '/studios/index.html' },
+      { source: '/maker', destination: '/maker/index.html' },
+      { source: '/maker/', destination: '/maker/index.html' },
     ];
   },
   async redirects() {
