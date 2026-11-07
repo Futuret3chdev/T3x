@@ -7,7 +7,7 @@ export default function GameCard({ game }: { game: CatalogGame }) {
     <article className="rounded-2xl overflow-hidden border border-white/10 bg-zinc-950/70 flex flex-col">
       <a href={`/catalog/${game.id}`} className="block h-44 bg-black/50 shrink-0">
         <img
-          src={`${game.img}${game.img.includes('?') ? '&' : '?'}v=6`}
+          src={`${game.img}${game.img.includes('?') ? '&' : '?'}v=7`}
           alt={game.name}
           className="w-full h-full object-cover"
         />
