@@ -17,7 +17,7 @@ export default function BotPage() {
         </Link>
         <h1 className="text-4xl font-semibold mt-6">Bots</h1>
         <p className="mt-3 text-sm opacity-70">
-          Growth layer: Telegram portal, verification, TagMe, message bot. Same T3x login where it applies.
+          Growth layer: verification, TagMe, and message bots. Same T3x login where it applies.
         </p>
         <ul className="mt-8 space-y-2 text-sm">
           {bots.map((b) => (
@@ -28,12 +28,12 @@ export default function BotPage() {
           ))}
         </ul>
         <a
-          href="https://t.me/+hxWzh5DZbfhiYWM9"
+          href="https://x.com/Futuret3ch"
           className="inline-block mt-8 px-4 py-2 rounded-full bg-emerald-400 text-black font-semibold text-sm"
           target="_blank"
           rel="noopener"
         >
-          Open Telegram portal
+          Open our X page
         </a>
       </div>
     </main>

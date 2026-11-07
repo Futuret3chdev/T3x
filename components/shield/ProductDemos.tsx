@@ -112,11 +112,11 @@ export default function ProductDemos({ children }: { children: React.ReactNode }
           </ul>
           <a
             className="inline-block mt-3 text-cyan-300 text-sm"
-            href="https://t.me/+hxWzh5DZbfhiYWM9"
+            href="https://x.com/Futuret3ch"
             target="_blank"
             rel="noopener"
           >
-            Telegram portal →
+            X page →
           </a>
         </Demo>
       )}
