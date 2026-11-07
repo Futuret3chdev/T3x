@@ -396,22 +396,6 @@ export default function Navbar() {
             BUY $T3X
           </button>
 
-          <div className="flex items-center gap-2 shrink-0 pl-2 border-l border-white/20">
-            <span className="opacity-60 shrink-0 text-[10px] sm:text-xs">CA</span>
-            <button
-              onClick={(e) => {
-                navigator.clipboard.writeText(MT_MINT);
-                const btn = e.currentTarget as HTMLElement;
-                if (btn) btn.innerText = 'Copied!';
-                setTimeout(() => { if (btn) btn.innerText = MT_MINT; }, 1500);
-              }}
-              className="font-mono text-emerald-400 hover:text-emerald-300 active:text-white transition text-left text-[10px] sm:text-xs whitespace-nowrap"
-              title={`${MT_MINT} — tap to copy`}
-            >
-              {MT_MINT}
-            </button>
-          </div>
-
           <div className="ml-auto flex items-center gap-2 shrink-0">
             {portalUser ? (
               <>

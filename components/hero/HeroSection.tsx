@@ -33,7 +33,7 @@ export default function HeroSection() {
             </a>
           </div>
 
-          <div className="mt-6 sm:mt-8 text-[10px] sm:text-xs opacity-50 font-mono tracking-widest break-all sm:break-normal">ELywDcVX2WumHm4xEfqF8NdEKaeGCAaq9JmwtjE8pump • FIXED 1¢ FEES • SELF-CUSTODIAL</div>
+          <div className="mt-6 sm:mt-8 text-[10px] sm:text-xs opacity-50 font-mono tracking-widest">FIXED 1¢ FEES • SELF-CUSTODIAL</div>
         </div>
 
         <div className="md:col-span-5 mt-10 sm:mt-12 md:mt-0">

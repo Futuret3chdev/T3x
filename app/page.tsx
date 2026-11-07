@@ -5,15 +5,15 @@ import EcosystemSection from '@/components/ecosystem/EcosystemSection';
 import WalletPromo from '@/components/wallet/WalletPromo';
 import Features from '@/components/features/Features';
 import Safety from '@/components/security/Security';
-import PortalExtras from '@/components/home/PortalExtras';
+import PortalExtras, { ScannerEmbed } from '@/components/home/PortalExtras';
 import TapEcosystem from '@/components/tap/TapEcosystem';
 
 export default function HomePage() {
   return (
     <>
+      <ScannerEmbed />
       <HeroSection />
       <TokenStats />
-      {/* Prominent standalone call-to-action as requested */}
       <div className="py-6 sm:py-8 border-y border-white/10 bg-black/60">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
           <div className="text-2xl sm:text-3xl md:text-5xl font-semibold tracking-[-1.8px]">Do more than watch.<br />Act directly.</div>

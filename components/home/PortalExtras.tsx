@@ -8,6 +8,22 @@ const SCANNER = 'https://t3xsolscanner.vercel.app';
 
 type Row = { username: string; usd: number; earned: number };
 
+export function ScannerEmbed() {
+  return (
+    <section id="scanner" className="border-b border-white/10 bg-black">
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">Futuret3ch</p>
+        <h2 className="mt-2 text-3xl font-semibold tracking-tight">T3X Scanner</h2>
+        <p className="mt-2 max-w-xl text-sm opacity-70">Scan, swap, and bridge from the portal. The link under it opens the scanner on its own.</p>
+        <iframe title="T3X Scanner" src={SCANNER} className="mt-4 h-[78dvh] min-h-[640px] w-full rounded-2xl border border-white/10 bg-black" />
+        <a href={SCANNER} className="mt-3 inline-flex text-sm text-emerald-400 hover:underline">
+          Open the scanner in its own tab
+        </a>
+      </div>
+    </section>
+  );
+}
+
 export default function PortalExtras() {
   const [rows, setRows] = useState<Row[]>([]);
 
@@ -20,17 +36,6 @@ export default function PortalExtras() {
 
   return (
     <>
-      <section id="scanner" className="border-y border-white/10 bg-black/40">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-          <p className="text-xs font-semibold tracking-[0.2em] text-emerald-400 uppercase">Futuret3ch</p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight">T3X Scanner</h2>
-          <p className="mt-2 max-w-xl text-sm opacity-70">Scan, swap, and bridge from the portal. The link under it opens the scanner on its own.</p>
-          <iframe title="T3X Scanner" src={SCANNER} className="mt-5 h-[820px] w-full rounded-2xl border border-white/10 bg-black" />
-          <a href={SCANNER} className="mt-3 inline-flex text-sm text-emerald-400 hover:underline">
-            Open the scanner in its own tab
-          </a>
-        </div>
-      </section>
       <section id="in-ai" className="border-y border-white/10 bg-black/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
           <p className="text-xs font-semibold tracking-[0.2em] text-emerald-400 uppercase">Futuret3ch</p>
