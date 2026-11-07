@@ -4,7 +4,7 @@ import GameCard from '@/components/games/GameCard';
 import { familyGames } from '@/lib/mt-catalog';
 import { TAP_APPS } from '@/lib/tap-apps';
 
-const FEATURED = ['clubpool', 'mt-world-gallery', 'soccer-pro', 'glimmer-pop', 'puck', 'mte-pop', 'metro-vice', 'starfleet', 'tetris'];
+const FEATURED = ['jade-garden', 'ashwake', 'clubpool', 'soccer-pro', 'glimmer-pop', 'metro-vice', 'starfleet', 'mte-pop', 'puck'];
 
 export default function TapEcosystem() {
   const listed = familyGames();
