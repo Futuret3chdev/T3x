@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import GameSuite from '@/components/software/GameSuite';
 
-const APK = '/downloads/MTGames.apk';
+const APK = '/downloads/T3x-Games.apk';
 
 export default function SoftwareGamesPage() {
   const [licensed, setLicensed] = useState(false);
@@ -107,28 +107,27 @@ export default function SoftwareGamesPage() {
           {
             name: 'Windows · T3x Android Studio',
             note: 'Standalone IDE. Design, Run, Build APK on this PC. Install the .apk on any Android phone.',
-            href: '/downloads/MTStudio.exe',
+            href: '/downloads/T3x-Android-Studio.exe',
             label: 'Download T3x Android Studio (.exe)',
-            extra: { href: '/downloads/MTMaker.exe', label: 'Alternate Windows file' },
           },
           {
             name: 'Android · T3x Android Studio',
             note: 'The same IDE on a phone. Design and Run here. Build APK from the Windows or Mac IDE.',
-            href: '/downloads/MTStudio.apk',
+            href: '/downloads/T3x-Android-Studio.apk',
             label: 'Download Studio APK',
             extra: { href: APK, label: 'Play client APK (T3x Games)' },
           },
           {
             name: 'Mac · T3x Android Studio',
             note: 'The same IDE on a Mac. Build APK from here. iOS listing still uses Xcode on a Mac with an Apple account.',
-            href: '/downloads/MTStudio-macos-arm.zip',
+            href: '/downloads/T3x-Android-Studio-mac.zip',
             label: 'Download Studio (Apple Silicon)',
-            extra: { href: '/downloads/MTStudio-macos.zip', label: 'Intel Mac' },
+            extra: { href: '/downloads/T3x-Android-Studio-mac-intel.zip', label: 'Intel Mac' },
           },
           {
             name: 'iOS (App Store project)',
             note: 'Xcode project of this IDE itself. Archive on a Mac with an Apple Developer account.',
-            href: '/downloads/MTMaker-ios-xcode.zip',
+            href: '/downloads/T3x-Android-Studio-ios.zip',
             label: 'Download Xcode project',
           },
         ].map((p) => (

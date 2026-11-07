@@ -100,7 +100,7 @@
     }
 
     function apkUrl() {
-      return api + '/downloads/MTGames.apk';
+      return api + '/downloads/T3x-Games.apk';
     }
 
     return {

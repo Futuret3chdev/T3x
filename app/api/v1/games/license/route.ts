@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     license_key: v.license_key,
     tier: v.tier,
     handle: v.handle,
-    apk: 'https://t3x.futuret3ch.com.au/downloads/MTGames.apk',
+    apk: 'https://t3x.futuret3ch.com.au/downloads/T3x-Games.apk',
     sdk: 'https://t3x.futuret3ch.com.au/sdk/t3x-games.js',
   });
 }
