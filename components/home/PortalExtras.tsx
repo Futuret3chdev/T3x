@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import ScannerFrame from '@/components/scanner/ScannerFrame';
 
 const APP = 'https://adept-learning-agent.vercel.app';
-const SCANNER = 'https://t3xsolscanner.vercel.app';
 
 type Row = { username: string; usd: number; earned: number };
 
@@ -14,11 +14,10 @@ export function ScannerEmbed() {
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">Futuret3ch</p>
         <h2 className="mt-2 text-3xl font-semibold tracking-tight">T3X Scanner</h2>
-        <p className="mt-2 max-w-xl text-sm opacity-70">Scan, swap, and bridge from the portal. The link under it opens the scanner on its own.</p>
-        <iframe title="T3X Scanner" src={SCANNER} className="mt-4 h-[78dvh] min-h-[640px] w-full rounded-2xl border border-white/10 bg-black" />
-        <a href={SCANNER} className="mt-3 inline-flex text-sm text-emerald-400 hover:underline">
-          Open the scanner in its own tab
-        </a>
+        <p className="mt-2 max-w-xl text-sm opacity-70">Paste an address and scan it here. Solana or 0x.</p>
+        <div className="mt-4">
+          <ScannerFrame tall />
+        </div>
       </div>
     </section>
   );

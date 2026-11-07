@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import { familyGames } from '@/lib/mt-catalog';
 import { PRODUCT_TABS } from '@/lib/productTabs';
+import ScannerFrame from '@/components/scanner/ScannerFrame';
 import servicesData from '@/app/status/services.json';
 
 export default function ProductDemos({ children }: { children: React.ReactNode }) {
@@ -153,15 +154,10 @@ export default function ProductDemos({ children }: { children: React.ReactNode }
         <Demo
           title="T3X Scanner"
           body="Scan, swap, and bridge from the portal."
-          href="https://t3xsolscanner.vercel.app"
-          cta="Open the scanner"
-          external
+          href="/scanner"
+          cta="Open the scanner page"
         >
-          <iframe
-            title="T3X Scanner"
-            src="https://t3xsolscanner.vercel.app"
-            className="h-[70dvh] min-h-[480px] w-full rounded-xl border border-white/10 bg-black"
-          />
+          <ScannerFrame />
         </Demo>
       )}
 
