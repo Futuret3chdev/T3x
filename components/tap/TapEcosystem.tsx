@@ -1,17 +1,15 @@
 'use client';
 
 import GameCard from '@/components/games/GameCard';
-import { CATALOG } from '@/lib/mt-catalog';
+import { familyGames } from '@/lib/mt-catalog';
 import { TAP_APPS } from '@/lib/tap-apps';
 
 const FEATURED = ['clubpool', 'mt-world-gallery', 'soccer-pro', 'glimmer-pop', 'puck', 'mte-pop', 'metro-vice', 'starfleet', 'tetris'];
-const PLAIN = new Set(['castrum', 'dominion', 'steam-demo', 'corgonaut', 'cryptoland', 'arcade-hub']);
 
 export default function TapEcosystem() {
-  const featured = FEATURED.map((id) => CATALOG.find((g) => g.id === id)).filter(Boolean);
-  const rest = CATALOG.filter((g) => !FEATURED.includes(g.id) && g.rated !== '18+' && g.kind !== 'adult').sort(
-    (a, b) => Number(PLAIN.has(a.id)) - Number(PLAIN.has(b.id))
-  );
+  const listed = familyGames();
+  const featured = FEATURED.map((id) => listed.find((g) => g.id === id)).filter(Boolean);
+  const rest = listed.filter((g) => !FEATURED.includes(g.id));
 
   return (
     <section id="tap" className="py-12 sm:py-20 border-t border-white/10 bg-black scroll-mt-24">

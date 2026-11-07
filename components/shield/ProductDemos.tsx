@@ -1,14 +1,14 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { CATALOG } from '@/lib/mt-catalog';
+import { familyGames } from '@/lib/mt-catalog';
 import { PRODUCT_TABS } from '@/lib/productTabs';
 import servicesData from '@/app/status/services.json';
 
 export default function ProductDemos({ children }: { children: React.ReactNode }) {
   const [tab, setTab] = useState('shield');
   const games = useMemo(
-    () => CATALOG.filter((g) => g.rated !== '18+' && g.kind !== 'adult').slice(0, 8),
+    () => familyGames().slice(0, 8),
     []
   );
   const bots = servicesData.services.filter((s) => /bot/i.test(s.key + s.name));

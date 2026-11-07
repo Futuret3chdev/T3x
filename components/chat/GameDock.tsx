@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CATALOG, getGame } from '@/lib/mt-catalog';
+import { familyGames, getGame } from '@/lib/mt-catalog';
 import GameScores from '@/components/chat/GameScores';
 
 export type RoomSession = {
@@ -164,7 +164,7 @@ export default function GameDock({
           >
             🪨📄✂️ Rock paper scissors
           </button>
-          {CATALOG.filter((g) => g.status === 'live' && g.rated !== '18+' && g.kind !== 'adult').map((g) => (
+          {familyGames().map((g) => (
             <button
               key={g.id}
               type="button"

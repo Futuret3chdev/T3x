@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CATALOG, getGame } from '@/lib/mt-catalog';
+import { familyGames, getGame } from '@/lib/mt-catalog';
 
 export type GameState =
   | {
@@ -108,7 +108,7 @@ export default function RoomGame({
           >
             Rock paper scissors
           </button>
-          {CATALOG.filter((g) => g.status === 'live' && g.rated !== '18+' && g.kind !== 'adult').map((g) => (
+          {familyGames().map((g) => (
             <button
               key={g.id}
               type="button"

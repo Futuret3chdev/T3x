@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import GameCard from '@/components/games/GameCard';
+import { studioShelf } from '@/lib/mt-catalog';
 
 const STEPS = [
   { n: '1', title: 'Name it', body: 'Give the game a name and one sentence about it.' },
@@ -34,6 +36,19 @@ export default function StudioLandingPage() {
           </li>
         ))}
       </ol>
+
+      <div className="mt-12">
+        <p className="text-xs font-semibold tracking-[0.2em] text-emerald-400 uppercase">Studio tools</p>
+        <p className="mt-2 text-sm opacity-70">In-Ai, Studio Jam, and the Android client live here. They are not games.</p>
+        <div className="mt-4 grid gap-4">
+          {studioShelf().map((g) => (
+            <GameCard key={g.id} game={g} />
+          ))}
+        </div>
+        <Link href="/software/studios" className="mt-4 inline-flex text-sm text-emerald-400">
+          Android Studio, Device Lab, and Publisher →
+        </Link>
+      </div>
     </div>
   );
 }

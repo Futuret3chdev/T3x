@@ -314,6 +314,32 @@ export const CATALOG: CatalogGame[] = [
   },
 ];
 
+/** Not a game. Shown on Studio, not in the games grid. */
+export const STUDIO_SHELF = ['in-ai', 'jam', 'mtgames'] as const;
+
+/** Pulled out of Games. Still reachable by direct link. */
+const OFF_GAMES = new Set<string>([
+  'in-ai',
+  'steam-demo',
+  'corgonaut',
+  'cryptoland',
+  'arcade-hub',
+  'tap',
+  'pacman',
+  'fruit',
+  'emoji',
+  'emoji-royale',
+  'signal',
+  'drop',
+  'raid',
+  'jam',
+  'mtgames',
+]);
+
+export function isListedGame(g: CatalogGame) {
+  return g.status !== 'soon' && g.rated !== '18+' && g.kind !== 'adult' && !OFF_GAMES.has(g.id);
+}
+
 const GAME_ALIASES: Record<string, string> = {
   'mt-world-pocket': 'clubpool',
   pocket: 'clubpool',
@@ -331,13 +357,13 @@ export function getGame(id: string) {
 }
 
 export function liveGames() {
-  return CATALOG.filter((g) => g.status !== 'soon' && g.rated !== '18+');
+  return CATALOG.filter(isListedGame);
 }
 
 export function p2eGames() {
   return CATALOG.filter(
     (g) =>
-      g.rated !== '18+' &&
+      isListedGame(g) &&
       (g.kind === 'p2e' || g.kind === 'arcade' || g.kind === 'action' || g.kind === 'multiplayer')
   );
 }
@@ -347,5 +373,9 @@ export function casinoGames() {
 }
 
 export function familyGames() {
-  return CATALOG.filter((g) => g.rated !== '18+' && g.kind !== 'adult');
+  return CATALOG.filter(isListedGame);
+}
+
+export function studioShelf() {
+  return STUDIO_SHELF.map((id) => CATALOG.find((g) => g.id === id)).filter((g): g is CatalogGame => !!g);
 }
