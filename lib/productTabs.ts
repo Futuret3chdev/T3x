@@ -29,7 +29,7 @@ export const PRODUCT_TABS: ProductTab[] = [
     id: 'tap',
     label: 'TAP',
     href: '/#tap',
-    blurb: 'TAP (trips, packages, food), TAPSHOP, TAPMATCH. TAP desk is in the portal.',
+    blurb: 'Rides, parcels, and food. Like a trip app, not a game.',
   },
   {
     id: 'bot',

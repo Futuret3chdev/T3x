@@ -64,16 +64,34 @@ export default function ProductDemos({ children }: { children: React.ReactNode }
       )}
 
       {tab === 'tap' && (
-        <Demo title="TAP" body="Shop, Match, Transport, Studio — play and earn." href="/#tap" cta="Open TAP">
-          <div className="grid sm:grid-cols-2 gap-3 text-sm">
-            {['TAP Shop', 'TAP Match', 'TAP Transport', 'TAP Studio'].map((n) => (
-              <div key={n} className="rounded-xl border border-white/10 p-3">
-                <div className="font-semibold">{n}</div>
-                <a href="/tap" className="text-cyan-300 text-xs">
-                  Play T3x Tap →
-                </a>
-              </div>
+        <Demo
+          title="TAP"
+          body="Rides, parcels, and food. Like Uber, not a game. You request a trip. You do not play it."
+          href="/portal/tap"
+          cta="Open the TAP desk"
+        >
+          <div className="grid sm:grid-cols-3 gap-3 text-sm">
+            {[
+              { name: 'Trips', line: 'Pick up and drop off. A ride network.' },
+              { name: 'Packages', line: 'Send and receive a parcel.' },
+              { name: 'Food', line: 'Restaurant and grocery runs.' },
+            ].map((item) => (
+              <a key={item.name} href="/portal/tap" className="rounded-xl border border-white/10 p-3 hover:border-cyan-400/40">
+                <div className="font-semibold">{item.name}</div>
+                <p className="mt-1 text-xs opacity-70">{item.line}</p>
+                <div className="mt-2 text-xs text-cyan-300">Request →</div>
+              </a>
             ))}
+          </div>
+          <div className="mt-3 grid sm:grid-cols-2 gap-3 text-sm">
+            <a href="/portal/tapshop" className="rounded-xl border border-white/10 p-3">
+              <div className="font-semibold">TAP Shop</div>
+              <p className="mt-1 text-xs opacity-70">Buy, sell, and trade. Not a game.</p>
+            </a>
+            <a href="/portal/tapmatch" className="rounded-xl border border-white/10 p-3">
+              <div className="font-semibold">TAP Match</div>
+              <p className="mt-1 text-xs opacity-70">Jobs for riders and employers.</p>
+            </a>
           </div>
         </Demo>
       )}
