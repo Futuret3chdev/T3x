@@ -7,6 +7,11 @@ type Item = { sku: string; name: string; price_mt: number; kind: string };
 type Call = { step: string; method: string; url: string; status: number; body: string };
 
 const STEPS = ['Authenticate', 'Load catalog', 'Purchase', 'Fulfill'];
+const SAMPLE: Item[] = [
+  { sku: 'ROCKET_PACK', name: 'Rocket pack', price_mt: 10, kind: 'currency' },
+  { sku: 'SKIN_GOLD', name: 'Gold skin', price_mt: 25, kind: 'item' },
+  { sku: 'BATTLE_PASS', name: 'Season pass', price_mt: 50, kind: 'pass' },
+];
 
 export default function StudioDemoPage() {
   const [user, setUser] = useState<string | null>(null);
@@ -87,7 +92,14 @@ export default function StudioDemoPage() {
     setStep(2);
     const { json } = await api('POST', '/api/studio/commerce', { action: 'buy', sku });
     const d = json as { ok?: boolean; error?: string };
-    if (d.ok) setStep(3);
+    if (d.ok) {
+      setInv((prev) => {
+        const hit = prev.find((row) => row.sku === sku);
+        if (hit) return prev.map((row) => (row.sku === sku ? { ...row, qty: row.qty + 1 } : row));
+        return [...prev, { sku, qty: 1 }];
+      });
+      setStep(3);
+    }
     await refreshShop();
     setBusy(false);
   };
@@ -168,7 +180,7 @@ export default function StudioDemoPage() {
                 </button>
               )}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {(items.length ? items : []).map((it) => (
+                {(items.length ? items : SAMPLE).map((it) => (
                   <div key={it.sku} className="rounded-2xl border border-white/10 p-3 bg-black/30">
                     <div className="h-20 rounded-xl mb-2" style={{ background: `linear-gradient(135deg,#123,#0f3)` }} />
                     <div className="font-semibold text-sm">{it.name}</div>
