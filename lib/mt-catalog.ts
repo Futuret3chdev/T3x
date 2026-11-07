@@ -117,7 +117,7 @@ export const CATALOG: CatalogGame[] = [
     kind: 'studio',
     status: 'live',
     play: '/in-ai',
-    img: '/games/covers/eve.jpg',
+    img: '/games/covers/in-ai.png',
     blurb: 'In-Ai, inside the portal. One assistant for T3x.',
   },
   {
