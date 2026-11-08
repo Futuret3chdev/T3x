@@ -14,8 +14,14 @@ export async function GET(request: NextRequest) {
     const withBalance = users.filter((u) => u.claimable_mt > 0);
     const pendingTotal = withBalance.reduce((s, u) => s + u.claimable_mt, 0);
 
-    const treasuryReady = await treasuryConfigured();
-    const treasuryPaused = await treasuryPauseMessage();
+    let treasuryReady = false;
+    let treasuryPaused: string | null = 'T3X will be paid once it becomes available.';
+    try {
+      treasuryReady = await treasuryConfigured();
+      treasuryPaused = await treasuryPauseMessage();
+    } catch {
+      treasuryReady = false;
+    }
 
     const payload = {
       updated_at: new Date().toISOString(),
