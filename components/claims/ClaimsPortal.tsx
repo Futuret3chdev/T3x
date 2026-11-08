@@ -124,8 +124,8 @@ export default function ClaimsPortal() {
   }, []);
 
   useEffect(() => {
-    loadList().catch((e) => {
-      setStatus(e.message);
+    loadList().catch(() => {
+      setStatus('The rewards list is not available yet. T3X will be paid once it becomes available.');
       setStatusErr(true);
     });
   }, [loadList]);

@@ -121,51 +121,43 @@ export async function fetchClaimableByWallet(
 }
 
 export async function fetchAllClaimableUsers(): Promise<ClaimableUserRow[]> {
-  const conn = await getUserDb();
+  const conn = await getPortalDb();
   try {
     const [rows] = await conn.execute(
-      `SELECT
-         u.id AS user_id,
-         u.username,
-         u.wallet_address,
-         u.verified,
-         COALESCE(dc.claimable_mt, 0) AS claimable_mt,
-         COALESCE(dc.current_streak, 0) AS current_streak,
-         COALESCE(dc.max_streak, 0) AS max_streak,
-         COALESCE(dc.total_checkins, 0) AS total_checkins,
-         dc.last_checkin
-       FROM user_details u
-       LEFT JOIN tcvkxete_message_tracking.daily_checkins dc ON u.id = dc.user_id
-       ORDER BY
-         CASE
-           WHEN (u.username IS NULL OR TRIM(u.username) = '' OR LOWER(TRIM(u.username)) = 'user')
-                AND (u.wallet_address IS NULL OR TRIM(u.wallet_address) = '')
-                AND COALESCE(dc.total_checkins, 0) = 0
-                AND COALESCE(dc.current_streak, 0) = 0
-                AND COALESCE(dc.claimable_mt, 0) = 0 THEN 2
-           WHEN COALESCE(dc.claimable_mt, 0) > 0 THEN 1
-           ELSE 0
-         END,
-         COALESCE(dc.claimable_mt, 0) DESC,
-         u.username ASC,
-         u.id ASC`
+      `SELECT user_id, username, wallet_address, usd, claimed FROM (
+         SELECT p.user_id AS user_id,
+                p.username AS username,
+                (SELECT w.address FROM t3x_wallets w WHERE w.user_id = p.user_id LIMIT 1) AS wallet_address,
+                COALESCE((SELECT SUM(f.usd) FROM t3x_fills f WHERE f.user_id = p.user_id), 0) AS usd,
+                COALESCE((SELECT SUM(c.units) FROM t3x_claims c WHERE c.user_id = p.user_id), 0) AS claimed
+         FROM t3x_profiles p
+         UNION
+         SELECT CONCAT('portal-', u.id) AS user_id,
+                u.username AS username,
+                u.wallet_address AS wallet_address,
+                0 AS usd,
+                0 AS claimed
+         FROM portal_users u
+         WHERE NOT EXISTS (SELECT 1 FROM t3x_profiles p WHERE p.username = u.username)
+       ) people
+       ORDER BY username ASC`
     );
     return (rows as any[]).map((r) => {
-      const wallet = (r.wallet_address || '').trim();
+      const wallet = String(r.wallet_address || '').trim();
       const linked = !!wallet && WALLET_RE.test(wallet);
+      const earned = Math.floor(Number(r.usd || 0) / 20);
+      const ready = Math.max(0, earned - Number(r.claimed || 0));
       return {
         user_id: String(r.user_id),
         username: r.username || null,
-        wallet_address: linked ? wallet : null,
+        wallet_address: linked ? wallet : wallet || null,
         wallet_linked: linked,
-        verified: !!r.verified,
-        claimable_mt: Number(r.claimable_mt) || 0,
-        current_streak: Number(r.current_streak) || 0,
-        max_streak: Number(r.max_streak) || 0,
-        total_checkins: Number(r.total_checkins) || 0,
-        last_checkin: r.last_checkin
-          ? String(r.last_checkin).slice(0, 10)
-          : null,
+        verified: true,
+        claimable_mt: ready,
+        current_streak: 0,
+        max_streak: 0,
+        total_checkins: earned,
+        last_checkin: null,
       };
     });
   } finally {
