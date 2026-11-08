@@ -312,6 +312,46 @@ export async function GET(request: NextRequest) {
   } catch (err: any) {
     apiError = err?.message || 'database_error';
     console.error('message-counts error', apiError);
+    try {
+      const { getPortalDb } = await import('@/lib/rewards-db');
+      const portal = await getPortalDb();
+      try {
+        const [daily] = await portal.query(
+          `SELECT COALESCE(NULLIF(username, ''), 'member') AS user_id,
+                  COALESCE(NULLIF(username, ''), 'member') AS username,
+                  COUNT(*) AS message_count
+           FROM mt_crypto_chat
+           WHERE created_at >= (UTC_TIMESTAMP() - INTERVAL 1 DAY)
+           GROUP BY username
+           ORDER BY message_count DESC
+           LIMIT 100`
+        );
+        const [monthly] = await portal.query(
+          `SELECT COALESCE(NULLIF(username, ''), 'member') AS user_id,
+                  COALESCE(NULLIF(username, ''), 'member') AS username,
+                  COUNT(*) AS message_count
+           FROM mt_crypto_chat
+           WHERE created_at >= DATE_FORMAT(UTC_TIMESTAMP(), '%Y-%m-01')
+           GROUP BY username
+           ORDER BY message_count DESC
+           LIMIT 100`
+        );
+        const map = (rows: any[]) =>
+          (rows || []).map((r) => ({
+            user_id: String(r.user_id || ''),
+            username: r.username,
+            message_count: String(r.message_count),
+          }));
+        response.telegram = { daily: map(daily as any[]), daily_previous: [], monthly: map(monthly as any[]), range: [] };
+        response.meta.source = 't3x-chat';
+        response.meta.note = 'Telegram and Discord tallies are offline. This board counts T3x chat.';
+        apiError = null;
+      } finally {
+        await portal.end();
+      }
+    } catch (fallbackErr) {
+      console.error('message-counts portal fallback', fallbackErr);
+    }
   } finally {
     if (tgConn && tgConn.end) { try { await tgConn.end(); } catch {} }
     if (dcConn && dcConn !== tgConn && dcConn.end) { try { await dcConn.end(); } catch {} }

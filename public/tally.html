@@ -97,7 +97,7 @@
 <body>
     <div class="header">
         <h1>Message Leaderboard</h1>
-        <div class="subtitle">Moderator / Admin / Manager view — Australia/Melbourne (AEST)</div>
+        <div class="subtitle">T3x chat leaderboard — Australia/Melbourne (AEST)</div>
         <div class="last-updated" id="lastUpdated">Loading...</div>
         <div style="margin-top:12px;font-size:13px">
             <a href="/claims" style="color:#93c5fd;margin:0 10px">Claim $T3X rewards</a>
@@ -115,7 +115,7 @@
             <button type="button" class="wallet-opt recommended" data-provider="solflare">Solflare</button>
             <button type="button" class="wallet-opt recommended" data-provider="backpack">Backpack</button>
             <button type="button" class="wallet-opt" data-provider="phantom">Phantom</button>
-            <a class="wallet-opt" data-provider="infinite" href="https://t3x-wallet.vercel.app/" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">T3x Vault</a>
+            <a class="wallet-opt" data-provider="infinite" href="#" style="text-decoration:none;display:inline-block">T3x Vault · soon</a>
             <select id="treasuryPick" class="treasury-pick" title="Which team treasury are you paying from?">
                 <option value="">Team treasury (optional label)…</option>
             </select>
@@ -166,7 +166,7 @@
     </div>
 
     <div class="tabs">
-        <button class="tablink active" data-tab="Telegram">Telegram</button>
+        <button class="tablink active" data-tab="Telegram">T3x chat</button>
         <button class="tablink" data-tab="Discord">Discord</button>
         <button class="tablink" data-tab="Custom">Custom Range</button>
     </div>
@@ -219,15 +219,8 @@
 
     <script>
     (function () {
-        const onMemetorrent = /memetorrent\.futuret3ch\.com\.au/i.test(location.hostname);
-        const DATA_SOURCES = onMemetorrent ? [
+        const DATA_SOURCES = [
             q => '/api/message-counts' + q,
-            q => 'message_counts.php' + q,
-            q => 'https://futuret3ch.com.au/message_counts.php' + q
-        ] : [
-            q => 'message_counts.php' + q,
-            q => '/api/message-counts' + q,
-            q => 'https://futuret3ch.com.au/message_counts.php' + q
         ];
 
         const charts = {};
@@ -239,8 +232,14 @@
             sections: {}
         };
 
-        const fpStart = flatpickr('#startDate', { dateFormat: 'Y-m-d' });
-        const fpEnd = flatpickr('#endDate', { dateFormat: 'Y-m-d' });
+        let fpStart = null;
+        let fpEnd = null;
+        try {
+            if (window.flatpickr) {
+                fpStart = flatpickr('#startDate', { dateFormat: 'Y-m-d' });
+                fpEnd = flatpickr('#endDate', { dateFormat: 'Y-m-d' });
+            }
+        } catch (err) {}
 
         function esc(t) {
             return !t ? 'Anonymous' : String(t).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
@@ -286,18 +285,10 @@
                 return '<div class="state-box state-error"><strong>API error</strong><br>Could not load message stats. Try Refresh, or use the legacy board at <a href="https://futuret3ch.com.au/tally.html" style="color:#86efac">futuret3ch.com.au/tally.html</a>.</div>';
             }
             if (platform === 'discord') {
-                return '<div class="state-box state-empty"><strong>No Discord messages for this period</strong><br>Either nobody chatted, or Discord tracking is not feeding this dashboard yet. Telegram stats are unaffected.</div>';
+                return '<div class="state-box state-empty"><strong>Discord tally is offline</strong><br>The old Discord database does not accept this server. T3x chat is on the first tab.</div>';
             }
             if (platform === 'telegram') {
-                const last = store.lastPayload?.meta?.telegram_last_daily || store.lastPayload?.meta?.telegram_last_message || '';
-                const lastBit = last ? `<br>Last stored Telegram tally day: <b>${last}</b>. Tracking was down after 24 Aug 2026; new messages start counting again now.` : '';
-                if (period === 'custom') {
-                    return `<div class="state-box state-empty"><strong>No Telegram messages in that date range</strong><br>24h / 2-day windows are empty because ingest stopped on 24 Aug 2026 — not because the range is too narrow.${lastBit}<br>Use a range that includes 1–24 Aug 2026 for historical talkers, or wait for live chat to refill today.</div>`;
-                }
-                if (period === 'monthly') {
-                    return `<div class="state-box state-empty"><strong>No monthly Telegram totals for this month yet</strong>${lastBit}</div>`;
-                }
-                return `<div class="state-box state-empty"><strong>No Telegram messages recorded for today yet</strong>${lastBit}<br>Live ingest is on again — send a message in the Telegram group and refresh.</div>`;
+                return '<div class="state-box state-empty"><strong>No T3x chat messages for this period yet</strong><br>Send a message in T3x chat and refresh. The old Telegram tally database is blocked from this server.</div>';
             }
             if (period === 'custom') {
                 return '<div class="state-box state-empty"><strong>No messages in that date range</strong><br>Try different dates (Melbourne time).</div>';
@@ -416,7 +407,8 @@
 
             if (res.timestamp) {
                 const next = new Date(Date.now() + 300000).toLocaleTimeString();
-                $('#lastUpdated').text(`Updated: ${res.timestamp} · Auto-refresh ~5 min (next ~${next})`);
+                const note = res.meta?.note ? ` · ${res.meta.note}` : '';
+                $('#lastUpdated').text(`Updated: ${res.timestamp} · Auto-refresh ~5 min (next ~${next})${note}`);
             }
 
             renderTable(res.telegram?.daily, '#tg_daily', { platform: 'telegram', period: 'daily', prevMap: tgPrev, apiError });
@@ -498,7 +490,7 @@
             const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `memetorrent-tally-${key}-${new Date().toISOString().slice(0, 10)}.csv`;
+            a.download = `t3x-tally-${key}-${new Date().toISOString().slice(0, 10)}.csv`;
             a.click();
             URL.revokeObjectURL(a.href);
         }
@@ -550,8 +542,8 @@
             } else {
                 start = today.slice(0, 8) + '01';
             }
-            fpStart.setDate(start);
-            fpEnd.setDate(end);
+            fpStart && fpStart.setDate(start);
+            fpEnd && fpEnd.setDate(end);
             loadCustom(start, end);
             openTab('Custom');
         });
@@ -810,10 +802,16 @@
 
         const injected = getProviderByName(name);
         if (!injected) {
-            showDeeplinkHint(name);
             if (name === 'infinite') {
-                window.open('https://t3x-wallet.vercel.app/', '_blank');
+                showDeeplinkHint(name);
+                const el = document.getElementById('walletDeeplinkHint');
+                el.style.display = 'block';
+                el.textContent = 'T3x Vault is coming soon.';
+                return false;
             }
+            const link = PROVIDER_DEEPLINKS[name];
+            if (link) window.location.href = link(window.location.href);
+            else showDeeplinkHint(name);
             return false;
         }
 
