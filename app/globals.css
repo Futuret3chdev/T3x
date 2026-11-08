@@ -115,6 +115,13 @@ html.mt-embed canvas {
 [data-theme="light"] .border-white\/30 {
   border-color: rgba(0, 0, 0, 0.16) !important;
 }
+[data-theme="light"] section.bg-black,
+[data-theme="light"] input.bg-black,
+[data-theme="light"] textarea.bg-black,
+[data-theme="light"] .bg-zinc-950 {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
 [data-theme="light"] .bg-black\/20,
 [data-theme="light"] .bg-black\/30,
 [data-theme="light"] .bg-black\/40,

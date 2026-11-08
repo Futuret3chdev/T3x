@@ -12,7 +12,7 @@ export default function TapEcosystem() {
   const rest = listed.filter((g) => !FEATURED.includes(g.id));
 
   return (
-    <section id="tap" className="py-12 sm:py-20 border-t border-white/10 bg-black scroll-mt-24">
+    <section id="tap" className="py-12 sm:py-20 border-t border-white/10 scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-xs tracking-[3px] text-emerald-400 mb-3">TAP ECO SYSTEM</div>
         <div className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-[-1.5px] max-w-3xl mb-8 sm:mb-10">

@@ -72,7 +72,7 @@ export default function ScannerFrame({ tall = false }: { tall?: boolean }) {
           spellCheck={false}
           autoComplete="off"
           enterKeyHint="search"
-          className="h-11 min-w-0 flex-1 rounded-xl border border-white/15 bg-black px-3 font-mono text-sm outline-none focus:border-emerald-400"
+          className="h-11 min-w-0 flex-1 rounded-xl border border-white/15 bg-[var(--card)] px-3 font-mono text-sm text-[var(--foreground)] outline-none focus:border-emerald-400"
         />
         <button type="submit" className="h-11 shrink-0 rounded-xl bg-emerald-400 px-4 text-sm font-semibold text-black">
           Scan

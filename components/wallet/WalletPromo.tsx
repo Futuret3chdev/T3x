@@ -4,7 +4,7 @@ import { LINKS } from '@/lib/constants';
 
 export default function WalletPromo() {
   return (
-    <section className="py-12 sm:py-20 border-t border-white/10 bg-black">
+    <section className="py-12 sm:py-20 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid md:grid-cols-2 gap-x-8 md:gap-x-16 gap-y-8 sm:gap-y-10 items-center">
           <div>

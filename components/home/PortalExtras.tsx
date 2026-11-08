@@ -11,7 +11,7 @@ type Row = { username: string; usd: number; earned: number };
 
 export function ScannerEmbed() {
   return (
-    <section id="scanner" className="border-b border-white/10 bg-black">
+    <section id="scanner" className="border-b border-white/10">
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">Futuret3ch</p>
         <h2 className="mt-2 text-3xl font-semibold tracking-tight">T3X Scanner</h2>
