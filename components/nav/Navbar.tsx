@@ -7,6 +7,7 @@ import ThemeToggle from '@/components/theme/ThemeToggle';
 import NoticeBell from '@/components/nav/NoticeBell';
 import LiveScoreIcon from '@/components/nav/LiveScoreIcon';
 import ProductTabBar from '@/components/nav/ProductTabBar';
+import { softwareMenu } from '@/lib/software-menu';
 import { LINKS } from '@/lib/constants';
 import { Connection, PublicKey, VersionedTransaction, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import servicesData from '@/app/status/services.json';
@@ -115,6 +116,7 @@ export default function Navbar() {
   const [showBuyPanel, setShowBuyPanel] = useState(false);
   const buyPanelRef = useRef<HTMLDivElement>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [softwareOpen, setSoftwareOpen] = useState(false);
 
   // Mobile detection for tips
   const [isMobile, setIsMobile] = useState(false);
@@ -310,7 +312,37 @@ export default function Navbar() {
             >
               CLAIM $T3X
             </a>
-            <a href="/software" className="opacity-70 hover:opacity-100">SOFTWARE</a>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setSoftwareOpen((open) => !open)}
+                className="opacity-70 hover:opacity-100"
+                aria-expanded={softwareOpen}
+              >
+                SOFTWARE
+              </button>
+              {softwareOpen && (
+                <div className="absolute right-0 top-full z-50 mt-3 max-h-[70vh] w-72 overflow-y-auto rounded-2xl border border-white/10 bg-zinc-950 p-3 shadow-2xl">
+                  {softwareMenu.map((group) => (
+                    <div key={group.title} className="mb-3 last:mb-0">
+                      <div className="px-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-400">{group.title}</div>
+                      {group.links.map((link) => (
+                        <a
+                          key={link.href}
+                          href={link.href}
+                          target={link.external ? '_blank' : undefined}
+                          rel={link.external ? 'noopener' : undefined}
+                          onClick={() => setSoftwareOpen(false)}
+                          className="block rounded-lg px-2 py-1.5 text-sm opacity-80 hover:bg-white/5 hover:opacity-100"
+                        >
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
             <a href="/contact" className="opacity-70 hover:opacity-100">CONTACT</a>
           </div>
 
@@ -350,7 +382,32 @@ export default function Navbar() {
           >
             CLAIM $T3X
           </a>
-          <a href="/software" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">SOFTWARE</a>
+          <div className="py-1">
+            <button type="button" onClick={() => setSoftwareOpen((open) => !open)} className="opacity-70 hover:opacity-100">
+              SOFTWARE
+            </button>
+            {softwareOpen && (
+              <div className="mt-2 space-y-3 border-l border-white/10 pl-3">
+                {softwareMenu.map((group) => (
+                  <div key={group.title}>
+                    <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-400">{group.title}</div>
+                    {group.links.map((link) => (
+                      <a
+                        key={link.href}
+                        href={link.href}
+                        target={link.external ? '_blank' : undefined}
+                        rel={link.external ? 'noopener' : undefined}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-1 opacity-80"
+                      >
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
           <a href="/contact" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">CONTACT</a>
           <a href="/#stats" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">LIVE $T3X</a>
           <button 
