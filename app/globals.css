@@ -44,16 +44,19 @@ html.mt-embed canvas {
   max-height: none !important;
 }
 
-/* Slim phone header by default. Full categories only on a real desktop mouse. */
+/* Phone and desktop share one short header. The rest lives in the menu. */
 .mt-nav-compact { display: flex; }
-.mt-nav-desktop { display: none; }
-.mt-nav-social { display: none; }
+.mt-nav-desktop { display: none !important; }
+.mt-nav-social { display: none !important; }
 .mt-foot-links { display: none; }
 @media (min-width: 1101px) and (hover: hover) and (pointer: fine) {
-  .mt-nav-compact { display: none !important; }
-  .mt-nav-desktop { display: flex !important; }
-  .mt-nav-social { display: block !important; }
   .mt-foot-links { display: flex !important; }
+}
+
+.site-header {
+  background: var(--background);
+  color: var(--foreground);
+  border-color: var(--border);
 }
 
 /* =========================
@@ -85,21 +88,40 @@ html.mt-embed canvas {
 /* MANUAL OVERRIDE: LIGHT */
 [data-theme="light"] {
   --background: #ffffff;
-  --foreground: #171717;
-
-  --card: #ffffff;
-  --border: rgba(0, 0, 0, 0.08);
-  --accent: #00cc88;
+  --foreground: #111111;
+  --card: #f4f4f5;
+  --border: rgba(0, 0, 0, 0.14);
+  --accent: #067a52;
+  color-scheme: light;
 }
 
-/* MANUAL OVERRIDE: DARK */
 [data-theme="dark"] {
   --background: #0a0a0a;
-  --foreground: #ededed;
-
-  --card: rgba(20, 25, 35, 0.9);
-  --border: rgba(255, 255, 255, 0.08);
+  --foreground: #f4f4f5;
+  --card: #141414;
+  --border: rgba(255, 255, 255, 0.12);
   --accent: #00ff99;
+  color-scheme: dark;
+}
+
+[data-theme="light"] .bg-white.text-black,
+[data-theme="light"] a.bg-white {
+  background: #111 !important;
+  color: #fff !important;
+}
+[data-theme="light"] .border-white\/10,
+[data-theme="light"] .border-white\/15,
+[data-theme="light"] .border-white\/20,
+[data-theme="light"] .border-white\/30 {
+  border-color: rgba(0, 0, 0, 0.16) !important;
+}
+[data-theme="light"] .bg-black\/20,
+[data-theme="light"] .bg-black\/30,
+[data-theme="light"] .bg-black\/40,
+[data-theme="light"] .bg-black\/50,
+[data-theme="light"] .bg-black\/60,
+[data-theme="light"] .bg-white\/5 {
+  background-color: rgba(0, 0, 0, 0.04) !important;
 }
 
 /* =========================

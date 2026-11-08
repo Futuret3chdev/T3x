@@ -18,13 +18,9 @@ export default function HeroSection() {
           </p>
 
           <div className="flex flex-wrap gap-3 sm:gap-4 mt-7 sm:mt-9">
-            <a
-              href={LINKS.wallet}
-              target="_blank"
-              className="inline-flex items-center justify-center px-6 sm:px-8 h-11 sm:h-12 rounded-2xl bg-white text-black font-semibold tracking-wider text-sm active:opacity-90"
-            >
-              LAUNCH T3x Vault →
-            </a>
+            <span className="inline-flex items-center justify-center px-6 sm:px-8 h-11 sm:h-12 rounded-2xl bg-white text-black font-semibold tracking-wider text-sm">
+              T3x Vault · soon
+            </span>
             <a
               href="#tokenomics"
               className="inline-flex items-center justify-center px-6 sm:px-8 h-11 sm:h-12 rounded-2xl border border-white/30 font-medium text-sm hover:bg-white/5"

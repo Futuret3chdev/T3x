@@ -26,15 +26,12 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="flex items-center justify-center w-9 h-9 rounded-full text-sm transition shrink-0"
-      style={{
-        background: 'var(--card)',
-        border: '1px solid var(--border)',
-      }}
+      className="flex h-9 items-center gap-1 rounded-full px-2.5 text-xs font-medium"
+      style={{ background: 'var(--card)', color: 'var(--foreground)', border: '1px solid var(--border)' }}
+      aria-label={theme === 'dark' ? 'Switch to light' : 'Switch to dark'}
     >
-      <span className="text-base" title={theme === 'dark' ? 'Dark' : 'Light'}>
-        {theme === 'dark' ? '🌙' : '☀️'}
-      </span>
+      <span aria-hidden="true">{theme === 'dark' ? '☾' : '☀'}</span>
+      <span className="hidden sm:inline">{theme === 'dark' ? 'Dark' : 'Light'}</span>
     </button>
   );
 }

@@ -5,9 +5,6 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from '@/components/theme/ThemeToggle';
 import NoticeBell from '@/components/nav/NoticeBell';
-import LiveScoreIcon from '@/components/nav/LiveScoreIcon';
-import ProductTabBar from '@/components/nav/ProductTabBar';
-import { softwareMenu } from '@/lib/software-menu';
 import { LINKS } from '@/lib/constants';
 import { Connection, PublicKey, VersionedTransaction, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import servicesData from '@/app/status/services.json';
@@ -114,9 +111,9 @@ export default function Navbar() {
 
   // Buy $T3X form state (compact at top, below BUY $T3X NOW)
   const [showBuyPanel, setShowBuyPanel] = useState(false);
+  const [showClaimPanel, setShowClaimPanel] = useState(false);
   const buyPanelRef = useRef<HTMLDivElement>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [softwareOpen, setSoftwareOpen] = useState(false);
 
   // Mobile detection for tips
   const [isMobile, setIsMobile] = useState(false);
@@ -236,322 +233,134 @@ export default function Navbar() {
   }, [showBuyPanel]);
 
   return (
-    <header className="w-full border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-5 flex items-center justify-between text-sm">
+    <header className="site-header w-full border-b">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2 flex items-center justify-between text-sm">
         <Link href="/" className="font-semibold tracking-tight flex items-center gap-2 hover:opacity-80 transition">
-          <span className="text-emerald-400">T3X</span>
-          <span className="text-white/70">Futuret3ch</span>
+          <span className="text-emerald-500">T3X</span>
+          <span className="opacity-70">Futuret3ch</span>
         </Link>
 
-        <div className="flex items-center gap-2 sm:gap-6 text-sm">
-          <div className="mt-nav-compact ml-auto items-center gap-1.5">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+            <a href="https://x.com/futuret3chdev" target="_blank" rel="noopener" aria-label="X" title="X" className="flex h-9 w-9 items-center justify-center rounded-full border border-current/20">
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current" aria-hidden="true"><path d="M14.7 10.3 22.4 1.5h-2.2l-6.7 7.6L8.2 1.5H1.6l8.1 11.5L1.5 22.5h2.2l7.1-8.1 5.7 8.1h6.6l-8.4-12.2Zm-2.5 2.9-.8-1.2-6.6-9.3h2.8l5.3 7.6.8 1.2 6.9 9.8h-2.8l-5.6-8.1Z"/></svg>
+            </a>
+            <a href="/status" className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-current/20 px-2.5 py-1 text-xs" title="System Status">
+              <span className="inline-block h-2 w-2 rounded-full bg-emerald-400"></span>
+              <span>{servicesData.services.length}/7</span>
+            </a>
             {portalUser ? (
               <>
                 <NoticeBell />
-                <a
-                  href="/portal"
-                  className="flex items-center gap-1 max-w-[7rem] opacity-90"
-                  title="Account"
-                >
-                  {portalUser.avatar_url ? (
-                    <img src={portalUser.avatar_url} alt="" className="w-7 h-7 rounded-full object-cover" />
-                  ) : (
-                    <span className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-xs">👤</span>
-                  )}
-                  <span className="truncate text-xs">@{portalUser.username}</span>
-                </a>
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="text-[11px] px-2 py-1 border border-white/20 rounded-full"
-                >
-                  Log out
-                </button>
+                <a href="/portal" className="flex items-center gap-1 max-w-[7rem] opacity-90" title="Account">
+                {portalUser.avatar_url ? (
+                  <img src={portalUser.avatar_url} alt="" className="w-7 h-7 rounded-full object-cover" />
+                ) : (
+                  <span className="w-7 h-7 rounded-full border border-current/20 flex items-center justify-center text-xs">👤</span>
+                )}
+              </a>
               </>
             ) : (
-              <button
-                type="button"
-                onClick={() => openAuth('login')}
-                className="text-[11px] px-2 py-1 border border-white/20 rounded-full"
-              >
+              <button type="button" onClick={() => openAuth('login')} className="text-[11px] px-2.5 py-1 border border-current/30 rounded-full">
                 Log in
               </button>
             )}
             <ThemeToggle />
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-xl leading-none"
+              onClick={() => { setMobileMenuOpen(!mobileMenuOpen); setShowBuyPanel(false); setShowClaimPanel(false); }}
+              className="flex h-9 w-9 items-center justify-center text-xl leading-none"
               aria-label="Menu"
               aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? '✕' : '☰'}
             </button>
-          </div>
-          {/* Desktop nav links - use /# so they work correctly even from /contact */}
-          <div className="mt-nav-desktop items-center gap-5">
-            <a href="/#tokenomics" className="opacity-70 hover:opacity-100">TOKENOMICS</a>
-            <a href="/#utilities" className="opacity-70 hover:opacity-100">UTILITIES</a>
-            <a href="/#tap" className="opacity-70 hover:opacity-100">TAP</a>
-            <a href="/catalog" className="opacity-70 hover:opacity-100">GAMES</a>
-            <a href="/developers" className="opacity-70 hover:opacity-100">API</a>
-            <a
-              href="/casino"
-              title="$T3X casino 18+"
-              className="inline-flex items-center justify-center shrink-0"
-              aria-label="$T3X casino 18+"
-            >
-              <img
-                src="/icons/casino-mt-18.png"
-                alt="$T3X 18+"
-                className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover"
-              />
-            </a>
-            <a
-              href="/claims"
-              className="font-semibold text-black bg-emerald-400 hover:bg-emerald-300 px-3 py-1 rounded-full whitespace-nowrap"
-            >
-              CLAIM $T3X
-            </a>
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setSoftwareOpen((open) => !open)}
-                className="opacity-70 hover:opacity-100"
-                aria-expanded={softwareOpen}
-              >
-                SOFTWARE
-              </button>
-              {softwareOpen && (
-                <div className="absolute right-0 top-full z-50 mt-3 max-h-[70vh] w-72 overflow-y-auto rounded-2xl border border-white/10 bg-zinc-950 p-3 shadow-2xl">
-                  {softwareMenu.map((group) => (
-                    <div key={group.title} className="mb-3 last:mb-0">
-                      <div className="px-2 pb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-400">{group.title}</div>
-                      {group.links.map((link) => (
-                        <a
-                          key={link.href}
-                          href={link.href}
-                          target={link.external ? '_blank' : undefined}
-                          rel={link.external ? 'noopener' : undefined}
-                          onClick={() => setSoftwareOpen(false)}
-                          className="block rounded-lg px-2 py-1.5 text-sm opacity-80 hover:bg-white/5 hover:opacity-100"
-                        >
-                          {link.label}
-                        </a>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <a href="/contact" className="opacity-70 hover:opacity-100">CONTACT</a>
-          </div>
-
-          {/* Status icon (replaces Launch) — pulls live summary from /status services.json */}
-          <a 
-            href="/status" 
-            className="mt-nav-desktop items-center gap-1.5 text-xs sm:text-sm px-3 py-1 rounded-xl border border-white/20 hover:bg-white/5"
-            title="System Status"
-          >
-            <span className="inline-block w-2 h-2 rounded-full bg-[#19d37e]"></span>
-            <span>Status <span className="text-[#19d37e]">{servicesData.services.length}/7</span></span>
-          </a>
-
         </div>
       </div>
 
-      {/* Mobile nav menu - use /# so anchors work from subpages like /contact */}
-      {compact && mobileMenuOpen && (
-        <div className="border-t border-white/10 bg-black px-4 py-3 flex flex-col gap-2 text-sm">
-          <a href="/#tokenomics" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">TOKENOMICS</a>
-          <a href="/#utilities" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">UTILITIES</a>
-          <a href="/#tap" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">TAP</a>
-          <a href="/catalog" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">GAMES</a>
-          <a href="/developers" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">API</a>
-          <a
-            href="/casino"
-            onClick={() => setMobileMenuOpen(false)}
-            className="py-1 inline-flex items-center gap-2 opacity-90 hover:opacity-100"
-          >
-            <img src="/icons/casino-mt-18.png" alt="" className="w-8 h-8 rounded-lg object-cover" />
-            $T3X Casino 18+
-          </a>
-          <a
-            href="/claims"
-            onClick={() => setMobileMenuOpen(false)}
-            className="py-2 my-1 text-center font-semibold text-black bg-emerald-400 rounded-full"
-          >
-            CLAIM $T3X
-          </a>
-          <div className="py-1">
-            <button type="button" onClick={() => setSoftwareOpen((open) => !open)} className="opacity-70 hover:opacity-100">
-              SOFTWARE
-            </button>
-            {softwareOpen && (
-              <div className="mt-2 space-y-3 border-l border-white/10 pl-3">
-                {softwareMenu.map((group) => (
-                  <div key={group.title}>
-                    <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-400">{group.title}</div>
-                    {group.links.map((link) => (
-                      <a
-                        key={link.href}
-                        href={link.href}
-                        target={link.external ? '_blank' : undefined}
-                        rel={link.external ? 'noopener' : undefined}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="block py-1 opacity-80"
-                      >
-                        {link.label}
-                      </a>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <a href="/contact" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">CONTACT</a>
-          <a href="/#stats" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">LIVE $T3X</a>
-          <button 
-            onClick={() => { setMobileMenuOpen(false); setShowBuyPanel(true); }}
-            className="py-1 text-left font-medium text-emerald-400 hover:opacity-100"
-          >
-            BUY $T3X NOW
-          </button>
-          <a href={LINKS.wallet} target="_blank" onClick={() => setMobileMenuOpen(false)} className="py-1 font-medium">T3x Vault</a>
-          <a href="/scanner" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">Scanner</a>
-          <a href="/scanner#tags" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">Tags</a>
-          <a href="/in-ai" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">In-Ai</a>
-          <a href="/status" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">Status</a>
-          <a href="/shield" onClick={() => setMobileMenuOpen(false)} className="mt-1 inline-flex items-center gap-2 rounded-xl border border-cyan-400/40 bg-cyan-400/10 px-2 py-1.5">
-            <img src="/icons/shield-mark.jpg" alt="" className="w-9 h-9 rounded-lg object-cover" />
-            <span className="text-xs font-black tracking-[0.22em] text-cyan-300">SHIELD</span>
-          </a>
-          {!portalUser && (
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                openAuth('register');
-              }}
-              className="py-1 text-left"
-            >
-              Register
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* Social icons row under the main nav links - using original Font Awesome icons in brand colors */}
-      <div className="mt-nav-social border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 flex flex-wrap items-center gap-x-3 sm:gap-x-5 text-xs sm:text-sm social-row">
-          <a href="https://discord.gg/FxT7q7fpkT" target="_blank" rel="noopener" title="Discord" style={{ color: '#5865F2' }}>
-            <i className="fab fa-discord text-lg sm:text-xl"></i>
-          </a>
-          <a href="https://twitter.com/Futuret3ch" target="_blank" rel="noopener" title="X / Twitter" style={{ color: '#1DA1F2' }}>
-            <i className="fab fa-twitter text-lg sm:text-xl"></i>
-          </a>
-          <a href="https://t.me/+hxWzh5DZbfhiYWM9" target="_blank" rel="noopener" title="Telegram Portal" style={{ color: '#26A5E4' }}>
-            <i className="fab fa-telegram text-lg sm:text-xl"></i>
-          </a>
-
-          <a
-            href="/#stats"
-            className="text-[11px] sm:text-xs font-medium text-emerald-400 hover:text-emerald-300 whitespace-nowrap"
-          >
-            LIVE $T3X
-          </a>
-          <a
-            href="/scanner"
-            title="Scanner"
-            className="text-[11px] sm:text-xs font-medium text-emerald-400 hover:text-emerald-300 whitespace-nowrap"
-          >
-            Scanner
-          </a>
-          <a
-            href="/scanner#tags"
-            title="Tag board"
-            className="text-[11px] sm:text-xs font-medium text-emerald-400 hover:text-emerald-300 whitespace-nowrap"
-          >
-            Tags
-          </a>
-          <a
-            href="/in-ai"
-            title="In-Ai"
-            aria-label="In-Ai"
-            className="flex items-center gap-1.5 shrink-0 text-[11px] sm:text-xs font-medium text-emerald-400 hover:text-emerald-300 whitespace-nowrap"
-          >
-            <img src="/icons/mt-chat.jpg" alt="" className="w-7 h-7 rounded-md object-cover" />
-            In-Ai
-          </a>
+      <div className="border-t border-current/10">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-6 px-3 py-2 sm:px-6">
           <button
-            onClick={() => setShowBuyPanel(!showBuyPanel)}
-            className="font-medium text-emerald-400 hover:text-emerald-300 transition cursor-pointer text-[11px] sm:text-xs px-2 py-1 border border-emerald-400/30 rounded whitespace-nowrap"
+            type="button"
+            onClick={() => { setShowBuyPanel((open) => !open); setShowClaimPanel(false); setMobileMenuOpen(false); }}
+            className="rounded-full border border-emerald-500/50 px-4 py-1.5 text-xs font-semibold text-emerald-500"
           >
             BUY $T3X
           </button>
-
-          <div className="ml-auto flex items-center gap-2 shrink-0">
-            {portalUser ? (
-              <>
-                <LiveScoreIcon />
-                <NoticeBell />
-                <button
-                  type="button"
-                  onClick={() => (window.location.href = '/portal')}
-                  className="opacity-80 hover:opacity-100 p-1 text-sm flex items-center gap-1.5 max-w-[7.5rem]"
-                  title="Open portal"
-                  aria-label="Account"
-                >
-                  {portalUser.avatar_url ? (
-                    <img src={portalUser.avatar_url} alt="" className="w-6 h-6 rounded-md object-cover" />
-                  ) : (
-                    <span>👤</span>
-                  )}
-                  <span className="truncate text-xs">{portalUser.username}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="text-[11px] sm:text-xs opacity-80 hover:opacity-100 whitespace-nowrap px-2 py-1 border border-white/20 rounded"
-                >
-                  Log out
-                </button>
-              </>
-            ) : (
-              <>
-                <LiveScoreIcon />
-                <button
-                  type="button"
-                  onClick={() => openAuth('login')}
-                  className="text-[11px] sm:text-xs opacity-80 hover:opacity-100 whitespace-nowrap"
-                >
-                  Log in
-                </button>
-                <button
-                  type="button"
-                  onClick={() => openAuth('register')}
-                  className="text-[11px] sm:text-xs px-2 py-1 border border-white/20 rounded whitespace-nowrap"
-                >
-                  Register
-                </button>
-              </>
-            )}
-            <ThemeToggle />
-          </div>
+          <button
+            type="button"
+            onClick={() => { setShowClaimPanel((open) => !open); setShowBuyPanel(false); setMobileMenuOpen(false); }}
+            className="rounded-full bg-emerald-400 px-4 py-1.5 text-xs font-semibold text-black"
+          >
+            CLAIM $T3X
+          </button>
         </div>
       </div>
+      {mobileMenuOpen && (
+        <div className="border-t border-current/10 px-3 py-3 sm:px-6" style={{ background: 'var(--background)', color: 'var(--foreground)' }}>
+          <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
+            {[
+              ['/#tokenomics', 'Tokenomics', '◎'],
+              ['/#utilities', 'Utilities', '⚡'],
+              ['/#tap', 'TAP', '🚗'],
+              ['/catalog', 'Games', '🎮'],
+              ['/developers', 'API', '</>'],
+              ['/casino', 'Casino', '🎲'],
+              ['/software', 'Software', '🛠'],
+              ['/studio', 'Studio', '✎'],
+              ['/scanner', 'Scanner', '⌕'],
+              ['/scanner#tags', 'Tags', '#'],
+              ['/in-ai', 'In-Ai', '✦'],
+              ['/shield', 'Shield', '🛡'],
+              ['/chat', 'Chat', '💬'],
+              ['/status', 'Status', '✓'],
+              ['/contact', 'Contact', '✉'],
+              ['/#stats', 'Live', '●'],
+            ].map(([href, label, icon]) => (
+              <a key={href} href={href} onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center gap-1 rounded-xl border border-current/10 px-1 py-2 text-center">
+                <span className="text-base leading-none">{icon}</span>
+                <span className="text-[10px] leading-tight opacity-80">{label}</span>
+              </a>
+            ))}
+          </div>
+          <div className="mt-3 flex items-center justify-between text-xs">
+            <span className="opacity-60">T3x Vault · coming soon</span>
+            {!portalUser ? (
+              <button type="button" onClick={() => { setMobileMenuOpen(false); openAuth('register'); }} className="underline">Register</button>
+            ) : (
+              <button type="button" onClick={logout} className="underline">Log out</button>
+            )}
+          </div>
+        </div>
+      )}
 
-      <ProductTabBar />
+      <AnimatePresence>
+        {showClaimPanel && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="ml-auto w-full max-w-md overflow-hidden"
+          >
+            <div className="mr-3 rounded-b-2xl border border-current/15 px-4 py-3 text-sm shadow-xl sm:mr-6" style={{ background: 'var(--background)' }}>
+              <div className="flex items-center justify-between gap-3">
+                <p className="font-semibold">Claim $T3X</p>
+                <button type="button" onClick={() => setShowClaimPanel(false)} className="text-xs opacity-70">Slide up</button>
+              </div>
+              <p className="mt-2 text-xs opacity-70">Tags pay 1 T3X for every 2 tags. $T3X is paid once it is available, on the T3X chain.</p>
+              <a href="/claims" className="mt-3 inline-flex rounded-full bg-emerald-400 px-4 py-2 text-xs font-semibold text-black">Open claims</a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Compact buy form panel - shows just below BUY $T3X NOW, hides on click off.
           Manual wallet connect (Phantom/Solflare/Backpack + deeplinks) is now primary so mobile actually works.
           Jupiter widget kept as secondary / visual option. */}
       {showBuyPanel && (
-        <div ref={buyPanelRef} className="border-t border-white/10 bg-zinc-950/95 backdrop-blur max-w-[480px] md:max-w-[620px] ml-auto mr-4 shadow-2xl rounded-b-xl z-50">
+        <div ref={buyPanelRef} className="ml-auto mr-3 w-full max-w-[480px] rounded-b-xl border border-current/15 shadow-2xl sm:mr-6 md:max-w-[620px]" style={{ background: 'var(--background)', color: 'var(--foreground)' }}>
           <div className="px-4 sm:px-6 py-3 sm:py-4 text-sm">
-            {/* Header with close for mobile/desktop */}
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-xs sm:text-sm font-medium">Direct on-chain buy — self-custodial (SOL → $T3X)</div>
-              <button onClick={() => setShowBuyPanel(false)} className="text-xl leading-none opacity-60 hover:opacity-100 px-2" aria-label="Close buy panel">×</button>
+            <div className="mb-2 flex items-center justify-between">
+              <div className="text-xs sm:text-sm font-medium">Buy $T3X</div>
+              <button onClick={() => setShowBuyPanel(false)} className="text-xs opacity-70" aria-label="Slide buy panel up">Slide up</button>
             </div>
 
             {/* Manual connect buttons — only on mobile for deeplink support (Phantom/Solflare/Backpack).
