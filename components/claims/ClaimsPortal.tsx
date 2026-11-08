@@ -406,9 +406,7 @@ export default function ClaimsPortal() {
           Sign in with X and tag the live tags. Each tag counts once on your page. The same tag is not counted again.
           The top 100 get a prize and T3X. 1st gets $200, 2nd $50, 3rd $10. New tags go out on games and posters. Stay tuned.
         </p>
-        <a href="https://t3x-airdrop.vercel.app/" className="mt-4 inline-flex h-11 items-center rounded-xl bg-emerald-400 px-4 text-sm font-semibold text-black">
-          Open the tag board
-        </a>
+        <iframe title="T3X tag board" src="https://t3x-airdrop.vercel.app/" className="mt-4 h-[70dvh] min-h-[520px] w-full rounded-xl border border-white/10 bg-black" />
       </section>
 
       <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">

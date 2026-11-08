@@ -33,6 +33,23 @@ const sections = [
   },
 ];
 
+const tools = [
+  { name: 'Lumina Studio', href: 'https://ft-lumina-studio.vercel.app/', note: 'Studio' },
+  { name: 'Telegram software', href: 'https://mt-radio.vercel.app/', note: 'Radio and bots' },
+  { name: 'Ledger', href: 'https://ledger.vercel.app/', note: 'Accounting' },
+  { name: 'Social Connect', href: 'https://ultimate-connect.vercel.app/', note: 'Social' },
+  { name: 'Launch Desk', href: 'https://hewig-launch-desk.vercel.app/', note: 'Penetration testing' },
+  { name: 'Wirewatch', href: 'https://wirewatch-lime.vercel.app/', note: 'Security' },
+  { name: 'Fieldline', href: 'https://fieldline.vercel.app/', note: 'Security' },
+  { name: 'Fieldline Sweep', href: 'https://fieldline-sweep.vercel.app/', note: 'Security' },
+  { name: 'Bay Three', href: 'https://bay-three-ih5jse4a0-futuret3ch.vercel.app/', note: 'Driving' },
+  { name: 'FareSense Driver', href: 'https://faresense-driver.vercel.app/', note: 'Driving' },
+  { name: 'FareSense', href: 'https://faresense-app.vercel.app/', note: 'Driving' },
+  { name: 'Uber, Dasher, Panda', href: 'https://driver-uber-green.vercel.app/', note: 'Driving' },
+  { name: 'Futuret3ch', href: 'https://futuret3ch-next.vercel.app/', note: 'The front door' },
+  { name: 'T3x Link', href: 'https://t3x-link.vercel.app/', note: 'Starlink' },
+];
+
 export default function SoftwarePage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
@@ -56,6 +73,15 @@ export default function SoftwarePage() {
             <p className="text-sm opacity-70">{s.desc}</p>
             <div className="mt-4 text-sm text-emerald-400">Open →</div>
           </Link>
+        ))}
+      </div>
+      <h2 className="mt-14 text-2xl font-semibold">More tools</h2>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {tools.map((tool) => (
+          <a key={tool.href} href={tool.href} target="_blank" rel="noopener" className="rounded-2xl border border-white/10 p-4 hover:bg-white/[0.03]" style={{ background: 'var(--card)' }}>
+            <div className="text-[11px] uppercase tracking-[2px] text-emerald-400">{tool.note}</div>
+            <div className="mt-1 font-semibold">{tool.name}</div>
+          </a>
         ))}
       </div>
     </div>

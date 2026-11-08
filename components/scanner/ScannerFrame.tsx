@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const BASE = 'https://t3xsolscanner.vercel.app';
 
@@ -19,6 +19,34 @@ export default function ScannerFrame({ tall = false }: { tall?: boolean }) {
   const [query, setQuery] = useState('');
   const [src, setSrc] = useState(BASE);
   const [error, setError] = useState('');
+  const frame = useRef<HTMLIFrameElement>(null);
+  const portal = useRef<{ username: string; email: string } | null>(null);
+
+  function tellScanner() {
+    const user = portal.current;
+    frame.current?.contentWindow?.postMessage(
+      user ? { type: 't3x-portal-user', username: user.username, email: user.email } : { type: 't3x-portal-user' },
+      BASE,
+    );
+  }
+
+  useEffect(() => {
+    fetch('/api/portal/me', { credentials: 'include' })
+      .then((response) => response.json())
+      .then((body: { user?: { username?: string; email?: string } }) => {
+        if (body.user?.username) {
+          portal.current = { username: body.user.username, email: body.user.email || '' };
+          tellScanner();
+        }
+      })
+      .catch(() => undefined);
+    function onMessage(event: MessageEvent) {
+      if (event.origin !== BASE) return;
+      if (event.data?.type === 't3x-scanner-ready') tellScanner();
+    }
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -52,9 +80,11 @@ export default function ScannerFrame({ tall = false }: { tall?: boolean }) {
       </form>
       {error ? <p className="mt-2 text-xs text-rose-300">{error}</p> : null}
       <iframe
+        ref={frame}
         key={src}
         title="T3X Scanner"
         src={src}
+        onLoad={tellScanner}
         className={`mt-3 w-full rounded-xl border border-white/10 bg-black ${tall ? 'h-[78dvh] min-h-[640px]' : 'h-[70dvh] min-h-[480px]'}`}
       />
       <a href={src} target="_blank" rel="noopener" className="mt-2 inline-flex text-sm text-emerald-400 hover:underline">
