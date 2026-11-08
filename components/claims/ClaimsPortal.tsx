@@ -22,8 +22,24 @@ type MyRow = {
   claimable_mt: number;
 };
 
+const WALLET_CHOICES = ['Phantom', 'Solflare', 'Backpack', 'MetaMask', 'Trust Wallet'] as const;
+
+function walletBrowseLink(name: string, page: string) {
+  const url = encodeURIComponent(page);
+  const ref = encodeURIComponent(typeof location !== 'undefined' ? location.origin : page);
+  if (name === 'Phantom') return `https://phantom.app/ul/browse/${url}?ref=${ref}`;
+  if (name === 'Solflare') return `https://solflare.com/ul/v1/browse/${url}?ref=${ref}`;
+  if (name === 'Backpack') return `https://backpack.app/ul/v1/browse/${url}`;
+  if (name === 'MetaMask') {
+    const host = page.replace(/^https?:\/\//, '');
+    return `https://metamask.app.link/dapp/${host}`;
+  }
+  if (name === 'Trust Wallet') return `https://link.trustwallet.com/open_url?coin_id=501&url=${url}`;
+  return '';
+}
+
 export default function ClaimsPortal() {
-  const { publicKey, connected, connect, disconnect, select, wallets, signTransaction } = useWallet();
+  const { publicKey, connected, disconnect, select, wallets, signTransaction } = useWallet();
   const [allUsers, setAllUsers] = useState<ClaimUser[]>([]);
   const [myRow, setMyRow] = useState<MyRow | null>(null);
   const [search, setSearch] = useState('');
@@ -139,11 +155,30 @@ export default function ClaimsPortal() {
   }, [connected, walletAddress, matchWallet]);
 
   async function handleConnect() {
+    const found = wallets.find((w) => w.adapter.name === selectedWallet);
+    const ready = found && (found.readyState === 'Installed' || found.readyState === 'Loadable');
+    if (!ready) {
+      const link = walletBrowseLink(selectedWallet, window.location.href);
+      if (!link) {
+        setStatus('T3x Vault is coming soon. Use Phantom, Solflare, or Backpack for now.');
+        setStatusErr(true);
+        return;
+      }
+      setStatus(`Opening ${selectedWallet}. This page will load inside the wallet, then tap Connect wallet again.`);
+      setStatusErr(false);
+      window.location.href = link;
+      return;
+    }
     try {
-      select(selectedWallet as any);
-      await connect();
+      select(found.adapter.name);
+      await found.adapter.connect();
     } catch (e: any) {
-      setStatus(e.message || 'Connect failed');
+      const msg = String(e?.message || '');
+      if (/reject|cancel/i.test(msg)) {
+        setStatus('Connection cancelled.');
+      } else {
+        setStatus(msg || 'The wallet did not connect. Open this page inside Phantom and try again.');
+      }
       setStatusErr(true);
     }
   }
@@ -425,20 +460,27 @@ export default function ClaimsPortal() {
       <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 sm:p-6 mb-6">
         <div className="flex flex-col gap-3 sm:gap-2">
           <div className="flex flex-wrap gap-2 justify-center">
-            {wallets.map((w) => (
+            {WALLET_CHOICES.map((name) => (
               <button
-                key={w.adapter.name}
+                key={name}
                 type="button"
-                onClick={() => setSelectedWallet(w.adapter.name)}
+                onClick={() => setSelectedWallet(name)}
                 className={`min-h-[44px] px-4 py-2 rounded-xl text-sm border touch-manipulation ${
-                  selectedWallet === w.adapter.name
+                  selectedWallet === name
                     ? 'border-emerald-400/60 bg-emerald-400/10'
                     : 'border-white/20 hover:bg-white/5 active:bg-white/10'
                 }`}
               >
-                {w.adapter.name}
+                {name}
               </button>
             ))}
+            <button
+              type="button"
+              disabled
+              className="min-h-[44px] px-4 py-2 rounded-xl text-sm border border-white/10 opacity-50"
+            >
+              T3x Vault · soon
+            </button>
           </div>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2 items-stretch sm:items-center justify-center">
             {!connected ? (
