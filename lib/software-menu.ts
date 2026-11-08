@@ -42,7 +42,7 @@ export const softwareMenu: SoftGroup[] = [
     title: 'Driving',
     links: [
       { label: 'FareSense', href: 'https://faresense-app.vercel.app/', external: true },
-      { label: 'Bay Three', href: 'https://bay-three-ih5jse4a0-futuret3ch.vercel.app/', external: true },
+      { label: 'Bay Three', href: 'https://bay-three-futuret3ch.vercel.app/', external: true },
       { label: 'Uber, Dasher, Panda', href: 'https://driver-uber-green.vercel.app/', external: true },
     ],
   },
