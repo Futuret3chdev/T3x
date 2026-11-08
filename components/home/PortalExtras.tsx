@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import ScannerFrame from '@/components/scanner/ScannerFrame';
+import TagBoard from '@/components/scanner/TagBoard';
 
 const APP = 'https://adept-learning-agent.vercel.app';
 
@@ -15,18 +16,9 @@ export function ScannerEmbed() {
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">Futuret3ch</p>
         <h2 className="mt-2 text-3xl font-semibold tracking-tight">T3X Scanner</h2>
         <p className="mt-2 max-w-xl text-sm opacity-70">Paste an address and scan it here. Solana or 0x.</p>
-        <div className="mt-4">
-          <ScannerFrame tall />
-        </div>
-        <div className="mt-8 overflow-hidden rounded-2xl border border-white/10">
-          <div className="border-b border-white/10 px-4 py-4">
-            <h3 className="text-xl font-semibold">Tag leaderboard</h3>
-            <p className="mt-1 max-w-2xl text-sm opacity-70">
-              Sign in with X and tag the live tags. Each tag counts once on your page. The same tag is not counted again.
-              Top 100 get a prize and T3X. 1st gets $200, 2nd $50, 3rd $10. New tags go out on games and posters.
-            </p>
-          </div>
-          <iframe title="T3X tag board" src="https://t3x-airdrop.vercel.app/" className="h-[70dvh] min-h-[520px] w-full bg-black" />
+        <div className="mt-4 grid items-start gap-4 xl:grid-cols-2">
+          <ScannerFrame />
+          <TagBoard />
         </div>
       </div>
     </section>

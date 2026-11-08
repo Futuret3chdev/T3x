@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ScannerFrame from '@/components/scanner/ScannerFrame';
+import TagBoard from '@/components/scanner/TagBoard';
 
 export const metadata: Metadata = {
   title: 'Scanner · T3x',
@@ -12,8 +13,9 @@ export default function ScannerPage() {
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">Futuret3ch</p>
       <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">T3X Scanner</h1>
       <p className="mt-2 max-w-xl text-sm opacity-70">Paste an address and scan. Solana wallets open on Solana. 0x addresses open on Ethereum.</p>
-      <div className="mt-4">
-        <ScannerFrame tall />
+      <div className="mt-4 grid items-start gap-4 xl:grid-cols-2">
+        <ScannerFrame />
+        <TagBoard />
       </div>
     </div>
   );

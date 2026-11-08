@@ -356,6 +356,7 @@ export default function Navbar() {
           </button>
           <a href={LINKS.wallet} target="_blank" onClick={() => setMobileMenuOpen(false)} className="py-1 font-medium">T3x Vault</a>
           <a href="/scanner" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">Scanner</a>
+          <a href="/scanner#tags" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">Tags</a>
           <a href="/in-ai" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">In-Ai</a>
           <a href="/status" onClick={() => setMobileMenuOpen(false)} className="py-1 opacity-70 hover:opacity-100">Status</a>
           <a href="/shield" onClick={() => setMobileMenuOpen(false)} className="mt-1 inline-flex items-center gap-2 rounded-xl border border-cyan-400/40 bg-cyan-400/10 px-2 py-1.5">
@@ -402,6 +403,13 @@ export default function Navbar() {
             className="text-[11px] sm:text-xs font-medium text-emerald-400 hover:text-emerald-300 whitespace-nowrap"
           >
             Scanner
+          </a>
+          <a
+            href="/scanner#tags"
+            title="Tag board"
+            className="text-[11px] sm:text-xs font-medium text-emerald-400 hover:text-emerald-300 whitespace-nowrap"
+          >
+            Tags
           </a>
           <a
             href="/in-ai"
