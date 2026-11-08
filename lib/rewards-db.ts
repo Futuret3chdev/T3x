@@ -123,40 +123,22 @@ export async function fetchClaimableByWallet(
 export async function fetchAllClaimableUsers(): Promise<ClaimableUserRow[]> {
   const conn = await getPortalDb();
   try {
-    const [rows] = await conn.execute(
-      `SELECT user_id, username, wallet_address, usd, claimed FROM (
-         SELECT p.user_id AS user_id,
-                p.username AS username,
-                (SELECT w.address FROM t3x_wallets w WHERE w.user_id = p.user_id LIMIT 1) AS wallet_address,
-                COALESCE((SELECT SUM(f.usd) FROM t3x_fills f WHERE f.user_id = p.user_id), 0) AS usd,
-                COALESCE((SELECT SUM(c.units) FROM t3x_claims c WHERE c.user_id = p.user_id), 0) AS claimed
-         FROM t3x_profiles p
-         UNION
-         SELECT CONCAT('portal-', u.id) AS user_id,
-                u.username AS username,
-                u.wallet_address AS wallet_address,
-                0 AS usd,
-                0 AS claimed
-         FROM portal_users u
-         WHERE NOT EXISTS (SELECT 1 FROM t3x_profiles p WHERE p.username = u.username)
-       ) people
-       ORDER BY username ASC`
+    const [rows] = await conn.query(
+      'SELECT id, username, wallet_address FROM portal_users ORDER BY username ASC LIMIT 200'
     );
-    return (rows as any[]).map((r) => {
+    return (rows as { id: number; username: string | null; wallet_address: string | null }[]).map((r) => {
       const wallet = String(r.wallet_address || '').trim();
       const linked = !!wallet && WALLET_RE.test(wallet);
-      const earned = Math.floor(Number(r.usd || 0) / 20);
-      const ready = Math.max(0, earned - Number(r.claimed || 0));
       return {
-        user_id: String(r.user_id),
+        user_id: `portal-${r.id}`,
         username: r.username || null,
         wallet_address: linked ? wallet : wallet || null,
         wallet_linked: linked,
         verified: true,
-        claimable_mt: ready,
+        claimable_mt: 0,
         current_streak: 0,
         max_streak: 0,
-        total_checkins: earned,
+        total_checkins: 0,
         last_checkin: null,
       };
     });
