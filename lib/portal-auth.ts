@@ -43,6 +43,8 @@ export async function ensurePortalColumns(conn: mysql.Connection) {
   const alters = [
     'ALTER TABLE portal_users ADD COLUMN license_key VARCHAR(40) NULL',
     'ALTER TABLE portal_users ADD COLUMN license_tier VARCHAR(16) NULL',
+    'ALTER TABLE portal_users ADD COLUMN totp_secret VARCHAR(64) NULL',
+    'ALTER TABLE portal_users ADD COLUMN totp_enabled TINYINT NOT NULL DEFAULT 0',
     'ALTER TABLE mt_dev_licenses ADD COLUMN user_id BIGINT NULL',
     'ALTER TABLE mt_dev_licenses MODIFY COLUMN user_id BIGINT NULL',
   ];

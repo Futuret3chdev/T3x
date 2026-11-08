@@ -9,13 +9,23 @@ import {
   writeSessionCookie,
   type PortalUser,
 } from '@/lib/portal-auth';
+import { totpMatches } from '@/lib/totp';
+import { clientIp, logSecurity, looksAutomated, tooManyFailures } from '@/lib/security-log';
 
 export async function POST(request: NextRequest) {
-  let body: { email?: string; username?: string; password?: string };
+  let body: { email?: string; username?: string; password?: string; code?: string; company_website?: string; fax_number?: string };
   try {
     body = await request.json();
   } catch {
     return Response.json({ ok: false, error: 'Invalid JSON' }, { status: 400 });
+  }
+  const ip = clientIp(request);
+  if (looksAutomated(body)) {
+    await logSecurity('honeypot', ip, '/api/portal/login', 'hidden field');
+    return Response.json({ ok: false, error: 'Invalid email or password.' }, { status: 401 });
+  }
+  if (await tooManyFailures(ip)) {
+    return Response.json({ ok: false, error: 'Too many attempts. Wait 15 minutes.' }, { status: 429 });
   }
   const login = (body.email || body.username || '').trim().toLowerCase();
   const password = body.password || '';
@@ -30,13 +40,22 @@ export async function POST(request: NextRequest) {
     const [rows] = await conn.execute(
       `SELECT id, username, email, password_hash, wallet_address, license_key, license_tier, bio, avatar_url,
               CAST(telegram_id AS CHAR) AS telegram_id,
-              CAST(discord_id AS CHAR) AS discord_id
+              CAST(discord_id AS CHAR) AS discord_id,
+              totp_secret, totp_enabled
        FROM portal_users WHERE email = ? OR username = ? LIMIT 1`,
       [login, login]
     );
-    const row = (rows as (PortalUser & { password_hash: string })[])[0];
+    const row = (rows as (PortalUser & { password_hash: string; totp_secret?: string | null; totp_enabled?: number })[])[0];
     if (!row || !(await checkPassword(password, row.password_hash))) {
+      await logSecurity('login_fail', ip, '/api/portal/login', login.slice(0, 80));
       return Response.json({ ok: false, error: 'Invalid email or password.' }, { status: 401 });
+    }
+    if (Number(row.totp_enabled) === 1) {
+      if (!body.code) return Response.json({ ok: false, need2fa: true, error: 'Enter the 6-digit authenticator code.' }, { status: 401 });
+      if (!row.totp_secret || !totpMatches(row.totp_secret, body.code)) {
+        await logSecurity('login_fail', ip, '/api/portal/login', 'bad-2fa');
+        return Response.json({ ok: false, need2fa: true, error: 'That code does not match.' }, { status: 401 });
+      }
     }
     const token = newSessionToken();
     await conn.execute('UPDATE portal_users SET session_token = ?, last_login = NOW() WHERE id = ?', [

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import GameCard from '@/components/games/GameCard';
+import TwoFactor from '@/components/portal/TwoFactor';
 import { liveGames } from '@/lib/mt-catalog';
 
 type Mode = 'users' | 'developers' | 'businesses';
@@ -296,6 +297,7 @@ export default function PortalPage() {
                     <div className="text-sm opacity-60">{user.email}</div>
                   </div>
                 </div>
+                <TwoFactor />
                 <div className="flex flex-wrap gap-2 text-sm items-center">
                   <input
                     value={avatar}

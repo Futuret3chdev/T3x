@@ -20,7 +20,10 @@ export default function Navbar() {
     username: '',
     email: '',
     password: '',
+    code: '',
+    company_website: '',
   });
+  const [need2fa, setNeed2fa] = useState(false);
   const [authError, setAuthError] = useState('');
   const [authBusy, setAuthBusy] = useState(false);
   const [portalUser, setPortalUser] = useState<{ username: string; license_key?: string | null; avatar_url?: string | null } | null>(null);
@@ -59,7 +62,8 @@ export default function Navbar() {
 
   const openAuth = (mode: 'login' | 'register') => {
     setAuthMode(mode);
-    setFormData({ username: '', email: '', password: '' });
+    setFormData({ username: '', email: '', password: '', code: '', company_website: '' });
+    setNeed2fa(false);
     setAuthError('');
     setAuthOpen(true);
   };
@@ -90,6 +94,7 @@ export default function Navbar() {
       });
       const data = await res.json();
       if (!data.ok) {
+        if (data.need2fa) setNeed2fa(true);
         setAuthError(data.error || 'Could not sign in.');
         return;
       }
@@ -631,6 +636,27 @@ export default function Navbar() {
                     className="w-full bg-white/5 border border-white/15 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-400/60"
                   />
                 </div>
+                {need2fa && (
+                  <div>
+                    <div className="text-xs opacity-60 mb-1">Authenticator code</div>
+                    <input
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      value={formData.code}
+                      onChange={(e) => setFormData({ ...formData, code: e.target.value })}
+                      placeholder="123456"
+                      className="w-full bg-white/5 border border-white/15 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-400/60"
+                    />
+                  </div>
+                )}
+                <input
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={formData.company_website}
+                  onChange={(e) => setFormData({ ...formData, company_website: e.target.value })}
+                  className="hidden"
+                />
 
                 {authError && <div className="text-sm text-red-400">{authError}</div>}
                 <button

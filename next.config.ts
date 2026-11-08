@@ -7,8 +7,39 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     '*': ['./node_modules/@swc/helpers/**'],
   },
-  async rewrites() {
+  async headers() {
     return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+        ],
+      },
+    ];
+  },
+  async rewrites() {
+    const traps = [
+      '/.env',
+      '/.env.local',
+      '/wp-login.php',
+      '/wp-admin',
+      '/wp-admin/:path*',
+      '/phpmyadmin',
+      '/phpmyadmin/:path*',
+      '/administrator',
+      '/xmlrpc.php',
+      '/server-status',
+      '/backup.sql',
+      '/.git/config',
+      '/config.json',
+      '/api/debug',
+      '/api/internal/export',
+    ];
+    return [
+      ...traps.map((source) => ({ source, destination: `/api/security/trap?path=${encodeURIComponent(source)}` })),
       {
         source: '/games/api/discord-callback.php',
         destination: '/api/oauth/discord/callback',

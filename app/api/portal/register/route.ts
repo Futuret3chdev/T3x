@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getPortalDb } from '@/lib/rewards-db';
+import { clientIp, logSecurity, looksAutomated } from '@/lib/security-log';
 import {
   attachLicense,
   hashPassword,
@@ -10,11 +11,15 @@ import {
 } from '@/lib/portal-auth';
 
 export async function POST(request: NextRequest) {
-  let body: { username?: string; email?: string; password?: string };
+  let body: { username?: string; email?: string; password?: string; company_website?: string; fax_number?: string };
   try {
     body = await request.json();
   } catch {
     return Response.json({ ok: false, error: 'Invalid JSON' }, { status: 400 });
+  }
+  if (looksAutomated(body)) {
+    await logSecurity('honeypot', clientIp(request), '/api/portal/register', 'hidden field');
+    return Response.json({ ok: false, error: 'Could not create that account.' }, { status: 400 });
   }
   const username = (body.username || '').trim();
   const email = (body.email || '').trim().toLowerCase();
